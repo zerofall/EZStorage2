@@ -1,0 +1,16 @@
+[
+{
+  "modid": "ezstorage2",
+  "name": "EZ Storage 2",
+  "description": "Storage: Simplified.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["zerofall"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
