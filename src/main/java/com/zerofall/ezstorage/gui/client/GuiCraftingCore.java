@@ -1,11 +1,11 @@
-package com.zerofall.ezstorage.gui;
-
-import com.zerofall.ezstorage.Reference;
-import com.zerofall.ezstorage.container.ContainerStorageCoreCrafting;
+package com.zerofall.ezstorage.gui.client;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
+import com.zerofall.ezstorage.Reference;
+import com.zerofall.ezstorage.gui.server.ContainerStorageCoreCrafting;
 
 public class GuiCraftingCore extends GuiStorageCore {
 

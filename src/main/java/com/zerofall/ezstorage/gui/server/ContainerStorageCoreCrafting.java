@@ -1,4 +1,4 @@
-package com.zerofall.ezstorage.container;
+package com.zerofall.ezstorage.gui.server;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;

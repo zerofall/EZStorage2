@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down": "ezstorage2:blocks/box_side",
+        "up": "ezstorage2:blocks/box_side",
+        "north": "ezstorage2:blocks/access_terminal",
+        "south": "ezstorage2:blocks/access_terminal",
+        "east": "ezstorage2:blocks/access_terminal",
+        "west": "ezstorage2:blocks/access_terminal",
+        "particle": "ezstorage2:blocks/access_terminal"
+    }
+}

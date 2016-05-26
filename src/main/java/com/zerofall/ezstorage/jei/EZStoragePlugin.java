@@ -15,10 +15,6 @@ public class EZStoragePlugin implements IModPlugin {
 	}
 
 	@Override
-	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {}
 
 }

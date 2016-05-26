@@ -3,10 +3,6 @@ package com.zerofall.ezstorage.jei;
 import java.util.List;
 import java.util.Map;
 
-import com.zerofall.ezstorage.EZStorage;
-import com.zerofall.ezstorage.container.ContainerStorageCoreCrafting;
-import com.zerofall.ezstorage.network.RecipeMessage;
-
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
@@ -18,6 +14,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
+import com.zerofall.ezstorage.EZStorage;
+import com.zerofall.ezstorage.gui.server.ContainerStorageCoreCrafting;
+import com.zerofall.ezstorage.network.RecipeMessage;
 
 public class RecipeTransferHandler implements IRecipeTransferHandler {
 

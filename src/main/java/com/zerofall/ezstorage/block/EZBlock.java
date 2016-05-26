@@ -1,11 +1,13 @@
 package com.zerofall.ezstorage.block;
 
-import com.zerofall.ezstorage.EZStorage;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
-public class EZBlock extends Block {
+import com.zerofall.ezstorage.EZStorage;
+import com.zerofall.ezstorage.registry.IRegistryBlock;
+
+/** Superclass for all mod blocks */
+public abstract class EZBlock extends Block implements IRegistryBlock {
 
 	protected EZBlock(String name, Material materialIn) {
 		super(materialIn);

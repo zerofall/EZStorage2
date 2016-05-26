@@ -18,8 +18,4 @@ public class BlockOutputPort extends EZBlockContainer {
 		return new TileEntityOutputPort();
 	}
 	
-	@Override
-	public int getRenderType() {
-		return 3;
-	}
 }

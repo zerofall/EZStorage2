@@ -1,6 +1,6 @@
 package com.zerofall.ezstorage.block;
 
-import com.zerofall.ezstorage.configuration.EZConfiguration;
+import com.zerofall.ezstorage.config.EZConfig;
 
 import net.minecraft.block.material.Material;
 
@@ -15,6 +15,6 @@ public class BlockStorage extends StorageMultiblock {
 	}
 	
 	public int getCapacity() {
-		return EZConfiguration.basicCapacity;
+		return EZConfig.basicCapacity;
 	}
 }

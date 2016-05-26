@@ -1,6 +1,7 @@
 package com.zerofall.ezstorage.block;
 
 import com.zerofall.ezstorage.EZStorage;
+import com.zerofall.ezstorage.gui.GuiHandler;
 import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 
 import net.minecraft.block.material.Material;
@@ -26,11 +27,6 @@ public class BlockStorageCore extends EZBlockContainer {
 	}
 	
 	@Override
-	public int getRenderType() {
-		return 3;
-	}
-	
-	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		TileEntityStorageCore tileEntity = (TileEntityStorageCore)worldIn.getTileEntity(pos);
 		if (tileEntity.inventory.getTotalCount() > 0) {
@@ -44,9 +40,9 @@ public class BlockStorageCore extends EZBlockContainer {
 		if (!worldIn.isRemote) {
 			TileEntityStorageCore tileEntity = (TileEntityStorageCore)worldIn.getTileEntity(pos);
 			if (tileEntity.hasCraftBox) {
-				playerIn.openGui(EZStorage.instance, 2, worldIn, pos.getX(), pos.getY(), pos.getZ());
+				playerIn.openGui(EZStorage.instance, GuiHandler.CRAFTING, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			} else {
-				playerIn.openGui(EZStorage.instance, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
+				playerIn.openGui(EZStorage.instance, GuiHandler.STORAGE, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			}
 			
 		}

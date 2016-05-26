@@ -1,11 +1,17 @@
 package com.zerofall.ezstorage.proxy;
 
-import com.zerofall.ezstorage.init.EZBlocks;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ClientProxy extends CommonProxy{
+import com.zerofall.ezstorage.init.EZBlocks;
+import com.zerofall.ezstorage.init.EZItems;
+
+public class ClientProxy extends CommonProxy {
+	
 	@Override
 	public void registerRenders() {
 		EZBlocks.registerRenders();
-
+		EZItems.registerRenders();
 	}
+	
 }

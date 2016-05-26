@@ -1,21 +1,10 @@
-package com.zerofall.ezstorage.gui;
+package com.zerofall.ezstorage.gui.client;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-
-import com.zerofall.ezstorage.EZStorage;
-import com.zerofall.ezstorage.Reference;
-import com.zerofall.ezstorage.container.ContainerStorageCore;
-import com.zerofall.ezstorage.network.MyMessage;
-import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
-import com.zerofall.ezstorage.util.EZItemRenderer;
-import com.zerofall.ezstorage.util.ItemGroup;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
@@ -29,6 +18,17 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+
+import com.zerofall.ezstorage.EZStorage;
+import com.zerofall.ezstorage.Reference;
+import com.zerofall.ezstorage.gui.server.ContainerStorageCore;
+import com.zerofall.ezstorage.network.MyMessage;
+import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
+import com.zerofall.ezstorage.util.EZItemRenderer;
+import com.zerofall.ezstorage.util.ItemGroup;
 
 public class GuiStorageCore extends GuiContainer {
 

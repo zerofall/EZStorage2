@@ -6,7 +6,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class XEventHandler {
+/** Main mod events */
+public class CoreEvents {
 
 	@SubscribeEvent
 	public void onBlockBreak(BreakEvent e) {
