@@ -1,18 +1,16 @@
 package com.zerofall.ezstorage.item;
 
 import net.minecraft.item.Item;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import com.zerofall.ezstorage.EZStorage;
+import com.zerofall.ezstorage.registry.IRegistryItem;
 
-public class EZItem extends Item {
+/** Superclass for all mod items */
+public abstract class EZItem extends Item implements IRegistryItem {
+	
 	public EZItem(String name) {
-		registerItem(name, this);
+		this.setUnlocalizedName(name);
+		this.setCreativeTab(EZStorage.instance.creativeTab);
 	}
-
-	public static void registerItem(String name, Item item) {
-		item.setCreativeTab(EZStorage.instance.creativeTab);
-		item.setUnlocalizedName(name);
-		GameRegistry.registerItem(item, name);
-	}
+	
 }

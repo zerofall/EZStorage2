@@ -26,10 +26,10 @@ version = "1.9.4-1.0.0"
 group= "com.zerofall.ezstorage2"
 archivesBaseName = "ezstorage2"
 
-
 minecraft {
     version = "1.9.4-12.17.0.1917-1.9.4"
     runDir = "run"
+	useDepAts = true
     mappings = "snapshot_20160518"
 }
 

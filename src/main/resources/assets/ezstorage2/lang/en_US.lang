@@ -1,9 +1,22 @@
+# language file
+
+# creative tab
+itemGroup.EZStorage=EZStorage
+
+# blocks
+tile.blank_box.name=Blank Box
 tile.storage_core.name=Storage Core
 tile.storage_box.name=Storage Box
 tile.condensed_storage_box.name=Condensed Storage Box
+tile.super_storage_box.name=Super Storage Box
+tile.ultra_storage_box.name=Ultra Storage Box
 tile.hyper_storage_box.name=Hyper Storage Box
 tile.input_port.name=Input Port
 tile.output_port.name=Output Port
 tile.crafting_box.name=Crafting Box
 tile.search_box.name=Search Box
-itemGroup.EZStorage=EZStorage
+tile.access_terminal.name=Access Terminal
+tile.security_box.name=Security Box
+
+# items
+item.key.name=EZ Key

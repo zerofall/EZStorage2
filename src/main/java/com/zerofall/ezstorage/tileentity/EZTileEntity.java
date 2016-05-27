@@ -25,12 +25,16 @@ public abstract class EZTileEntity extends TileEntity {
 		readFromNBT(pkt.getNbtCompound());
 	}
 	
+	/** New required method for 1.9.4 tile entities */
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		NBTTagCompound nbtTag = new NBTTagCompound();
+		return writeDataToNBT(nbtTag);
+	}
 	
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound nbtTag = new NBTTagCompound();
-		writeDataToNBT(nbtTag);
-		return new SPacketUpdateTileEntity(this.pos, 1, nbtTag);
+		return new SPacketUpdateTileEntity(this.pos, 1, getUpdateTag());
 	}
 	
 	public abstract NBTTagCompound writeDataToNBT(NBTTagCompound paramNBTTagCompound);

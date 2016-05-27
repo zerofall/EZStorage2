@@ -1,4 +1,4 @@
-package com.zerofall.ezstorage.container;
+package com.zerofall.ezstorage.gui.server;
 
 import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 
