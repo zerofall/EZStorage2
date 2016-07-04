@@ -1,0 +1,5 @@
+{
+	"variants": {
+		"normal": {"model": "ezstorage:super_storage_box"}
+	}
+}
