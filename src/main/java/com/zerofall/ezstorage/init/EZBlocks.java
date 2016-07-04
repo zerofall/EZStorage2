@@ -6,7 +6,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.zerofall.ezstorage.Reference;
 import com.zerofall.ezstorage.block.BlockAccessTerminal;
 import com.zerofall.ezstorage.block.BlockBlankBox;
 import com.zerofall.ezstorage.block.BlockCondensedStorage;
@@ -22,6 +21,7 @@ import com.zerofall.ezstorage.block.BlockSuperStorage;
 import com.zerofall.ezstorage.block.BlockUltraStorage;
 import com.zerofall.ezstorage.block.EZBlock;
 import com.zerofall.ezstorage.config.EZConfig;
+import com.zerofall.ezstorage.ref.RefStrings;
 import com.zerofall.ezstorage.registry.IRegistryBlock;
 import com.zerofall.ezstorage.tileentity.TileEntityInputPort;
 import com.zerofall.ezstorage.tileentity.TileEntityOutputPort;
@@ -79,10 +79,10 @@ public class EZBlocks {
 		for(IRegistryBlock block : blocks) {
 			GameRegistry.registerBlock((Block)block, block.getItemClass(), block.getShorthandName(), block.getItemClassArgs());
 		}
-		GameRegistry.registerTileEntity(TileEntityStorageCore.class, Reference.MOD_ID + ":TileEntityStorageCore");
-		GameRegistry.registerTileEntity(TileEntityInputPort.class, Reference.MOD_ID + ":TileEntityInputPort");
-		GameRegistry.registerTileEntity(TileEntityOutputPort.class, Reference.MOD_ID + ":TileEntityOutputPort");
-		GameRegistry.registerTileEntity(TileEntitySecurityBox.class, Reference.MOD_ID + ":TileEntitySecurityBox");
+		GameRegistry.registerTileEntity(TileEntityStorageCore.class, RefStrings.MODID + ":TileEntityStorageCore");
+		GameRegistry.registerTileEntity(TileEntityInputPort.class, RefStrings.MODID + ":TileEntityInputPort");
+		GameRegistry.registerTileEntity(TileEntityOutputPort.class, RefStrings.MODID + ":TileEntityOutputPort");
+		GameRegistry.registerTileEntity(TileEntitySecurityBox.class, RefStrings.MODID + ":TileEntitySecurityBox");
 	}
 	
 	/** Register model information */

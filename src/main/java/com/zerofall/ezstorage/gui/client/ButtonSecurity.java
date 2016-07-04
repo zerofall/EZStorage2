@@ -6,12 +6,12 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
-import com.zerofall.ezstorage.Reference;
+import com.zerofall.ezstorage.ref.RefStrings;
 
 /** Custom buttons for the security block GUI */
 public class ButtonSecurity extends GuiButton {
 
-	private static final ResourceLocation tex = new ResourceLocation(Reference.MOD_ID, "textures/gui/securityButton.png");
+	private static final ResourceLocation tex = new ResourceLocation(RefStrings.MODID, "textures/gui/securityButton.png");
 
 	public ButtonSecurity(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {
 		super(buttonId, x, y, widthIn, heightIn, buttonText);

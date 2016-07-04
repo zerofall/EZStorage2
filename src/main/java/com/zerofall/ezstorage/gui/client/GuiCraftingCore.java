@@ -4,8 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import com.zerofall.ezstorage.Reference;
 import com.zerofall.ezstorage.gui.server.ContainerStorageCoreCrafting;
+import com.zerofall.ezstorage.ref.RefStrings;
 
 public class GuiCraftingCore extends GuiStorageCore {
 
@@ -22,6 +22,6 @@ public class GuiCraftingCore extends GuiStorageCore {
 	
 	@Override
 	protected ResourceLocation getBackground() {
-		return new ResourceLocation(Reference.MOD_ID + ":textures/gui/storageCraftingGui.png");
+		return new ResourceLocation(RefStrings.MODID + ":textures/gui/storageCraftingGui.png");
 	}
 }

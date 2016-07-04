@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.zerofall.ezstorage.Reference;
+import com.zerofall.ezstorage.ref.RefStrings;
 
 /** Interface to help with item registration */
 public interface IRegistryItem extends IRegistryBase {
@@ -22,7 +22,7 @@ public interface IRegistryItem extends IRegistryBase {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public default void registerRender(ItemModelMesher mesher) {
-		mesher.register((Item)this, 0, new ModelResourceLocation(Reference.MOD_ID + ":" + this.getShorthandName(), "inventory"));
+		mesher.register((Item)this, 0, new ModelResourceLocation(RefStrings.MODID + ":" + this.getShorthandName(), "inventory"));
 	}
 	
 }

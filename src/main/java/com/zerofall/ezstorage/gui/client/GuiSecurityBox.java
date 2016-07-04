@@ -14,10 +14,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 
-import com.zerofall.ezstorage.Reference;
 import com.zerofall.ezstorage.gui.server.ContainerSecurityBox;
 import com.zerofall.ezstorage.init.EZBlocks;
 import com.zerofall.ezstorage.network.EZNetwork;
+import com.zerofall.ezstorage.ref.RefStrings;
 import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
 import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox.SecurePlayer;
 import com.zerofall.ezstorage.util.EZStorageUtils;
@@ -27,7 +27,7 @@ import com.zerofall.ezstorage.util.JointList;
 @SideOnly(Side.CLIENT)
 public class GuiSecurityBox extends GuiContainer {
 	
-	public static final ResourceLocation secureGuiTextures = new ResourceLocation(Reference.MOD_ID, "textures/gui/securityBox.png");
+	public static final ResourceLocation secureGuiTextures = new ResourceLocation(RefStrings.MODID, "textures/gui/securityBox.png");
 	private TileEntitySecurityBox tileSecure;
 	private static final int nButtons = 7;
 	private static final int buttonWidth = 80;

@@ -1,13 +1,13 @@
 [
 {
-  "modid": "ezstorage2",
+  "modid": "ezstorage",
   "name": "EZ Storage 2",
   "description": "Storage: Simplified again.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["zerofall", "sblectric"],
+  "authorList": ["zerofall", "SBlectric"],
   "credits": "",
   "logoFile": "",
   "screenshots": [],
