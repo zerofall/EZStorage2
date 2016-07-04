@@ -4,6 +4,6 @@ EZStorage 2 introduces a storage system that scales and evolves as players progr
 
 This repo is for the latest version of the mod.
 
-This Open Source project (see [License](https://github.com/zerofall/EZStorage2/blob/master/LICENSE) is a mod for [Minecraft](http://www.minecraft.net/), a game by [Mojang AB](http://mojang.com/).
+This Open Source project (see [License](https://github.com/zerofall/EZStorage2/blob/master/LICENSE)) is a mod for [Minecraft](http://www.minecraft.net/), a game by [Mojang AB](http://mojang.com/).
 
 [Project on CurseForge](http://minecraft.curseforge.com/projects/ezstorage-2)
