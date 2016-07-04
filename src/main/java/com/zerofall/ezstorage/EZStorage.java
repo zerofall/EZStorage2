@@ -19,15 +19,17 @@ import com.zerofall.ezstorage.init.EZBlocks;
 import com.zerofall.ezstorage.init.EZItems;
 import com.zerofall.ezstorage.network.EZNetwork;
 import com.zerofall.ezstorage.proxy.CommonProxy;
+import com.zerofall.ezstorage.ref.EZTab;
+import com.zerofall.ezstorage.ref.RefStrings;
 
 /** EZStorage main mod class */
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
+@Mod(modid = RefStrings.MODID, name = RefStrings.NAME, version = RefStrings.VERSION)
 public class EZStorage {
 	
-    @Mod.Instance(Reference.MOD_ID)
+    @Mod.Instance(RefStrings.MODID)
     public static EZStorage instance;
     
-    @SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
+    @SidedProxy(clientSide = RefStrings.CLIENT_PROXY, serverSide = RefStrings.SERVER_PROXY)
     public static CommonProxy proxy;
     
     public static SimpleNetworkWrapper networkWrapper;

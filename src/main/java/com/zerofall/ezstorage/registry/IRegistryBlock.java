@@ -8,7 +8,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.zerofall.ezstorage.Reference;
+import com.zerofall.ezstorage.ref.RefStrings;
 
 /** Interface to help with block registration */
 public interface IRegistryBlock extends IRegistryBase {
@@ -31,7 +31,7 @@ public interface IRegistryBlock extends IRegistryBase {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public default void registerRender(ItemModelMesher mesher) {
-		mesher.register(Item.getItemFromBlock((Block)this), 0, new ModelResourceLocation(Reference.MOD_ID + ":" + this.getShorthandName(), "inventory"));
+		mesher.register(Item.getItemFromBlock((Block)this), 0, new ModelResourceLocation(RefStrings.MODID + ":" + this.getShorthandName(), "inventory"));
 	}
 
 }

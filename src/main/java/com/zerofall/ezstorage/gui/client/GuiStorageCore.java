@@ -23,9 +23,9 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import com.zerofall.ezstorage.EZStorage;
-import com.zerofall.ezstorage.Reference;
 import com.zerofall.ezstorage.gui.server.ContainerStorageCore;
 import com.zerofall.ezstorage.network.MyMessage;
+import com.zerofall.ezstorage.ref.RefStrings;
 import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 import com.zerofall.ezstorage.util.EZItemRenderer;
 import com.zerofall.ezstorage.util.ItemGroup;
@@ -362,7 +362,7 @@ public class GuiStorageCore extends GuiContainer {
 	}
 	
 	protected ResourceLocation getBackground() {
-		return new ResourceLocation(Reference.MOD_ID + ":textures/gui/storageScrollGui.png");
+		return new ResourceLocation(RefStrings.MODID + ":textures/gui/storageScrollGui.png");
 	}
 	
 	public int rowsVisible() {

@@ -1,4 +1,4 @@
-package com.zerofall.ezstorage;
+package com.zerofall.ezstorage.ref;
 
 import com.zerofall.ezstorage.init.EZBlocks;
 
