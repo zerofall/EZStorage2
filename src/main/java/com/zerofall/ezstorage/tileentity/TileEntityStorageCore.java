@@ -33,7 +33,8 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.FMLLog;
 
-public class TileEntityStorageCore extends TileEntity implements ITickable {
+/** The storage core tile entity */
+public class TileEntityStorageCore extends EZTileEntity {
 	
 	public static Logger log = FMLLog.getLogger();
 	
@@ -49,6 +50,7 @@ public class TileEntityStorageCore extends TileEntity implements ITickable {
 		inventory = new EZInventory();
 	}
 	
+	/** Inputs a stack to the inventory */
 	public ItemStack input(ItemStack stack) {
 		ItemStack result = this.inventory.input(stack);
 		EZStorageUtils.notifyBlockUpdate(this);
@@ -56,6 +58,7 @@ public class TileEntityStorageCore extends TileEntity implements ITickable {
 		return result;
 	}
 	
+	/** Gets the first full stack in the inventory */
 	public ItemStack getRandomStack() {
 		ItemStack result = this.inventory.getItemsAt(0, 0);
 		EZStorageUtils.notifyBlockUpdate(this);
@@ -63,31 +66,22 @@ public class TileEntityStorageCore extends TileEntity implements ITickable {
 		return result;
 	}
 	
+	/** Sorts the inventory on change */
 	public void sortInventory() {
-		this.inventory.sort();
-		updateTileEntity();
+		if(!this.worldObj.isRemote) {
+			this.inventory.sort();
+			updateTileEntity();
+		}
 	}
 	
+	/** Updates the tile entity position in the world and marks it to be saved */
 	public void updateTileEntity() {
 		EZStorageUtils.notifyBlockUpdate(this);
 		this.markDirty();
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		readFromNBT(pkt.getNbtCompound());
-	}
-	
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound nbtTag = new NBTTagCompound();
-		writeToNBT(nbtTag);
-		return new SPacketUpdateTileEntity(this.pos, getBlockMetadata(), nbtTag);
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound paramNBTTagCompound) {
-		super.writeToNBT(paramNBTTagCompound);
+	public NBTTagCompound writeDataToNBT(NBTTagCompound paramNBTTagCompound) {
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < this.inventory.slotCount(); ++i) {
 			ItemGroup group = this.inventory.inventory.get(i);
@@ -107,8 +101,7 @@ public class TileEntityStorageCore extends TileEntity implements ITickable {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound paramNBTTagCompound) {
-		super.readFromNBT(paramNBTTagCompound);
+	public void readDataFromNBT(NBTTagCompound paramNBTTagCompound) {
 		NBTTagList nbttaglist = paramNBTTagCompound.getTagList("Internal", 10);
 
 		if (nbttaglist != null) {
@@ -128,9 +121,7 @@ public class TileEntityStorageCore extends TileEntity implements ITickable {
 		this.disabled = paramNBTTagCompound.getBoolean("isDisabled");
 	}
 	
-	/**
-	 * Scans the multiblock structure for valid blocks
-	 */
+	/** Scans the multiblock structure for valid blocks */
 	public void scanMultiblock() {
 		inventory.maxItems = 0;
 		this.hasCraftBox = false;
@@ -178,6 +169,7 @@ public class TileEntityStorageCore extends TileEntity implements ITickable {
 		}
 	}
 	
+	/** Makes sure the storage system doesn't have multiple storage cores */
 	public boolean validateSystem() {
 		int count = 0;
 		for (BlockRef ref : multiblock) {

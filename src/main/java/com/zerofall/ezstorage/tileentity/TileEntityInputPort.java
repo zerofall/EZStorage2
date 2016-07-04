@@ -6,21 +6,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
-public class TileEntityInputPort extends TileEntity implements IInventory, ITickable, ISidedInventory {
+public class TileEntityInputPort extends EZTileEntity implements IInventory, ISidedInventory {
 
 	private ItemStack[] inv = new ItemStack[1];
 	public TileEntityStorageCore core;
-	
-//	@Override
-//	public String getName() {
-//		return "input_port";
-//	}
 
 	@Override
 	public boolean hasCustomName() {
@@ -157,4 +153,12 @@ public class TileEntityInputPort extends TileEntity implements IInventory, ITick
 	public ItemStack removeStackFromSlot(int index) {
 		return null;
 	}
+
+	@Override
+	public NBTTagCompound writeDataToNBT(NBTTagCompound paramNBTTagCompound) {
+		return paramNBTTagCompound;
+	}
+
+	@Override
+	public void readDataFromNBT(NBTTagCompound paramNBTTagCompound) {}
 }

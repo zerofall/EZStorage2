@@ -35,6 +35,7 @@ public class ContainerStorageCoreCrafting extends ContainerStorageCore {
         this.onCraftMatrixChanged(this.craftMatrix);
 	}
 	
+	@Override
 	public void onCraftMatrixChanged(IInventory inventoryIn) {
         this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
     }
@@ -66,7 +67,7 @@ public class ContainerStorageCoreCrafting extends ContainerStorageCore {
                 		if (crafted + itemstack1.stackSize > itemstack1.getMaxStackSize()) {
                 			return null;
                 		}
-	                	boolean merged = this.mergeItemStack(itemstack1, this.rowCount()*9, this.rowCount()*9+36, true);
+	                	boolean merged = this.mergeItemStack(itemstack1, this.rowCount() * 9, this.rowCount() * 9 + 36, true);
 	                	if (!merged) {
 	                		return null;
 	                	} else {
@@ -161,7 +162,7 @@ public class ContainerStorageCoreCrafting extends ContainerStorageCore {
 		super.onContainerClosed(playerIn);
 	}
 	
-	public void clearGrid(EntityPlayer playerIn){
+	public void clearGrid(EntityPlayer playerIn) {
 		for (int i=0; i<9; i++) {
 			ItemStack stack = this.craftMatrix.getStackInSlot(i);
 			if (stack != null) {

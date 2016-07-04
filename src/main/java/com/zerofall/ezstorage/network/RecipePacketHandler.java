@@ -24,7 +24,7 @@ public class RecipePacketHandler implements IMessageHandler<RecipeMessage, IMess
 			ContainerStorageCoreCrafting con = (ContainerStorageCoreCrafting)container;
 			TileEntityStorageCore tileEntity = con.tileEntity;
 			
-			//Empty grid into inventory
+			// Empty grid into inventory
 			con.clearGrid(player);
 			
 			this.recipe = new ItemStack[9][];
@@ -48,7 +48,9 @@ public class RecipePacketHandler implements IMessageHandler<RecipeMessage, IMess
 					}
 				}
 			}
-			tileEntity.updateTileEntity();
+			
+			// resort and update the tile entity
+			tileEntity.sortInventory();
 		}
 		
 		

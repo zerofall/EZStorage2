@@ -103,4 +103,9 @@ public class TileEntitySecurityBox extends EZTileEntity {
 		}
 	}
 
+	@Override
+	public void update() {
+		// do nothing here
+	}
+
 }

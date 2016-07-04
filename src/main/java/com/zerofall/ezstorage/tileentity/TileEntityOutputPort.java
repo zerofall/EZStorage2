@@ -7,13 +7,14 @@ import com.zerofall.ezstorage.util.ItemGroup;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 
-public class TileEntityOutputPort extends TileEntity implements ITickable {
+public class TileEntityOutputPort extends EZTileEntity {
 
 	public TileEntityStorageCore core;
 
@@ -58,4 +59,12 @@ public class TileEntityOutputPort extends TileEntity implements ITickable {
             }
 		}
 	}
+
+	@Override
+	public NBTTagCompound writeDataToNBT(NBTTagCompound paramNBTTagCompound) {
+		return paramNBTTagCompound;
+	}
+
+	@Override
+	public void readDataFromNBT(NBTTagCompound paramNBTTagCompound) {}
 }
