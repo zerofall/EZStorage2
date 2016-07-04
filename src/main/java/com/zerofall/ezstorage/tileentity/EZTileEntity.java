@@ -2,11 +2,12 @@ package com.zerofall.ezstorage.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 
-public abstract class EZTileEntity extends TileEntity {
+/** The parent tile entity for this mod */
+public abstract class EZTileEntity extends TileEntity implements ITickable {
 	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
@@ -25,11 +26,11 @@ public abstract class EZTileEntity extends TileEntity {
 		readFromNBT(pkt.getNbtCompound());
 	}
 	
-	/** New required method for 1.9.4 tile entities */
+	/** New required method for 1.9.4+ tile entities */
 	@Override
 	public NBTTagCompound getUpdateTag() {
 		NBTTagCompound nbtTag = new NBTTagCompound();
-		return writeDataToNBT(nbtTag);
+		return writeToNBT(nbtTag);
 	}
 	
 	@Override
@@ -37,7 +38,9 @@ public abstract class EZTileEntity extends TileEntity {
 		return new SPacketUpdateTileEntity(this.pos, 1, getUpdateTag());
 	}
 	
+	/** Writes custom data to the NBT tag after writing basic tile entity data */
 	public abstract NBTTagCompound writeDataToNBT(NBTTagCompound paramNBTTagCompound);
 	
+	/** Reads custom data from the NBT tag after reading basic tile entity data */
 	public abstract void readDataFromNBT(NBTTagCompound paramNBTTagCompound);
 }

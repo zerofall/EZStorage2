@@ -291,7 +291,7 @@ public class GuiStorageCore extends GuiContainer {
 			int elementX = this.searchField.xPosition;
 			int elementY = this.searchField.yPosition;
 			if (mouseX >= elementX && mouseX <= elementX + this.searchField.width && mouseY >= elementY && mouseY <= elementY + this.searchField.height) {
-				if(mouseButton==1||GuiScreen.isShiftKeyDown()){
+				if(mouseButton == 1 || GuiScreen.isShiftKeyDown()){
 					this.searchField.setText("");
 				}
 				this.searchField.setFocused(true);
@@ -303,13 +303,13 @@ public class GuiStorageCore extends GuiContainer {
 	}
 	
 	private Integer getSlotAt(int x, int y) {
-		int startX = this.guiLeft + 8;
-		int startY = this.guiTop + 18;
+		int startX = this.guiLeft + 7;
+		int startY = this.guiTop + 17;
 		
 		int clickedX = x - startX;
 		int clickedY = y - startY;
 		
-		if (clickedX > 0 && clickedY > 0) {
+		if (clickedX >= 0 && clickedY >= 0) {
 			int column = clickedX / 18;
 			if (column < 9) {
 				int row = clickedY / 18;

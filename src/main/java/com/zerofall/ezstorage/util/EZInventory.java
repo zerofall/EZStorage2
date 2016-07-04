@@ -75,6 +75,7 @@ public class EZInventory {
 		return stack;
 	}
 	
+	/** Get items and decrease their stack size in the inventory */
 	public ItemStack getItems(ItemStack[] itemStacks) {
 		for (ItemGroup group : inventory) {
 			for (ItemStack itemStack : itemStacks) {
@@ -86,6 +87,23 @@ public class EZInventory {
 						if (group.count <= 0) {
 							inventory.remove(group);
 						}
+						return stack;
+					}
+					return null;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/** Get items without decreasing their stack size in the inventory */
+	public ItemStack getItemsNoDecrease(ItemStack[] itemStacks) {
+		for (ItemGroup group : inventory) {
+			for (ItemStack itemStack : itemStacks) {
+				if (stacksEqual(group.itemStack, itemStack)) {
+					if (group.count >= itemStack.stackSize) {
+						ItemStack stack = group.itemStack.copy();
+						stack.stackSize = itemStack.stackSize;
 						return stack;
 					}
 					return null;
@@ -108,7 +126,7 @@ public class EZInventory {
 		}
 		if (stack1.getItem() == stack2.getItem()) {
 			if (stack1.getItemDamage() == stack2.getItemDamage()) {
-				if (stack1.getTagCompound() == stack2.getTagCompound()) {
+				if((!stack1.hasTagCompound() && !stack2.hasTagCompound()) || (stack1.hasTagCompound() && stack1.getTagCompound().equals(stack2.getTagCompound()))) {
 					return true;
 				}
 			}

@@ -1,7 +1,5 @@
 package com.zerofall.ezstorage.gui.server;
 
-import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
@@ -13,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
+
 public class ContainerStorageCore extends Container {
 
 	public TileEntityStorageCore tileEntity;
@@ -21,7 +21,7 @@ public class ContainerStorageCore extends Container {
 		this.tileEntity = ((TileEntityStorageCore)world.getTileEntity(new BlockPos(x, y, z)));
 		int startingY = 18;
 		int startingX = 8;
-		IInventory inventory = new InventoryBasic("title", false, this.rowCount()*9);
+		IInventory inventory = new InventoryBasic("title", false, this.rowCount() * 9);
 		for (int i = 0; i < this.rowCount(); i++) {
             for (int j = 0; j < 9; j++) {
             	addSlotToContainer(new Slot(inventory, j + i * 9, startingX + j * 18, startingY + i * 18));
@@ -62,14 +62,13 @@ public class ContainerStorageCore extends Container {
 	
 	@Override
 	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
-		if (slotId < this.rowCount()*9 && slotId >= 0) {
+		if (slotId < this.rowCount() * 9 && slotId >= 0) {
 			return null;
 		}
 		return super.slotClick(slotId, dragType, clickTypeIn, player);
 	}
 	
-	public ItemStack customSlotClick(int slotId, int clickedButton, int mode,
-		EntityPlayer playerIn) {
+	public ItemStack customSlotClick(int slotId, int clickedButton, int mode, EntityPlayer playerIn) {
 		int itemIndex = slotId;
 		ItemStack heldStack = playerIn.inventory.getItemStack();
 		if (heldStack == null) {
@@ -83,15 +82,18 @@ public class ContainerStorageCore extends Container {
 			}
 			//Shift click
 			if (clickedButton == 0 && mode == 1) {
-				if (!this.mergeItemStack(stack, this.rowCount()*9, this.rowCount()*9+36, true)) {
+				if (!this.mergeItemStack(stack, this.rowCount() * 9, this.rowCount() * 9 + 36, true)) {
 					this.tileEntity.inventory.input(stack);
+					this.tileEntity.sortInventory();
 				}
 			} else {
 				playerIn.inventory.setItemStack(stack);
+				this.tileEntity.sortInventory();
 			}
 			return stack;
 		} else {
 			playerIn.inventory.setItemStack(this.tileEntity.inventory.input(heldStack));
+			this.tileEntity.sortInventory();
 		}
 		return null;
 	}
@@ -111,8 +113,6 @@ public class ContainerStorageCore extends Container {
 	@Override
 	public void onContainerClosed(EntityPlayer playerIn) {
 		super.onContainerClosed(playerIn);
-		if (!playerIn.worldObj.isRemote) {
-			this.tileEntity.sortInventory();
-		}
+		this.tileEntity.sortInventory();
 	}
 }

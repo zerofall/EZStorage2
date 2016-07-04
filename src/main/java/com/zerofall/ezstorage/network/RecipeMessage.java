@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class RecipeMessage implements IMessage {
 	
-	NBTTagCompound recipe;
+	public NBTTagCompound recipe;
 	
 	public RecipeMessage() {
 		
