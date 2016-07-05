@@ -7,7 +7,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
-import mezz.jei.gui.ingredients.IGuiIngredient;
+import mezz.jei.gui.ingredients.GuiIngredient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -21,6 +21,7 @@ import com.zerofall.ezstorage.gui.server.ContainerStorageCoreCrafting;
 import com.zerofall.ezstorage.network.RecipeMessage;
 import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 
+/** The mod's recipe transfer handler */
 public class RecipeTransferHandler implements IRecipeTransferHandler {
 
 	@Override
@@ -36,11 +37,11 @@ public class RecipeTransferHandler implements IRecipeTransferHandler {
 	@Override
 	public IRecipeTransferError transferRecipe(Container container, IRecipeLayout recipeLayout, EntityPlayer player, boolean maxTransfer, boolean doTransfer) {
 		if (doTransfer) {
-			Map<Integer, ? extends IGuiIngredient<ItemStack>> inputs = recipeLayout.getItemStacks().getGuiIngredients();
+			Map<Integer, GuiIngredient<ItemStack>> inputs = (Map<Integer, GuiIngredient<ItemStack>>)recipeLayout.getItemStacks().getGuiIngredients();
 			NBTTagCompound recipe = new NBTTagCompound();
 			for (Slot slot : (List<Slot>) container.inventorySlots) {
 				if (slot.inventory instanceof InventoryCrafting) {
-					IGuiIngredient<ItemStack> ingredient = inputs.get(slot.getSlotIndex()+1);
+					GuiIngredient<ItemStack> ingredient = inputs.get(slot.getSlotIndex() + 1);
 					if (ingredient != null) {
 						List<ItemStack> possibleItems = ingredient.getAllIngredients();
 						NBTTagList tags = new NBTTagList();
@@ -76,11 +77,11 @@ public class RecipeTransferHandler implements IRecipeTransferHandler {
 
 			this.recipe = new ItemStack[9][];
 			for( int x = 0; x < this.recipe.length; x++ ) {
-				NBTTagList list = message.recipe.getTagList( "#" + x, 10 );
+				NBTTagList list = message.recipe.getTagList("#" + x, 10);
 				if( list.tagCount() > 0 ) {
 					this.recipe[x] = new ItemStack[list.tagCount()];
 					for( int y = 0; y < list.tagCount(); y++ ) {
-						this.recipe[x][y] = ItemStack.loadItemStackFromNBT( list.getCompoundTagAt( y ) );
+						this.recipe[x][y] = ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(y));
 					}
 				}
 			}
