@@ -49,7 +49,7 @@ public class ContainerStorageCore extends Container {
 		return true;
 	}
 	
-	//Shift clicking
+	/** Shift click a slot */
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
         Slot slotObject = (Slot) inventorySlots.get(index);
@@ -60,14 +60,21 @@ public class ContainerStorageCore extends Container {
         return null;
 	}
 	
+	/** Default slot click handling.
+	 *  Also checks for shift-clicking to sort the inventory appropriately */
 	@Override
 	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+		ItemStack val;
 		if (slotId < this.rowCount() * 9 && slotId >= 0) {
-			return null;
+			val = null;
+		} else {
+			val = super.slotClick(slotId, dragType, clickTypeIn, player);
 		}
-		return super.slotClick(slotId, dragType, clickTypeIn, player);
+		if(clickTypeIn == ClickType.QUICK_MOVE) this.tileEntity.sortInventory();
+		return val;
 	}
 	
+	/** Click a custom slot to take or insert items */
 	public ItemStack customSlotClick(int slotId, int clickedButton, int mode, EntityPlayer playerIn) {
 		int itemIndex = slotId;
 		ItemStack heldStack = playerIn.inventory.getItemStack();
