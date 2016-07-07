@@ -53,8 +53,8 @@ public class CraftingManager {
 		} else { // blank box recipes
 			
 			// storage core
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.storage_core), "C","B","L", 
-					'B',new ItemStack(EZBlocks.blank_box), 'C',Blocks.CHEST, 'L',"logWood");
+			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.storage_core), "C","B","I", 
+					'B',new ItemStack(EZBlocks.blank_box), 'C',Blocks.CHEST, 'I',"ingotIron");
 			
 			// basic storage box
 			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.storage_box), " C ","CBC"," C ", 

@@ -50,7 +50,7 @@ public class EZItemRenderer extends RenderItem {
 	                this.draw(vertexbuffer, xPosition + 2, yPosition + 13, 13, 2, 0, 0, 0, 255);
 	                this.draw(vertexbuffer, xPosition + 2, yPosition + 13, 12, 1, (255 - i) / 4, 64, 0, 255);
 	                this.draw(vertexbuffer, xPosition + 2, yPosition + 13, j, 1, 255 - i, i, 0, 255);
-	                //GL11.glEnable(GL11.GL_BLEND); // Forge: Disable Bled because it screws with a lot of things down the line.
+	                GL11.glEnable(GL11.GL_BLEND); // Reenable blend so enchanted stuff stops being black
 	                GL11.glEnable(GL11.GL_ALPHA_TEST);
 	                GL11.glEnable(GL11.GL_TEXTURE_2D);
 	                GL11.glEnable(GL11.GL_LIGHTING);
