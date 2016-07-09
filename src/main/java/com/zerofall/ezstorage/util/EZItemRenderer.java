@@ -18,6 +18,7 @@ public class EZItemRenderer extends RenderItem {
 		super(textureManager, modelManager, null);
 	}
 
+	@Override
 	public void renderItemOverlayIntoGUI(FontRenderer fr, ItemStack stack, int xPosition, int yPosition, String text) {
 		if (stack != null)
 		{
@@ -112,15 +113,4 @@ public class EZItemRenderer extends RenderItem {
         Tessellator.getInstance().draw();
     }
 
-	
-//	private void renderQuad(Tessellator p_77017_1_, int p_77017_2_, int p_77017_3_, int p_77017_4_, int p_77017_5_, int p_77017_6_)
-//    {
-//        p_77017_1_.startDrawingQuads();
-//        p_77017_1_.setColorOpaque_I(p_77017_6_);
-//        p_77017_1_.addVertex((double)(p_77017_2_ + 0), (double)(p_77017_3_ + 0), 0.0D);
-//        p_77017_1_.addVertex((double)(p_77017_2_ + 0), (double)(p_77017_3_ + p_77017_5_), 0.0D);
-//        p_77017_1_.addVertex((double)(p_77017_2_ + p_77017_4_), (double)(p_77017_3_ + p_77017_5_), 0.0D);
-//        p_77017_1_.addVertex((double)(p_77017_2_ + p_77017_4_), (double)(p_77017_3_ + 0), 0.0D);
-//        p_77017_1_.draw();
-//    }
 }

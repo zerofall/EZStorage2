@@ -28,7 +28,7 @@ public class CraftingManager {
 			
 			// storage core
 			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.storage_core), "ABA","BCB","ABA",
-					'A', "logWood", 'B', Items.IRON_INGOT, 'C', Blocks.CHEST);
+					'A', "logWood", 'B', "ingotIron", 'C', Blocks.CHEST);
 
 			// basic storage box
 			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.storage_box), "ABA","B B","ABA",
@@ -45,6 +45,10 @@ public class CraftingManager {
 			// search box
 			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.search_box), "ABA","BCB","ABA",
 					'A', "blockIron", 'B', Items.ENCHANTED_BOOK, 'C', Items.COMPASS);
+			
+			// sorting box
+			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.sort_box), "ABA","BCB","ABA",
+					'A', "logWood", 'B', Items.COMPARATOR, 'C', Items.MAP);
 			
 			// security box
 			if(EZConfig.enableSecurity) RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.security_box), "ABA","BCB","ABA", 
@@ -71,6 +75,10 @@ public class CraftingManager {
 			// search box
 			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.search_box), "EDE","CBC","CEC", 
 					'B',new ItemStack(EZBlocks.blank_box), 'E',Items.ENCHANTED_BOOK, 'C',"blockIron", 'D',Items.COMPASS);
+			
+			// sorting box
+			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.sort_box), "EDE","CBC","CEC", 
+					'B',new ItemStack(EZBlocks.blank_box), 'E',Items.COMPARATOR, 'C',"logWood", 'D',Items.MAP);
 			
 			// security box
 			if(EZConfig.enableSecurity) RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.security_box), "EDE","CBC","CEC", 

@@ -15,6 +15,7 @@ import com.zerofall.ezstorage.block.BlockInputPort;
 import com.zerofall.ezstorage.block.BlockOutputPort;
 import com.zerofall.ezstorage.block.BlockSearchBox;
 import com.zerofall.ezstorage.block.BlockSecurityBox;
+import com.zerofall.ezstorage.block.BlockSortBox;
 import com.zerofall.ezstorage.block.BlockStorage;
 import com.zerofall.ezstorage.block.BlockStorageCore;
 import com.zerofall.ezstorage.block.BlockSuperStorage;
@@ -51,6 +52,7 @@ public class EZBlocks {
 	public static EZBlock output_port;
 	public static EZBlock crafting_box;
 	public static EZBlock search_box;
+	public static EZBlock sort_box;
 	public static EZBlock access_terminal;
 	public static EZBlock security_box;
 	
@@ -67,6 +69,7 @@ public class EZBlocks {
 			output_port = new BlockOutputPort(),
 			crafting_box = new BlockCraftingBox(),
 			search_box = new BlockSearchBox(),
+			sort_box = new BlockSortBox(),
 			access_terminal = new BlockAccessTerminal(),
 			security_box = new BlockSecurityBox()
 		);

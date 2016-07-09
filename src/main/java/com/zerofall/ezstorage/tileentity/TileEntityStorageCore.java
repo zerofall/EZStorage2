@@ -5,12 +5,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.common.FMLLog;
+
 import org.apache.logging.log4j.Logger;
 
 import com.zerofall.ezstorage.block.BlockCraftingBox;
 import com.zerofall.ezstorage.block.BlockInputPort;
 import com.zerofall.ezstorage.block.BlockOutputPort;
 import com.zerofall.ezstorage.block.BlockSearchBox;
+import com.zerofall.ezstorage.block.BlockSortBox;
 import com.zerofall.ezstorage.block.BlockStorage;
 import com.zerofall.ezstorage.block.BlockStorageCore;
 import com.zerofall.ezstorage.block.StorageMultiblock;
@@ -19,19 +28,7 @@ import com.zerofall.ezstorage.util.BlockRef;
 import com.zerofall.ezstorage.util.EZInventory;
 import com.zerofall.ezstorage.util.EZStorageUtils;
 import com.zerofall.ezstorage.util.ItemGroup;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.fml.common.FMLLog;
+import com.zerofall.ezstorage.util.ItemGroup.EnumSortMode;
 
 /** The storage core tile entity */
 public class TileEntityStorageCore extends EZTileEntity {
@@ -41,13 +38,15 @@ public class TileEntityStorageCore extends EZTileEntity {
 	public EZInventory inventory;
 	
 	Set<BlockRef> multiblock = new HashSet<BlockRef>();
+	public boolean disabled = false;
 	private boolean firstTick = false;
 	public boolean hasCraftBox = false;
 	public boolean hasSearchBox = false;
-	public boolean disabled = false;
+	public EnumSortMode sortMode = EnumSortMode.COUNT;
+	public boolean hasSortBox = false;
 	
 	public TileEntityStorageCore() {
-		inventory = new EZInventory();
+		inventory = new EZInventory(this);
 	}
 	
 	/** Inputs a stack to the inventory */
@@ -81,44 +80,48 @@ public class TileEntityStorageCore extends EZTileEntity {
 	}
 
 	@Override
-	public NBTTagCompound writeDataToNBT(NBTTagCompound paramNBTTagCompound) {
+	public NBTTagCompound writeDataToNBT(NBTTagCompound nbt) {
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < this.inventory.slotCount(); ++i) {
 			ItemGroup group = this.inventory.inventory.get(i);
 			if (group != null && group.itemStack != null && group.count > 0) {
-				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("Index", (byte) i);
-				group.itemStack.writeToNBT(nbttagcompound1);
-				nbttagcompound1.setLong("InternalCount", group.count);
-				nbttaglist.appendTag(nbttagcompound1);
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setByte("Index", (byte) i);
+				group.itemStack.writeToNBT(tag);
+				tag.setLong("InternalCount", group.count);
+				nbttaglist.appendTag(tag);
 			}
 		}
-		paramNBTTagCompound.setTag("Internal", nbttaglist);
-		paramNBTTagCompound.setLong("InternalMax", this.inventory.maxItems);
-		paramNBTTagCompound.setBoolean("hasSearchBox", this.hasSearchBox);
-		paramNBTTagCompound.setBoolean("isDisabled", this.disabled);
-		return paramNBTTagCompound; 
+		nbt.setTag("Internal", nbttaglist);
+		nbt.setLong("InternalMax", this.inventory.maxItems);
+		nbt.setBoolean("hasSearchBox", this.hasSearchBox);
+		nbt.setBoolean("isDisabled", this.disabled);
+		nbt.setInteger("sortMode", this.sortMode.ordinal());
+		nbt.setBoolean("hasSortBox", this.hasSortBox);
+		return nbt; 
 	}
 
 	@Override
-	public void readDataFromNBT(NBTTagCompound paramNBTTagCompound) {
-		NBTTagList nbttaglist = paramNBTTagCompound.getTagList("Internal", 10);
+	public void readDataFromNBT(NBTTagCompound nbt) {
+		NBTTagList nbttaglist = nbt.getTagList("Internal", 10);
 
 		if (nbttaglist != null) {
 			inventory.inventory = new ArrayList<ItemGroup>();
 			for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-				NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-				int j = nbttagcompound1.getByte("Index") & 255;
-				ItemStack stack = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-				long count = nbttagcompound1.getLong("InternalCount");
+				NBTTagCompound tag = nbttaglist.getCompoundTagAt(i);
+				int j = tag.getByte("Index") & 255;
+				ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+				long count = tag.getLong("InternalCount");
 				ItemGroup group = new ItemGroup(stack, count);
 				this.inventory.inventory.add(group);
 			}
 		}
-		long maxItems = paramNBTTagCompound.getLong("InternalMax");
+		long maxItems = nbt.getLong("InternalMax");
 		this.inventory.maxItems = maxItems;
-		this.hasSearchBox = paramNBTTagCompound.getBoolean("hasSearchBox");
-		this.disabled = paramNBTTagCompound.getBoolean("isDisabled");
+		this.hasSearchBox = nbt.getBoolean("hasSearchBox");
+		this.disabled = nbt.getBoolean("isDisabled");
+		this.sortMode = EnumSortMode.fromInt(nbt.getInteger("sortMode"));
+		this.hasSortBox = nbt.getBoolean("hasSortBox");
 	}
 	
 	/** Scans the multiblock structure for valid blocks */
@@ -126,6 +129,7 @@ public class TileEntityStorageCore extends EZTileEntity {
 		inventory.maxItems = 0;
 		this.hasCraftBox = false;
 		this.hasSearchBox = false;
+		this.hasSortBox = false;
 		multiblock = new HashSet<BlockRef>();
 		BlockRef ref = new BlockRef(this);
 		multiblock.add(ref);
@@ -163,6 +167,9 @@ public class TileEntityStorageCore extends EZTileEntity {
 					if (blockRef.block instanceof BlockSearchBox) {
 						this.hasSearchBox = true;
 					}
+					if (blockRef.block instanceof BlockSortBox) {
+						this.hasSortBox = true;
+					}
 					getValidNeighbors(blockRef);
 				}
 			}
@@ -181,7 +188,7 @@ public class TileEntityStorageCore extends EZTileEntity {
 					if (Minecraft.getMinecraft() != null && Minecraft.getMinecraft().thePlayer != null) {
 						Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString("You can only have 1 Storage Core per system!"));
 					}
-				} else if (worldObj.getBlockState(pos).getBlock() == EZBlocks.storage_core){
+				} else if (worldObj.getBlockState(pos).getBlock() == EZBlocks.storage_core) {
 					worldObj.setBlockToAir(getPos());
 					worldObj.spawnEntityInWorld(new EntityItem(worldObj, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(EZBlocks.storage_core)));
 				}

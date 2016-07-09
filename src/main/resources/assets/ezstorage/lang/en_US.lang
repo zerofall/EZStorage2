@@ -15,6 +15,7 @@ tile.input_port.name=Input Port
 tile.output_port.name=Output Port
 tile.crafting_box.name=Crafting Box
 tile.search_box.name=Search Box
+tile.sort_box.name=Sorting Box
 tile.access_terminal.name=Access Terminal
 tile.security_box.name=Security Box
 
