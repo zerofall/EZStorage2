@@ -15,6 +15,7 @@ public class EZConfig {
 	public static boolean toughHyper;
 	public static boolean enableTerminal;
 	public static boolean enableSecurity;
+	public static boolean enableSearchModes;
 
 	public static void syncConfig() {
 		final Configuration config = EZStorage.config;
@@ -31,6 +32,8 @@ public class EZConfig {
 		toughHyper = config.getBoolean("Harder Hyper Recipe", OPTIONS, true, "If true, the hyper storage box will use 2 nether stars instead of 1.");
 		enableTerminal = config.getBoolean("Enable Access Terminal", OPTIONS, true, "Should the access terminal be enabled?");
 		enableSecurity = config.getBoolean("Enable Security", OPTIONS, true, "Should the security features be enabled?");
+		enableSearchModes = config.getBoolean("Enable Search Modes", OPTIONS, true, 
+				"Should '$' in front of a search search the ore dicionary names, '@' search mod ids and names, and '%' search creative tab names?");
 
 		if(config.hasChanged()) config.save();
 	}

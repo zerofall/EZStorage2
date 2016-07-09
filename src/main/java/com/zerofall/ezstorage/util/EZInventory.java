@@ -4,32 +4,43 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
+import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
+
+/** The EZStorage inventory system */
 public class EZInventory {
+	
+	public TileEntityStorageCore tile;
 	public List<ItemGroup> inventory;
 	public long maxItems = 0;
 	
-	public EZInventory() {
-		inventory = new ArrayList<ItemGroup>();
+	public EZInventory(TileEntityStorageCore tile) {
+		this.inventory = new ArrayList<ItemGroup>();
+		this.tile = tile;
 	}
 	
+	/** Input a stack to the system */
 	public ItemStack input(ItemStack itemStack) {
-		//Inventory is full
+		// Inventory is full
 		if (getTotalCount() >= maxItems) {
 			return itemStack;
 		}
 		long space = maxItems - getTotalCount();
-		//Only part of the stack can fit
+		
+		// Only part of the stack can fit
 		int amount = (int)Math.min(space, (long)itemStack.stackSize);
-		return mergeStack(itemStack, amount);
+		ItemStack result = mergeStack(itemStack, amount);
+		tile.sortInventory();
+		return result;
 	}
 	
+	/** Sort the inventory (block updates are separate) */
 	public void sort() {
-		Collections.sort(this.inventory, new ItemGroup.CountComparator());
+		tile.sortMode.sortInventory(this.inventory);
 	}
 	
+	/** Attempt a stack merge */
 	private ItemStack mergeStack(ItemStack itemStack, int amount) {
 		for (ItemGroup group : inventory) {
 			if (stacksEqual(group.itemStack, itemStack)) {
@@ -42,9 +53,11 @@ public class EZInventory {
 				}
 			}
 		}
-		//Needs to add a space
+		
+		// need to add a space
 		inventory.add(new ItemGroup(itemStack, amount));
 		itemStack.stackSize -= amount;
+		
 		if (itemStack.stackSize <= 0) {
 			return null;
 		} else {
@@ -52,6 +65,7 @@ public class EZInventory {
 		}
 	}
 	
+	/** Extract items from the inventory */
 	//Type: 0= full stack, 1= half stack, 2= single
 	public ItemStack getItemsAt(int index, int type) {
 		if (index >= inventory.size()) {
@@ -69,9 +83,13 @@ public class EZInventory {
 		}
 		stack.stackSize = size;
 		group.count -= size;
+		
+		// when an item is depleted, remove it and sort the inventory
 		if (group.count <= 0) {
 			inventory.remove(index);
+			tile.sortInventory();
 		}
+		
 		return stack;
 	}
 	
@@ -113,10 +131,12 @@ public class EZInventory {
 		return null;
 	}
 	
+	/** Get the size of the inventory */
 	public int slotCount() {
 		return inventory.size();
 	}
 	
+	/** Check stacks for equality to join them in the inventory */
 	public static boolean stacksEqual(ItemStack stack1, ItemStack stack2) {
 		if (stack1 == null && stack2 == null) {
 			return true;
@@ -134,6 +154,7 @@ public class EZInventory {
 		return false;
 	}
 	
+	/** Get the total item count */
 	public long getTotalCount() {
 		long count = 0;
 		for (ItemGroup group : inventory) {
@@ -142,6 +163,7 @@ public class EZInventory {
 		return count;
 	}
 	
+	/** Convert this inventory to a string */
 	@Override
 	public String toString() {
 		return inventory.toString();

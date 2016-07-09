@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 
 import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 
+/** The storage core container */
 public class ContainerStorageCore extends Container {
 
 	public TileEntityStorageCore tileEntity;
@@ -21,6 +22,8 @@ public class ContainerStorageCore extends Container {
 		this.tileEntity = ((TileEntityStorageCore)world.getTileEntity(new BlockPos(x, y, z)));
 		int startingY = 18;
 		int startingX = 8;
+		
+		// the EZStorage slots
 		IInventory inventory = new InventoryBasic("title", false, this.rowCount() * 9);
 		for (int i = 0; i < this.rowCount(); i++) {
             for (int j = 0; j < 9; j++) {
@@ -28,6 +31,7 @@ public class ContainerStorageCore extends Container {
             }
 		}
 		
+		// the player inventory
 		bindPlayerInventory(player.inventory);
 	}
 	
@@ -49,6 +53,17 @@ public class ContainerStorageCore extends Container {
 		return true;
 	}
 	
+	/** Rotate the sorting mode from client packet */
+	@Override
+	public boolean enchantItem(EntityPlayer player, int action) {
+		switch(action) {
+		case 0: // change sort mode and update
+			tileEntity.sortMode = tileEntity.sortMode.rotateMode();
+			tileEntity.sortInventory();
+		}
+		return true;
+	}
+	
 	/** Shift click a slot */
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
@@ -66,11 +81,11 @@ public class ContainerStorageCore extends Container {
 	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
 		ItemStack val;
 		if (slotId < this.rowCount() * 9 && slotId >= 0) {
-			val = null;
+			val = null; // use custom handler for clicks on the inventory
 		} else {
 			val = super.slotClick(slotId, dragType, clickTypeIn, player);
+			if(clickTypeIn == ClickType.QUICK_MOVE) this.tileEntity.sortInventory(); // sort only on insert shift-click
 		}
-		if(clickTypeIn == ClickType.QUICK_MOVE) this.tileEntity.sortInventory();
 		return val;
 	}
 	
@@ -78,6 +93,8 @@ public class ContainerStorageCore extends Container {
 	public ItemStack customSlotClick(int slotId, int clickedButton, int mode, EntityPlayer playerIn) {
 		int itemIndex = slotId;
 		ItemStack heldStack = playerIn.inventory.getItemStack();
+		
+		// grab a stack from the inventory
 		if (heldStack == null) {
 			int type = 0;
 			if (clickedButton == 1) {
@@ -87,20 +104,20 @@ public class ContainerStorageCore extends Container {
 			if (stack == null) {
 				return null;
 			}
-			//Shift click
+			// player -> inventory
 			if (clickedButton == 0 && mode == 1) {
 				if (!this.mergeItemStack(stack, this.rowCount() * 9, this.rowCount() * 9 + 36, true)) {
 					this.tileEntity.inventory.input(stack);
-					this.tileEntity.sortInventory();
 				}
+			// inventory -> player
 			} else {
 				playerIn.inventory.setItemStack(stack);
-				this.tileEntity.sortInventory();
 			}
 			return stack;
+		
+		// place a stack into the inventory
 		} else {
 			playerIn.inventory.setItemStack(this.tileEntity.inventory.input(heldStack));
-			this.tileEntity.sortInventory();
 		}
 		return null;
 	}

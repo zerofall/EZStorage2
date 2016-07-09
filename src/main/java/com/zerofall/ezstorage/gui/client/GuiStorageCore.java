@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -18,18 +19,27 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import com.zerofall.ezstorage.EZStorage;
+import com.zerofall.ezstorage.config.EZConfig;
 import com.zerofall.ezstorage.gui.server.ContainerStorageCore;
 import com.zerofall.ezstorage.network.MyMessage;
 import com.zerofall.ezstorage.ref.RefStrings;
 import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 import com.zerofall.ezstorage.util.EZItemRenderer;
 import com.zerofall.ezstorage.util.ItemGroup;
+import com.zerofall.ezstorage.util.JointList;
 
+/** The storage core GUI */
+@SideOnly(Side.CLIENT)
 public class GuiStorageCore extends GuiContainer {
 
 	TileEntityStorageCore tileEntity;
@@ -39,9 +49,11 @@ public class GuiStorageCore extends GuiContainer {
 	private boolean wasClicking = false;
     private static final ResourceLocation creativeInventoryTabs = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
     private static final ResourceLocation searchBar = new ResourceLocation("textures/gui/container/creative_inventory/tab_item_search.png");
+    private static final ResourceLocation sortGui = new ResourceLocation(RefStrings.MODID, "textures/gui/customGui.png");
     private float currentScroll;
     private GuiTextField searchField;
     private List<ItemGroup> filteredList;
+    private GuiButton modeToggle;
     
     @Override
     public void initGui() {
@@ -54,6 +66,8 @@ public class GuiStorageCore extends GuiContainer {
         this.searchField.setFocused(true);
         this.searchField.setText("");
         filteredList = new ArrayList<ItemGroup>(this.tileEntity.inventory.inventory);
+        buttonList.add(modeToggle = new GuiButton(0, guiLeft - 100, guiTop + 16, 90, 20, ""));
+        modeToggle.visible = false;
     }
 	
 	public GuiStorageCore(EntityPlayer player, World world, int x, int y, int z) {
@@ -71,17 +85,27 @@ public class GuiStorageCore extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks,
-			int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(getBackground());
 		int x = (this.width - this.xSize) / 2;
 		int y = (this.height - this.ySize) / 2;
 		drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
+		
+		// sorting gui
+		if(this.tileEntity.hasSortBox) {
+			this.mc.renderEngine.bindTexture(sortGui);
+			drawTexturedModalRect(guiLeft - 108, guiTop, 0, 128, 112, 48);
+			modeToggle.visible = true;
+		} else {
+			modeToggle.visible = false;
+		}
+		
+		// search box
 		this.searchField.setVisible(this.tileEntity.hasSearchBox);
-		if (this.tileEntity.hasSearchBox) {
+		if(this.tileEntity.hasSearchBox) {
 			this.mc.renderEngine.bindTexture(searchBar);
-			drawTexturedModalRect(this.guiLeft+8, this.guiTop+4, 80, 4, 90, 12);
+			drawTexturedModalRect(guiLeft + 8, guiTop + 4, 80, 4, 90, 12);
 			this.searchField.drawTextBox();
 		}
 	}
@@ -95,10 +119,11 @@ public class GuiStorageCore extends GuiContainer {
 		String totalCount = formatter.format(this.tileEntity.inventory.getTotalCount());
 		String max = formatter.format(this.tileEntity.inventory.maxItems);
 		String amount = totalCount + "/" + max;
-		//Right-align text
+		
+		// right-align text
 		int stringWidth = fontRendererObj.getStringWidth(amount);
 		
-		//Scale down text if its too large
+		// scale down text if it is too large
 		if (stringWidth > 88) {
 			float ScaleFactor = 0.7f;
 			float RScaleFactor = 1.0f / ScaleFactor;
@@ -109,6 +134,12 @@ public class GuiStorageCore extends GuiContainer {
 			GL11.glPopMatrix();
 		} else {
 			fontRendererObj.drawString(amount, 187 - stringWidth, 6, 4210752);
+		}
+		
+		// sorting mode
+		modeToggle.displayString = tileEntity.sortMode.toString();
+		if(this.tileEntity.hasSortBox) {
+			this.fontRendererObj.drawString("Sorting Mode", -100, 6, 4210752);
 		}
 		
 		int x = 8;
@@ -132,14 +163,17 @@ public class GuiStorageCore extends GuiContainer {
         			break;
         		}
         		
+        		// get the item group
         		ItemGroup group = this.filteredList.get(index);
-        		ItemStack stack = group.itemStack;
+        		ItemStack stack = group.itemStack;        		
+        		
     			FontRenderer font = null;
     	        if (stack != null) font = stack.getItem().getFontRenderer(stack);
     	        if (font == null) font = fontRendererObj;
     	        RenderHelper.enableGUIStandardItemLighting();
     	        this.itemRender.renderItemAndEffectIntoGUI(stack, x, y);
     	        ezRenderer.renderItemOverlayIntoGUI(font, stack, x, y, "" + group.count);
+    	        
         		x += 18;
         	}
         	if (finished) {
@@ -155,6 +189,14 @@ public class GuiStorageCore extends GuiContainer {
         this.drawTexturedModalRect(i1, k + (int)((float)(l - k - 17) * this.currentScroll), 232, 0, 12, 15);
 		this.zLevel = 0.0F;
         this.itemRender.zLevel = 0.0F;
+	}
+	
+	/** Send a packet to the server when the sort mode is toggled */
+	@Override
+	protected void actionPerformed(GuiButton parButton) {
+		if(parButton == modeToggle) {
+			this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, 0);
+		}
 	}
 	
 	@Override
@@ -180,6 +222,7 @@ public class GuiStorageCore extends GuiContainer {
 		}
 	}
 	
+	/** Update the filtered items on type */
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if (!this.checkHotbarKeys(keyCode))
@@ -193,36 +236,92 @@ public class GuiStorageCore extends GuiContainer {
                 super.keyTyped(typedChar, keyCode);
             }
         }
-		if(keyCode==63){
-			this.tileEntity.sortInventory();
-		}
 	}
 	
+	/** Update the user search */
 	private void updateFilteredItems() {
 		filteredList = new ArrayList<ItemGroup>(this.tileEntity.inventory.inventory);
 		Iterator iterator = this.filteredList.iterator();
-        String s1 = this.searchField.getText().toLowerCase();
-
+        String searchText = this.searchField.getText().toLowerCase();
+        boolean oreSearch = false;
+        boolean modSearch = false;
+        boolean tabSearch = false;
+        
+        // search modes
+        if(EZConfig.enableSearchModes) {
+	        // ore dictionary search
+	        if(searchText.startsWith("$")) {
+	        	oreSearch = true;
+	        	searchText = searchText.substring(1);
+	        } else
+	        	
+	        // mod id and mod name search
+	        if(searchText.startsWith("@")) {
+	        	modSearch = true;
+	        	searchText = searchText.substring(1);
+	        } else
+	        	
+	        // creative tab name search
+	    	if(searchText.startsWith("%")) {
+	        	tabSearch = true;
+	        	searchText = searchText.substring(1);
+	        }
+        }
+        
         while (iterator.hasNext())
         {
         	ItemGroup group = (ItemGroup)iterator.next();
             ItemStack itemstack = group.itemStack;
             boolean flag = false;
-            Iterator iterator1 = itemstack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips).iterator();
+            Iterator<String> iterator1 = null;
+            String compare = "";
+            String compare2 = "";
+            
+            if(oreSearch) { // searches oredict entries
+            	int[] oreIds = OreDictionary.getOreIDs(itemstack);
+            	List<String> ores = new JointList();
+            	for(int id : oreIds) ores.add(OreDictionary.getOreName(id));
+            	iterator1 = ores.iterator();
+            	
+            } else if(modSearch) { // searches mod ids and mod names
+            	try {
+            		compare = itemstack.getItem().getRegistryName().getResourceDomain();
+            		for(ModContainer m : Loader.instance().getModList()) {
+            			if(m.getModId().equals(compare)) {
+            				compare2 = m.getName().toLowerCase();
+            			}
+            		}
+            	} catch (Exception e) {}
+            	compare = compare.toLowerCase();
+            	
+            } else if(tabSearch) { // searches the item's creative tab
+            	try {
+            		compare = itemstack.getItem().getCreativeTab().getTabLabel().toLowerCase();
+            	} catch (Exception e) {}
+            	
+            } else { // searches the item's name and tooltip info
+            	iterator1 = itemstack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips).iterator();
+            }
 
             while (true)
             {
-                if (iterator1.hasNext())
-                {
-                    String s = (String)iterator1.next();
-
-                    if (!s.toLowerCase().contains(s1))
-                    {
-                        continue;
-                    }
-
-                    flag = true;
-                }
+            	
+            	if (modSearch || tabSearch) { // mod or creative tab search
+            		
+            		flag = compare.contains(searchText) || compare2.contains(searchText);
+            		
+            	} else { // regular or ore search
+	                if (iterator1.hasNext()) {
+	                    String s = iterator1.next();
+	
+	                    if (!s.toLowerCase().contains(searchText))
+	                    {
+	                        continue;
+	                    }
+	
+	                    flag = true;
+	                }
+            	}
 
                 if (!flag)
                 {
