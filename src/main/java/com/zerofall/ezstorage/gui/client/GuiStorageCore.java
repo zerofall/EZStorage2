@@ -35,6 +35,7 @@ import com.zerofall.ezstorage.network.MyMessage;
 import com.zerofall.ezstorage.ref.RefStrings;
 import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 import com.zerofall.ezstorage.util.EZItemRenderer;
+import com.zerofall.ezstorage.util.EZStorageUtils;
 import com.zerofall.ezstorage.util.ItemGroup;
 import com.zerofall.ezstorage.util.JointList;
 
@@ -95,7 +96,7 @@ public class GuiStorageCore extends GuiContainer {
 		// sorting gui
 		if(this.tileEntity.hasSortBox) {
 			this.mc.renderEngine.bindTexture(sortGui);
-			drawTexturedModalRect(guiLeft - 108, guiTop, 0, 128, 112, 48);
+			drawTexturedModalRect(guiLeft - 108, guiTop, 0, 128, 112, 128);
 			modeToggle.visible = true;
 		} else {
 			modeToggle.visible = false;
@@ -125,11 +126,11 @@ public class GuiStorageCore extends GuiContainer {
 		
 		// scale down text if it is too large
 		if (stringWidth > 88) {
-			float ScaleFactor = 0.7f;
-			float RScaleFactor = 1.0f / ScaleFactor;
+			double ScaleFactor = 0.7;
+			double RScaleFactor = 1.0 / ScaleFactor;
 			GL11.glPushMatrix();
 			GL11.glScaled( ScaleFactor, ScaleFactor, ScaleFactor );
-			int X = (int) (((float) 187 - stringWidth * ScaleFactor) * RScaleFactor);
+			int X = (int) (((double) 187 - stringWidth * ScaleFactor) * RScaleFactor);
 			fontRendererObj.drawString(amount, X, 10, 4210752);
 			GL11.glPopMatrix();
 		} else {
@@ -140,6 +141,11 @@ public class GuiStorageCore extends GuiContainer {
 		modeToggle.displayString = tileEntity.sortMode.toString();
 		if(this.tileEntity.hasSortBox) {
 			this.fontRendererObj.drawString("Sorting Mode", -100, 6, 4210752);
+			GL11.glPushMatrix();
+			double scale = 0.7;
+			GL11.glScaled(scale, scale, scale);
+			this.fontRendererObj.drawSplitString(tileEntity.sortMode.getDesc(), (int)(-100 / scale), (int)(42 / scale), (int)(96 / scale), 4210752);
+			GL11.glPopMatrix();
 		}
 		
 		int x = 8;
@@ -284,14 +290,8 @@ public class GuiStorageCore extends GuiContainer {
             	iterator1 = ores.iterator();
             	
             } else if(modSearch) { // searches mod ids and mod names
-            	try {
-            		compare = itemstack.getItem().getRegistryName().getResourceDomain();
-            		for(ModContainer m : Loader.instance().getModList()) {
-            			if(m.getModId().equals(compare)) {
-            				compare2 = m.getName().toLowerCase();
-            			}
-            		}
-            	} catch (Exception e) {}
+        		compare = itemstack.getItem().getRegistryName().getResourceDomain();
+        		compare2 = EZStorageUtils.getModNameFromID(compare).toLowerCase();
             	compare = compare.toLowerCase();
             	
             } else if(tabSearch) { // searches the item's creative tab

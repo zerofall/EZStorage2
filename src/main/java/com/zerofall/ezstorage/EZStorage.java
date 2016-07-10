@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -21,6 +22,7 @@ import com.zerofall.ezstorage.network.EZNetwork;
 import com.zerofall.ezstorage.proxy.CommonProxy;
 import com.zerofall.ezstorage.ref.EZTab;
 import com.zerofall.ezstorage.ref.RefStrings;
+import com.zerofall.ezstorage.util.EZStorageUtils;
 
 /** EZStorage main mod class */
 @Mod(modid = RefStrings.MODID, name = RefStrings.NAME, version = RefStrings.VERSION)
@@ -54,6 +56,11 @@ public class EZStorage {
     public void init(FMLInitializationEvent event) {
     	CraftingManager.mainRegistry();
     	proxy.registerRenders();
+    }
+    
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+    	EZStorageUtils.getModNameFromID(RefStrings.MODID); // build the mod map
     }
     
 }

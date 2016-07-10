@@ -1,6 +1,7 @@
 package com.zerofall.ezstorage.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,13 +10,34 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 
 import com.zerofall.ezstorage.block.BlockSecurityBox;
 import com.zerofall.ezstorage.block.StorageMultiblock;
 import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
 
+/** Useful stuff */
 public class EZStorageUtils {
 	
+	private static HashMap<String, String> modMap = new HashMap();
+	
+	/** Get a cached mod name from the mod map */
+	public static String getModNameFromID(String modid) {
+		// build the map
+		if(modMap.isEmpty()) {
+    		for(ModContainer m : Loader.instance().getModList()) {
+    			modMap.put(m.getModId(), m.getName());
+    		}			
+		}
+		if(modMap.containsKey(modid)) {
+			return modMap.get(modid);
+		} else {
+			return "";
+		}
+	}
+	
+	/** Get a block's neighbors */
 	public static List<BlockRef> getNeighbors(int xCoord, int yCoord, int zCoord, World world) {
 		List<BlockRef> blockList = new ArrayList<BlockRef>();
 		blockList.add(new BlockRef(world.getBlockState(new BlockPos(xCoord - 1, yCoord, zCoord)).getBlock(), xCoord - 1, yCoord, zCoord));
@@ -28,10 +50,12 @@ public class EZStorageUtils {
 		return blockList;
 	}
 	
+	/** Update the block position */
 	public static void notifyBlockUpdate(TileEntity entity) {
 		notifyBlockUpdate(entity.getWorld(), entity.getPos());
 	}
 
+	/** Update the block position */
 	public static void notifyBlockUpdate(World world, BlockPos pos) {
 		world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
 	}

@@ -32,17 +32,21 @@ public class ItemGroup {
 	
 	/** Sort modes */
 	public static enum EnumSortMode {
-		COUNT(CountComparator.class, "Count Down"),
-		INVERSE_COUNT(InverseCountComparator.class, "Count Up"),
-		NAME(NameComparator.class, "A - Z"),
-		INVERSE_NAME(InverseNameComparator.class, "Z - A");
+		COUNT(CountComparator.class, "Count Down", "Sorts by descending item counts, then from A-Z for equal cases."),
+		INVERSE_COUNT(InverseCountComparator.class, "Count Up", "Sorts by ascending item counts, then from Z-A for equal cases."),
+		NAME(NameComparator.class, "Name A - Z", "Sorts A-Z, then by descending item counts for equal cases."),
+		INVERSE_NAME(InverseNameComparator.class, "Name Z - A", "Sorts Z-A, then by ascending item counts for equal cases."),
+		MOD_NAME(ModNameComparator.class, "Mod A - Z", "Sorts by mod name A-Z, then by descending item counts for equal cases."),
+		INVERSE_MOD_NAME(InverseModNameComparator.class, "Mod Z - A", "Sorts by mod name Z-A, then by ascending item counts for equal cases.");
 		
 		private Class<? extends ItemGroupComparator> sortClass;
 		private String name;
+		private String desc;
 		
-		private EnumSortMode(Class<? extends ItemGroupComparator> sortClass, String name) {
+		private EnumSortMode(Class<? extends ItemGroupComparator> sortClass, String name, String desc) {
 			this.sortClass = sortClass;
 			this.name = name;
+			this.desc = desc;
 		}
 		
 		/** Get the mode from an integer (corrects overflow) */
@@ -68,6 +72,11 @@ public class ItemGroup {
 		@Override
 		public String toString() {
 			return name;
+		}
+		
+		/** Gets the info for the current mode */
+		public String getDesc() {
+			return desc;
 		}
 	}
 	
@@ -128,6 +137,42 @@ public class ItemGroup {
 		public int compare(ItemGroup group1, ItemGroup group2) {
 			String n1 = group1.itemStack.getDisplayName();
 			String n2 = group2.itemStack.getDisplayName();
+			if(!n1.equals(n2)) {
+				return n2.compareTo(n1);
+			} else {
+				Long l1 = (Long)group1.count;
+				Long l2 = (Long)group2.count;
+				return l1.compareTo(l2);
+			}
+		}
+	}
+	
+	/** Sort by mod alphabetically, then fall back to item count */
+	public static class ModNameComparator extends ItemGroupComparator {
+		@Override
+		public int compare(ItemGroup group1, ItemGroup group2) {
+			String m1 = group1.itemStack.getItem().getRegistryName().getResourceDomain();
+			String m2 = group2.itemStack.getItem().getRegistryName().getResourceDomain();
+			String n1 = EZStorageUtils.getModNameFromID(m1).toLowerCase();
+			String n2 = EZStorageUtils.getModNameFromID(m2).toLowerCase();
+			if(!n1.equals(n2)) {
+				return n1.compareTo(n2);
+			} else {
+				Long l1 = (Long)group1.count;
+				Long l2 = (Long)group2.count;
+				return l2.compareTo(l1);
+			}
+		}
+	}
+	
+	/** Sort by mod inverse alphabetically, then fall back to inverse item count */
+	public static class InverseModNameComparator extends ItemGroupComparator {
+		@Override
+		public int compare(ItemGroup group1, ItemGroup group2) {
+			String m1 = group1.itemStack.getItem().getRegistryName().getResourceDomain();
+			String m2 = group2.itemStack.getItem().getRegistryName().getResourceDomain();
+			String n1 = EZStorageUtils.getModNameFromID(m1).toLowerCase();
+			String n2 = EZStorageUtils.getModNameFromID(m2).toLowerCase();
 			if(!n1.equals(n2)) {
 				return n2.compareTo(n1);
 			} else {
