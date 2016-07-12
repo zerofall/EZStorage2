@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -15,6 +14,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import com.zerofall.ezstorage.EZStorage;
 import com.zerofall.ezstorage.gui.server.ContainerStorageCoreCrafting;
 import com.zerofall.ezstorage.util.JointList;
 
@@ -62,8 +62,8 @@ public class MessageCraftingSync implements IMessage {
 	public static class Handler implements IMessageHandler<MessageCraftingSync, IMessage> {
 		@Override
 		public IMessage onMessage(MessageCraftingSync message, MessageContext ctx) {
-			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-			if(player.openContainer != null && player.openContainer instanceof ContainerStorageCoreCrafting) {
+			EntityPlayer player = EZStorage.proxy.getClientPlayer();
+			if(player != null && player.openContainer != null && player.openContainer instanceof ContainerStorageCoreCrafting) {
 				InventoryCrafting craft = ((ContainerStorageCoreCrafting)player.openContainer).craftMatrix;
 				int i = 0;
 				for(ItemStack s : message.stackList) {
