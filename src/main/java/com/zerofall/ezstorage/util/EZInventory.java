@@ -1,10 +1,10 @@
 package com.zerofall.ezstorage.util;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 
@@ -97,7 +97,7 @@ public class EZInventory {
 	public ItemStack getItems(ItemStack[] itemStacks) {
 		for (ItemGroup group : inventory) {
 			for (ItemStack itemStack : itemStacks) {
-				if (stacksEqual(group.itemStack, itemStack)) {
+				if (stacksEqualOreDict(group.itemStack, itemStack)) {
 					if (group.count >= itemStack.stackSize) {
 						ItemStack stack = group.itemStack.copy();
 						stack.stackSize = itemStack.stackSize;
@@ -118,7 +118,7 @@ public class EZInventory {
 	public ItemStack getItemsNoDecrease(ItemStack[] itemStacks) {
 		for (ItemGroup group : inventory) {
 			for (ItemStack itemStack : itemStacks) {
-				if (stacksEqual(group.itemStack, itemStack)) {
+				if (stacksEqualOreDict(group.itemStack, itemStack)) {
 					if (group.count >= itemStack.stackSize) {
 						ItemStack stack = group.itemStack.copy();
 						stack.stackSize = itemStack.stackSize;
@@ -152,6 +152,15 @@ public class EZInventory {
 			}
 		}
 		return false;
+	}
+	
+	/** Check stacks for oredict equality (wildcard damage support) */
+	public static boolean stacksEqualOreDict(ItemStack stack1, ItemStack stack2) {
+		boolean first = stacksEqual(stack1, stack2);
+		boolean nullCheck = stack1 != null && stack2 != null;
+		boolean second = stack1.getItem() == stack2.getItem();
+		boolean third = stack1.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack2.getItemDamage() == OreDictionary.WILDCARD_VALUE;
+		return first || (nullCheck && second && third);
 	}
 	
 	/** Get the total item count */
