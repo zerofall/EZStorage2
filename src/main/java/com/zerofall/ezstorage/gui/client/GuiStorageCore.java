@@ -31,7 +31,7 @@ import org.lwjgl.opengl.GL11;
 import com.zerofall.ezstorage.EZStorage;
 import com.zerofall.ezstorage.config.EZConfig;
 import com.zerofall.ezstorage.gui.server.ContainerStorageCore;
-import com.zerofall.ezstorage.network.MyMessage;
+import com.zerofall.ezstorage.network.MessageCustomClick;
 import com.zerofall.ezstorage.ref.RefStrings;
 import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 import com.zerofall.ezstorage.util.EZItemRenderer;
@@ -115,7 +115,7 @@ public class GuiStorageCore extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		handleScrolling(mouseX, mouseY);
-		updateFilteredItems();
+		
 		DecimalFormat formatter = new DecimalFormat("#,###");
 		String totalCount = formatter.format(this.tileEntity.inventory.getTotalCount());
 		String max = formatter.format(this.tileEntity.inventory.maxItems);
@@ -236,6 +236,7 @@ public class GuiStorageCore extends GuiContainer {
             if (this.tileEntity.hasSearchBox && this.searchField.isFocused() && this.searchField.textboxKeyTyped(typedChar, keyCode))
             {
             	updateFilteredItems();
+                scrollTo(this.currentScroll = 0); // rest scrolling
             }
             else
             {
@@ -383,7 +384,7 @@ public class GuiStorageCore extends GuiContainer {
 					}
 				}
 			}
-			EZStorage.networkWrapper.sendToServer(new MyMessage(index, mouseButton, mode));
+			EZStorage.networkWrapper.sendToServer(new MessageCustomClick(index, mouseButton, mode));
 			ContainerStorageCore container = (ContainerStorageCore)this.inventorySlots;
 			container.customSlotClick(index, mouseButton, mode, this.mc.thePlayer);
 		} else {

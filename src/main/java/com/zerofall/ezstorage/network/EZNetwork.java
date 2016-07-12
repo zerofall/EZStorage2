@@ -9,7 +9,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
-import com.zerofall.ezstorage.EZStorage;
 import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox.SecurePlayer;
 
 public class EZNetwork {
@@ -21,8 +20,9 @@ public class EZNetwork {
 	public static SimpleNetworkWrapper registerNetwork() {
 		id = 0;
 		net = NetworkRegistry.INSTANCE.newSimpleChannel("ezChannel");
-    	net.registerMessage(PacketHandler.class, MyMessage.class, id++, Side.SERVER);
-    	net.registerMessage(RecipePacketHandler.class, RecipeMessage.class, id++, Side.SERVER);
+    	net.registerMessage(MessageCustomClick.Handler.class, MessageCustomClick.class, id++, Side.SERVER);
+    	net.registerMessage(MessageRecipeSync.Handler.class, MessageRecipeSync.class, id++, Side.SERVER);
+    	net.registerMessage(MessageCraftingSync.Handler.class, MessageCraftingSync.class, id++, Side.CLIENT);
 		net.registerMessage(MessageSecureSync.Handler.class, MessageSecureSync.class, id++, Side.CLIENT);
 		net.registerMessage(MessageSecurePlayer.Handler.class, MessageSecurePlayer.class, id++, Side.SERVER);
 		return net;
