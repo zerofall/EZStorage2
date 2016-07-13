@@ -60,8 +60,15 @@ public class ContainerStorageCore extends Container {
 		case 0: // change sort mode and update
 			tileEntity.sortMode = tileEntity.sortMode.rotateMode();
 			tileEntity.sortInventory();
+			return true;
+		case 1:
+			if(this instanceof ContainerStorageCoreCrafting) {
+				((ContainerStorageCoreCrafting)this).clearGrid(player);
+				tileEntity.sortInventory();
+				return true;
+			}
 		}
-		return true;
+		return false;
 	}
 	
 	/** Shift click a slot */

@@ -8,12 +8,12 @@ import net.minecraft.util.ResourceLocation;
 
 import com.zerofall.ezstorage.ref.RefStrings;
 
-/** Custom buttons for the security block GUI */
-public class ButtonSecurity extends GuiButton {
+/** Custom buttons for the security block GUI and other stuff */
+public class ButtonBlue extends GuiButton {
 
 	private static final ResourceLocation tex = new ResourceLocation(RefStrings.MODID, "textures/gui/customGui.png");
 
-	public ButtonSecurity(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {
+	public ButtonBlue(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {
 		super(buttonId, x, y, widthIn, heightIn, buttonText);
 		this.visible = false;
 	}

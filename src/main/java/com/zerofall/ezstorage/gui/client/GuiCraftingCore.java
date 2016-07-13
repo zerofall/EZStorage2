@@ -14,6 +14,12 @@ public class GuiCraftingCore extends GuiStorageCore {
 		this.xSize = 195;
 		this.ySize = 244;
 	}
+	
+	@Override
+    public void initGui() {
+		super.initGui();
+		craftClear.visible = true;
+	}
 
 	@Override
 	public int rowsVisible() {

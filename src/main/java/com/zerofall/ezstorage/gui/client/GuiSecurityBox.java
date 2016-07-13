@@ -50,8 +50,8 @@ public class GuiSecurityBox extends GuiContainer {
         
         // get the buttons ready
         for(int i = 0; i < nButtons; i++) {
-        	addedPlayers[i] = new ButtonSecurity(i, k + 4, l + 30 + i * 15, buttonWidth, 14, "");
-        	availablePlayers[i] = new ButtonSecurity(i + nButtons, k + this.xSize - buttonWidth - 4, l + 30 + i * 15, buttonWidth, 14, "");
+        	addedPlayers[i] = new ButtonBlue(i, k + 4, l + 30 + i * 15, buttonWidth, 14, "");
+        	availablePlayers[i] = new ButtonBlue(i + nButtons, k + this.xSize - buttonWidth - 4, l + 30 + i * 15, buttonWidth, 14, "");
         }
 		buttonList = new JointList<GuiButton>().join(addedPlayers).join(availablePlayers);
 		
