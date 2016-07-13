@@ -62,11 +62,7 @@ public class MessageRecipeSync implements IMessage {
 						NBTTagCompound tag = list.getCompoundTagAt(0);
 						boolean hasOre = tag.hasKey("ore");
 						if(hasOre) { // sent an oredict entry
-							System.out.println("got an oredict entry");
 							List<ItemStack> items = OreDictionary.getOres(tag.getString("ore"));
-							for(ItemStack item : items) {
-								System.out.println(item);
-							}
 							this.recipe[x] = new ItemStack[items.size()];
 							for( int y = 0; y < items.size(); y++ ) {
 								this.recipe[x][y] = items.get(y).copy();

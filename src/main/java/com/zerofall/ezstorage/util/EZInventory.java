@@ -172,6 +172,18 @@ public class EZInventory {
 		return count;
 	}
 	
+	/** Gets the index of an itemgroup in the inventory */
+	public int indexOf(ItemGroup group) {
+		int n = 0;
+		for(ItemGroup g : inventory) {
+			if(stacksEqual(g.itemStack, group.itemStack)) {
+				return n;
+			}
+			n++;
+		}
+		return -1;
+	}
+	
 	/** Convert this inventory to a string */
 	@Override
 	public String toString() {

@@ -19,8 +19,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -54,7 +52,9 @@ public class GuiStorageCore extends GuiContainer {
     private float currentScroll;
     private GuiTextField searchField;
     private List<ItemGroup> filteredList;
-    private GuiButton modeToggle;
+    protected GuiButton modeToggle;
+    protected GuiButton craftClear;
+    private boolean didUpdate;
     
     @Override
     public void initGui() {
@@ -68,7 +68,10 @@ public class GuiStorageCore extends GuiContainer {
         this.searchField.setText("");
         filteredList = new ArrayList<ItemGroup>(this.tileEntity.inventory.inventory);
         buttonList.add(modeToggle = new GuiButton(0, guiLeft - 100, guiTop + 16, 90, 20, ""));
+        buttonList.add(craftClear = new ButtonBlue(0, guiLeft + 20, guiTop + 100, 14, 14, "x"));
         modeToggle.visible = false;
+        craftClear.visible = false;
+        didUpdate = false;
     }
 	
 	public GuiStorageCore(EntityPlayer player, World world, int x, int y, int z) {
@@ -115,6 +118,14 @@ public class GuiStorageCore extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		handleScrolling(mouseX, mouseY);
+		
+		// update the filtered list every 0.15s
+		if(mc.thePlayer.ticksExisted % 3 == 0 && !didUpdate) {
+			updateFilteredItems();
+			didUpdate = true;
+		} else if(mc.thePlayer.ticksExisted % 3 != 0) {
+			didUpdate = false;
+		}
 		
 		DecimalFormat formatter = new DecimalFormat("#,###");
 		String totalCount = formatter.format(this.tileEntity.inventory.getTotalCount());
@@ -197,11 +208,13 @@ public class GuiStorageCore extends GuiContainer {
         this.itemRender.zLevel = 0.0F;
 	}
 	
-	/** Send a packet to the server when the sort mode is toggled */
+	/** Send a packet to the server when the sort mode is toggled or the crafting matrix is cleared */
 	@Override
 	protected void actionPerformed(GuiButton parButton) {
 		if(parButton == modeToggle) {
 			this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, 0);
+		} else if(parButton == craftClear) {
+			this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, 1);
 		}
 	}
 	
@@ -370,6 +383,7 @@ public class GuiStorageCore extends GuiContainer {
 		
 		Integer slot = getSlotAt(mouseX, mouseY);
 		if (slot != null) {
+			
 			int mode = 0;
 			if (GuiScreen.isShiftKeyDown()) {
 				mode = 1;
@@ -378,12 +392,13 @@ public class GuiStorageCore extends GuiContainer {
 			if (slot < this.filteredList.size()) {
 				ItemGroup group = this.filteredList.get(slot);
 				if (group != null) {
-					index = this.tileEntity.inventory.inventory.indexOf(group);
+					index = this.tileEntity.inventory.indexOf(group);
 					if (index < 0) {
 						return;
 					}
 				}
 			}
+			
 			EZStorage.networkWrapper.sendToServer(new MessageCustomClick(index, mouseButton, mode));
 			ContainerStorageCore container = (ContainerStorageCore)this.inventorySlots;
 			container.customSlotClick(index, mouseButton, mode, this.mc.thePlayer);

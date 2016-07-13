@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.FMLLog;
 
 import org.apache.logging.log4j.Logger;
 
+import com.zerofall.ezstorage.EZStorage;
 import com.zerofall.ezstorage.block.BlockCraftingBox;
 import com.zerofall.ezstorage.block.BlockInputPort;
 import com.zerofall.ezstorage.block.BlockOutputPort;
@@ -52,16 +53,14 @@ public class TileEntityStorageCore extends EZTileEntity {
 	/** Inputs a stack to the inventory */
 	public ItemStack input(ItemStack stack) {
 		ItemStack result = this.inventory.input(stack);
-		EZStorageUtils.notifyBlockUpdate(this);
-		this.markDirty();
+		sortInventory();
 		return result;
 	}
 	
 	/** Gets the first full stack in the inventory */
 	public ItemStack getRandomStack() {
 		ItemStack result = this.inventory.getItemsAt(0, 0);
-		EZStorageUtils.notifyBlockUpdate(this);
-		this.markDirty();
+		sortInventory();
 		return result;
 	}
 	
