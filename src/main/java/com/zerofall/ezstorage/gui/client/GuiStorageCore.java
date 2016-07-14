@@ -43,6 +43,8 @@ public class GuiStorageCore extends GuiContainer {
 
 	TileEntityStorageCore tileEntity;
 	EZItemRenderer ezRenderer;
+	
+	// scrolling and searching
 	int scrollRow = 0;
 	private boolean isScrolling = false;
 	private boolean wasClicking = false;
@@ -52,9 +54,15 @@ public class GuiStorageCore extends GuiContainer {
     private float currentScroll;
     private GuiTextField searchField;
     private List<ItemGroup> filteredList;
+    
+    // buttons
     protected GuiButton modeToggle;
     protected GuiButton craftClear;
-    private boolean didUpdate;
+    
+    // updating the filter
+    private boolean needsUpdate;
+    private int updateTicksCurrent;
+    private int updateTicksPassed;
     
     @Override
     public void initGui() {
@@ -71,7 +79,6 @@ public class GuiStorageCore extends GuiContainer {
         buttonList.add(craftClear = new ButtonBlue(0, guiLeft + 20, guiTop + 100, 14, 14, "x"));
         modeToggle.visible = false;
         craftClear.visible = false;
-        didUpdate = false;
     }
 	
 	public GuiStorageCore(EntityPlayer player, World world, int x, int y, int z) {
@@ -113,18 +120,32 @@ public class GuiStorageCore extends GuiContainer {
 			this.searchField.drawTextBox();
 		}
 	}
+	
+	/** Marks this inventory as needing a filter update */
+	public void markFilterUpdate() {
+		needsUpdate = true;
+		updateTicksPassed = 0;
+		updateTicksCurrent = mc.thePlayer.ticksExisted;
+	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		handleScrolling(mouseX, mouseY);
 		
-		// update the filtered list every 0.15s
-		if(mc.thePlayer.ticksExisted % 3 == 0 && !didUpdate) {
-			updateFilteredItems();
-			didUpdate = true;
-		} else if(mc.thePlayer.ticksExisted % 3 != 0) {
-			didUpdate = false;
+		// check if this inventory needs a filter update
+		// then update it after no more than 0.1s have passed
+		if(needsUpdate) {
+			if(mc.thePlayer.ticksExisted > updateTicksCurrent) {
+				updateTicksPassed++;
+				updateTicksCurrent = mc.thePlayer.ticksExisted;
+			}
+			
+			// update the filtered list
+			if(updateTicksPassed >= 2) {
+				updateFilteredItems();
+				needsUpdate = false;
+			}
 		}
 		
 		DecimalFormat formatter = new DecimalFormat("#,###");
@@ -141,7 +162,7 @@ public class GuiStorageCore extends GuiContainer {
 			double RScaleFactor = 1.0 / ScaleFactor;
 			GL11.glPushMatrix();
 			GL11.glScaled( ScaleFactor, ScaleFactor, ScaleFactor );
-			int X = (int) (((double) 187 - stringWidth * ScaleFactor) * RScaleFactor);
+			int X = (int) ((187 - stringWidth * ScaleFactor) * RScaleFactor);
 			fontRendererObj.drawString(amount, X, 10, 4210752);
 			GL11.glPopMatrix();
 		} else {
@@ -203,7 +224,7 @@ public class GuiStorageCore extends GuiContainer {
         int k = 18;
         int l = k + 108;
         this.mc.getTextureManager().bindTexture(creativeInventoryTabs);
-        this.drawTexturedModalRect(i1, k + (int)((float)(l - k - 17) * this.currentScroll), 232, 0, 12, 15);
+        this.drawTexturedModalRect(i1, k + (int)((l - k - 17) * this.currentScroll), 232, 0, 12, 15);
 		this.zLevel = 0.0F;
         this.itemRender.zLevel = 0.0F;
 	}
@@ -231,7 +252,7 @@ public class GuiStorageCore extends GuiContainer {
 			if (slot < this.filteredList.size()) {
 				ItemGroup group = this.filteredList.get(slot);
 				if (group != null) {
-					index = this.tileEntity.inventory.inventory.indexOf(group);
+					index = this.tileEntity.inventory.indexOf(group);
 					if (index < 0) {
 						return;
 					}
@@ -258,7 +279,7 @@ public class GuiStorageCore extends GuiContainer {
         }
 	}
 	
-	/** Update the user search */
+	/** Update the filtered list of items that the core needs to function correctly */
 	private void updateFilteredItems() {
 		filteredList = new ArrayList<ItemGroup>(this.tileEntity.inventory.inventory);
 		Iterator iterator = this.filteredList.iterator();
@@ -371,7 +392,7 @@ public class GuiStorageCore extends GuiContainer {
 
         if (this.isScrolling)
         {
-            this.currentScroll = ((float)(mouseY - j1) - 7.5F) / ((float)(l1 - j1) - 15.0F);
+            this.currentScroll = (mouseY - j1 - 7.5F) / (l1 - j1 - 15.0F);
             this.currentScroll = MathHelper.clamp_float(this.currentScroll, 0.0F, 1.0F);
             scrollTo(this.currentScroll);
         }
@@ -459,7 +480,7 @@ public class GuiStorageCore extends GuiContainer {
                 i = -1;
             }
 
-            this.currentScroll = (float)((double)this.currentScroll - (double)i / (double)j);
+            this.currentScroll = (float)(this.currentScroll - (double)i / (double)j);
             this.currentScroll = MathHelper.clamp_float(this.currentScroll, 0.0F, 1.0F);
             scrollTo(this.currentScroll);
         }
@@ -468,7 +489,7 @@ public class GuiStorageCore extends GuiContainer {
 	
 	private void scrollTo(float scroll) {
 		int i = (this.tileEntity.inventory.slotCount() + 8) / 9 - this.rowsVisible();
-        int j = (int)((double)(scroll * (float)i) + 0.5D);
+        int j = (int)(scroll * i + 0.5D);
         if (j < 0)
         {
             j = 0;

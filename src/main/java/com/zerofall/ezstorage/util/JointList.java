@@ -1,7 +1,6 @@
 package com.zerofall.ezstorage.util;
 
 import java.util.LinkedList;
-import java.util.List;
 
 /** An easier-to-construct linked list */
 public class JointList<T> extends LinkedList<T> {

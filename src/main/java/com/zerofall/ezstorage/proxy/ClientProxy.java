@@ -1,7 +1,6 @@
 package com.zerofall.ezstorage.proxy;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -21,6 +20,15 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public EntityPlayer getClientPlayer() {
 		return Minecraft.getMinecraft().thePlayer;
+	}
+	
+	@Override
+	public void markGuiDirty() {
+		GuiScreen scr = Minecraft.getMinecraft().currentScreen;
+		if(scr instanceof GuiStorageCore) {
+			GuiStorageCore gui = (GuiStorageCore)scr;
+			gui.markFilterUpdate();
+		}
 	}
 	
 }

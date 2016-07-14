@@ -25,6 +25,7 @@ import com.zerofall.ezstorage.block.BlockStorage;
 import com.zerofall.ezstorage.block.BlockStorageCore;
 import com.zerofall.ezstorage.block.StorageMultiblock;
 import com.zerofall.ezstorage.init.EZBlocks;
+import com.zerofall.ezstorage.network.MessageFilterUpdate;
 import com.zerofall.ezstorage.util.BlockRef;
 import com.zerofall.ezstorage.util.EZInventory;
 import com.zerofall.ezstorage.util.EZStorageUtils;
@@ -64,11 +65,12 @@ public class TileEntityStorageCore extends EZTileEntity {
 		return result;
 	}
 	
-	/** Sorts the inventory on change */
+	/** Sorts the inventory on change and tells clients to update their filtered lists */
 	public void sortInventory() {
 		if(!this.worldObj.isRemote) {
 			this.inventory.sort();
 			updateTileEntity();
+			EZStorage.networkWrapper.sendToDimension(new MessageFilterUpdate(this), worldObj.provider.getDimension());
 		}
 	}
 	

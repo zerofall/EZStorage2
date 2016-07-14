@@ -43,7 +43,7 @@ public class ContainerStorageCoreCrafting extends ContainerStorageCore {
 	//Shift clicking
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
-        Slot slotObject = (Slot) inventorySlots.get(index);
+        Slot slotObject = inventorySlots.get(index);
         if (slotObject != null && slotObject.getHasStack()) {
         	if (slotObject instanceof SlotCrafting) {
         		ItemStack[] recipe = new ItemStack[9];

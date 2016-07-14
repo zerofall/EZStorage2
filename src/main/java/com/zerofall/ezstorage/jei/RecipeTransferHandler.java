@@ -40,7 +40,7 @@ public class RecipeTransferHandler implements IRecipeTransferHandler {
 			Map<Integer, GuiIngredient<ItemStack>> inputs = (Map<Integer, GuiIngredient<ItemStack>>)recipeLayout.getItemStacks().getGuiIngredients();
 			NBTTagCompound recipe = new NBTTagCompound();
 			StackHelper helper = new StackHelper();
-			for (Slot slot : (List<Slot>) container.inventorySlots) {
+			for (Slot slot : container.inventorySlots) {
 				if (slot.inventory instanceof InventoryCrafting) {
 					GuiIngredient<ItemStack> ingredient = inputs.get(slot.getSlotIndex() + 1);
 					if (ingredient != null) {

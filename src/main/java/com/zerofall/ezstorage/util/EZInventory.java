@@ -29,7 +29,7 @@ public class EZInventory {
 		long space = maxItems - getTotalCount();
 		
 		// Only part of the stack can fit
-		int amount = (int)Math.min(space, (long)itemStack.stackSize);
+		int amount = (int)Math.min(space, itemStack.stackSize);
 		ItemStack result = mergeStack(itemStack, amount);
 		tile.sortInventory();
 		return result;
@@ -73,7 +73,7 @@ public class EZInventory {
 		}
 		ItemGroup group = inventory.get(index);
 		ItemStack stack = group.itemStack.copy();
-		int size = (int)Math.min((long)stack.getMaxStackSize(), group.count);
+		int size = (int)Math.min(stack.getMaxStackSize(), group.count);
 		if (size > 1) {
 			if (type == 1) {
 				size = size/2;

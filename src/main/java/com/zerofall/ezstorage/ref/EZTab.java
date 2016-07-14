@@ -3,7 +3,6 @@ package com.zerofall.ezstorage.ref;
 import com.zerofall.ezstorage.init.EZBlocks;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

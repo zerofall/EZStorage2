@@ -3,7 +3,6 @@ package com.zerofall.ezstorage.block;
 import net.minecraft.block.material.Material;
 
 import com.zerofall.ezstorage.config.EZConfig;
-import com.zerofall.ezstorage.registry.IRegistryBlock;
 
 /** An ultra storage box */
 public class BlockUltraStorage extends BlockStorage {
