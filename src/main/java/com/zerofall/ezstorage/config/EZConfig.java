@@ -21,7 +21,7 @@ public class EZConfig {
 		final Configuration config = EZStorage.config;
 		config.load();
 
-		final String OPTIONS = config.CATEGORY_GENERAL + config.CATEGORY_SPLITTER + "options";
+		final String OPTIONS = Configuration.CATEGORY_GENERAL + Configuration.CATEGORY_SPLITTER + "options";
 
 		basicCapacity = config.getInt("Basic Storage Capacity", OPTIONS, 400, 100, 4000, "Basic");
 		condensedCapacity = config.getInt("Condensed Storage Capacity", OPTIONS, 4000, 100, 40000, "Condensed");
@@ -33,7 +33,7 @@ public class EZConfig {
 		enableTerminal = config.getBoolean("Enable Access Terminal", OPTIONS, true, "Should the access terminal be enabled?");
 		enableSecurity = config.getBoolean("Enable Security", OPTIONS, true, "Should the security features be enabled?");
 		enableSearchModes = config.getBoolean("Enable Search Modes", OPTIONS, true, 
-				"Should '$' in front of a search search the ore dicionary names, '@' search mod ids and names, and '%' search creative tab names?");
+				"Should '$' in front of a term search ore dictionary names, '@' search mod ids and names, and '%' search creative tab names?");
 
 		if(config.hasChanged()) config.save();
 	}

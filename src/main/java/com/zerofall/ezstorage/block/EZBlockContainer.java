@@ -24,7 +24,8 @@ public class EZBlockContainer extends StorageMultiblock implements ITileEntityPr
 		return EnumBlockRenderType.MODEL;
 	}
 
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+    @Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         super.breakBlock(worldIn, pos, state);
         worldIn.removeTileEntity(pos);
     }

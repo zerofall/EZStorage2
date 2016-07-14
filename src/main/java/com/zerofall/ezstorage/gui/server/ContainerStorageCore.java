@@ -74,7 +74,7 @@ public class ContainerStorageCore extends Container {
 	/** Shift click a slot */
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
-        Slot slotObject = (Slot) inventorySlots.get(index);
+        Slot slotObject = inventorySlots.get(index);
         if (slotObject != null && slotObject.getHasStack()) {
         	ItemStack stackInSlot = slotObject.getStack();
         	slotObject.putStack(this.tileEntity.inventory.input(stackInSlot));

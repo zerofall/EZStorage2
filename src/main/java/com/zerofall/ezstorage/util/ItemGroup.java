@@ -87,8 +87,8 @@ public class ItemGroup {
 	public static class CountComparator extends ItemGroupComparator {
 		@Override
 		public int compare(ItemGroup group1, ItemGroup group2) {
-			Long l1 = (Long)group1.count;
-			Long l2 = (Long)group2.count;
+			Long l1 = group1.count;
+			Long l2 = group2.count;
 			if(l1 != l2) {
 				return l2.compareTo(l1);
 			} else {
@@ -103,8 +103,8 @@ public class ItemGroup {
 	public static class InverseCountComparator extends ItemGroupComparator {
 		@Override
 		public int compare(ItemGroup group1, ItemGroup group2) {
-			Long l1 = (Long)group1.count;
-			Long l2 = (Long)group2.count;
+			Long l1 = group1.count;
+			Long l2 = group2.count;
 			if(l1 != l2) {
 				return l1.compareTo(l2);
 			} else {
@@ -124,8 +124,8 @@ public class ItemGroup {
 			if(!n1.equals(n2)) {
 				return n1.compareTo(n2);
 			} else {
-				Long l1 = (Long)group1.count;
-				Long l2 = (Long)group2.count;
+				Long l1 = group1.count;
+				Long l2 = group2.count;
 				return l2.compareTo(l1);
 			}
 		}
@@ -140,8 +140,8 @@ public class ItemGroup {
 			if(!n1.equals(n2)) {
 				return n2.compareTo(n1);
 			} else {
-				Long l1 = (Long)group1.count;
-				Long l2 = (Long)group2.count;
+				Long l1 = group1.count;
+				Long l2 = group2.count;
 				return l1.compareTo(l2);
 			}
 		}
@@ -158,8 +158,8 @@ public class ItemGroup {
 			if(!n1.equals(n2)) {
 				return n1.compareTo(n2);
 			} else {
-				Long l1 = (Long)group1.count;
-				Long l2 = (Long)group2.count;
+				Long l1 = group1.count;
+				Long l2 = group2.count;
 				return l2.compareTo(l1);
 			}
 		}
@@ -176,8 +176,8 @@ public class ItemGroup {
 			if(!n1.equals(n2)) {
 				return n2.compareTo(n1);
 			} else {
-				Long l1 = (Long)group1.count;
-				Long l2 = (Long)group2.count;
+				Long l1 = group1.count;
+				Long l2 = group2.count;
 				return l1.compareTo(l2);
 			}
 		}

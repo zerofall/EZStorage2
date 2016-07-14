@@ -23,6 +23,7 @@ public class EZNetwork {
     	net.registerMessage(MessageCustomClick.Handler.class, MessageCustomClick.class, id++, Side.SERVER);
     	net.registerMessage(MessageRecipeSync.Handler.class, MessageRecipeSync.class, id++, Side.SERVER);
     	net.registerMessage(MessageCraftingSync.Handler.class, MessageCraftingSync.class, id++, Side.CLIENT);
+    	net.registerMessage(MessageFilterUpdate.Handler.class, MessageFilterUpdate.class, id++, Side.CLIENT);
 		net.registerMessage(MessageSecureSync.Handler.class, MessageSecureSync.class, id++, Side.CLIENT);
 		net.registerMessage(MessageSecurePlayer.Handler.class, MessageSecurePlayer.class, id++, Side.SERVER);
 		return net;

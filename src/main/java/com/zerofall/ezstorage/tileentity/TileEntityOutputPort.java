@@ -11,7 +11,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 
 public class TileEntityOutputPort extends EZTileEntity {
@@ -33,7 +32,7 @@ public class TileEntityOutputPort extends EZTileEntity {
 						ItemGroup group = inventoryList.get(0);
 						if (group != null) {
 							ItemStack stack = group.itemStack;
-							stack.stackSize = (int) Math.min((long)stack.getMaxStackSize(), group.count);
+							stack.stackSize = (int) Math.min(stack.getMaxStackSize(), group.count);
 							int stackSize = stack.stackSize;
 							ItemStack leftOver = TileEntityHopper.putStackInInventoryAllSlots(inventory, stack, EnumFacing.DOWN);
 							if (leftOver != null) {

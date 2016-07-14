@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import com.zerofall.ezstorage.EZStorage;
 import com.zerofall.ezstorage.gui.GuiHandler;
 import com.zerofall.ezstorage.init.EZItems;
-import com.zerofall.ezstorage.registry.IRegistryBlock;
 import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
 
 /** A block that can be added to the system to secure it against intruders */

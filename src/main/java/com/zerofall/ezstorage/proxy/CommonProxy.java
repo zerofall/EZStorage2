@@ -1,6 +1,5 @@
 package com.zerofall.ezstorage.proxy;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
 /** The mod's shared proxy */
@@ -13,4 +12,7 @@ public class CommonProxy {
 	public EntityPlayer getClientPlayer() {
 		return null;
 	}
+	
+	/** Marks the system as needing a filter update clientside */
+	public void markGuiDirty() {}
 }

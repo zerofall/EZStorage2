@@ -3,7 +3,6 @@ package com.zerofall.ezstorage.registry;
 import java.util.Random;
 
 import net.minecraft.client.renderer.ItemModelMesher;
-import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
