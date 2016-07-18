@@ -5,15 +5,32 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.zerofall.ezstorage.config.EZConfig;
 import com.zerofall.ezstorage.util.JointList;
+import com.zerofall.ezstorage.util.SecurityOverrideHelper;
 
 /** The security box tile entity */
 public class TileEntitySecurityBox extends EZTileEntity {
 	
 	// list of allowed players
 	private JointList<SecurePlayer> allowedPlayers = new JointList();
+	
+	// security overrides by an operator
+	private boolean sendOpNotification = false;
+	private EntityPlayerMP op = null;
+	
+	// check if the op override notification needs sending
+	// then send it if needed
+	@Override
+	public void update() {
+		if(!worldObj.isRemote && sendOpNotification && op != null) {
+			SecurityOverrideHelper.sendOpNotification(op, allowedPlayers);
+			sendOpNotification = false;
+		}
+	}
 	
 	/** Get the allowed players */
 	public List<SecurePlayer> getAllowedPlayers() {
@@ -32,10 +49,21 @@ public class TileEntitySecurityBox extends EZTileEntity {
 	
 	/** Is the specified player allowed? */
 	public boolean isPlayerAllowed(EntityPlayer p) {
+		
+		// allowed due to normal stuff
 		if(getAllowedPlayerCount() == 0) return true;
 		for(SecurePlayer sp : allowedPlayers) {
 			if(sp.id.toString().equals(p.getPersistentID().toString())) return true;
 		}
+		
+		// allowed due to op level 2 override
+		if(EZConfig.enableOpOverride && !p.worldObj.isRemote && p.capabilities.isCreativeMode && SecurityOverrideHelper.isPlayerOpLv2((EntityPlayerMP)p)) {
+			op = (EntityPlayerMP)p;
+			sendOpNotification = true;
+			return true;
+		}
+		
+		// not allowed
 		return false;
 	}
 	
@@ -101,11 +129,6 @@ public class TileEntitySecurityBox extends EZTileEntity {
 		public String toString() {
 			return id + "=" + name;
 		}
-	}
-
-	@Override
-	public void update() {
-		// do nothing here
 	}
 
 }

@@ -1,7 +1,7 @@
 [
 {
   "modid": "ezstorage",
-  "name": "EZ Storage 2",
+  "name": "EZStorage 2",
   "description": "Storage: Simplified again.",
   "version": "${version}",
   "mcversion": "${mcversion}",

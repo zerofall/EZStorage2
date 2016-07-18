@@ -35,8 +35,6 @@ import com.zerofall.ezstorage.util.ItemGroup.EnumSortMode;
 /** The storage core tile entity */
 public class TileEntityStorageCore extends EZTileEntity {
 	
-	public static Logger log = FMLLog.getLogger();
-	
 	public EZInventory inventory;
 	
 	Set<BlockRef> multiblock = new HashSet<BlockRef>();
