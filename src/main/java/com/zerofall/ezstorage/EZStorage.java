@@ -21,6 +21,7 @@ import com.zerofall.ezstorage.init.EZItems;
 import com.zerofall.ezstorage.network.EZNetwork;
 import com.zerofall.ezstorage.proxy.CommonProxy;
 import com.zerofall.ezstorage.ref.EZTab;
+import com.zerofall.ezstorage.ref.Log;
 import com.zerofall.ezstorage.ref.RefStrings;
 import com.zerofall.ezstorage.util.EZStorageUtils;
 
@@ -61,6 +62,7 @@ public class EZStorage {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
     	EZStorageUtils.getModNameFromID(RefStrings.MODID); // build the mod map
+    	Log.logger.info("Loading complete.");
     }
     
 }

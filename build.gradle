@@ -21,7 +21,7 @@ repositories {
     }
 }
 
-version = "2.1.5"
+version = "2.1.6"
 group= "com.zerofall.ezstorage2"
 archivesBaseName = "ezstorage"
 
