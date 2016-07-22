@@ -2,39 +2,53 @@ package com.zerofall.ezstorage.tileentity;
 
 import java.util.List;
 
-import com.zerofall.ezstorage.util.EZStorageUtils;
-import com.zerofall.ezstorage.util.ItemGroup;
-
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
+import com.zerofall.ezstorage.util.ItemGroup;
+
+/** The ejection port (now with fewer bugs!) */
 public class TileEntityOutputPort extends EZTileEntity {
 
 	public TileEntityStorageCore core;
 
 	@Override
 	public void update() {
-		if (core != null && !worldObj.isRemote) {
+		if (core != null && !worldObj.isRemote && !worldObj.isBlockPowered(pos)) {
 			boolean updateCore = false;
-			BlockPos location = getPos().offset(EnumFacing.UP);
-			TileEntity tileentity = worldObj.getTileEntity(location);
-            if (tileentity instanceof IInventory) {
-				IInventory inventory = (IInventory)tileentity;
+			BlockPos targetPos = getPos().offset(EnumFacing.UP);
+			TileEntity targetTile = worldObj.getTileEntity(targetPos);
+			
+			// make sure there's a inventory tile entity above it
+            if (targetTile != null && targetTile instanceof IInventory) {
+				IInventory targetInv = (IInventory)targetTile;
+				Block targetBlock = worldObj.getBlockState(targetPos).getBlock();
 				
-				if (inventory != null) {
+				// double chest support
+                if (targetInv != null && targetInv instanceof TileEntityChest && targetBlock instanceof BlockChest) {
+                	targetInv = ((BlockChest)targetBlock).getContainer(worldObj, targetPos, true);
+                }
+				
+                // make sure the inventory exists
+				if (targetInv != null) {
+					
+	                // now spit the items into the above inventory
 					List<ItemGroup> inventoryList = core.inventory.inventory;
 					if (inventoryList != null && inventoryList.size() > 0) {
 						ItemGroup group = inventoryList.get(0);
 						if (group != null) {
-							ItemStack stack = group.itemStack;
+							ItemStack stack = group.itemStack.copy(); // wasn't a copy before... WEIRD STUFF HAPPENED.
 							stack.stackSize = (int) Math.min(stack.getMaxStackSize(), group.count);
 							int stackSize = stack.stackSize;
-							ItemStack leftOver = TileEntityHopper.putStackInInventoryAllSlots(inventory, stack, EnumFacing.DOWN);
+							ItemStack leftOver = TileEntityHopper.putStackInInventoryAllSlots(targetInv, stack, EnumFacing.DOWN);
 							if (leftOver != null) {
 								int remaining = stackSize - leftOver.stackSize;
 								if (remaining > 0) {
@@ -52,9 +66,10 @@ public class TileEntityOutputPort extends EZTileEntity {
 					}
 				}
             }
+            
+            // make sure to sort the inventory on change
             if (updateCore) {
-            	EZStorageUtils.notifyBlockUpdate(core);
-				core.markDirty();
+            	core.sortInventory();
             }
 		}
 	}

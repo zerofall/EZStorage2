@@ -11,12 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.fml.common.FMLLog;
-
-import org.apache.logging.log4j.Logger;
 
 import com.zerofall.ezstorage.EZStorage;
 import com.zerofall.ezstorage.block.BlockCraftingBox;
+import com.zerofall.ezstorage.block.BlockExtractPort;
 import com.zerofall.ezstorage.block.BlockInputPort;
 import com.zerofall.ezstorage.block.BlockOutputPort;
 import com.zerofall.ezstorage.block.BlockSearchBox;
@@ -24,8 +22,10 @@ import com.zerofall.ezstorage.block.BlockSortBox;
 import com.zerofall.ezstorage.block.BlockStorage;
 import com.zerofall.ezstorage.block.BlockStorageCore;
 import com.zerofall.ezstorage.block.StorageMultiblock;
+import com.zerofall.ezstorage.gui.server.InventoryExtractList;
 import com.zerofall.ezstorage.init.EZBlocks;
 import com.zerofall.ezstorage.network.MessageFilterUpdate;
+import com.zerofall.ezstorage.tileentity.TileEntityExtractPort.EnumListMode;
 import com.zerofall.ezstorage.util.BlockRef;
 import com.zerofall.ezstorage.util.EZInventory;
 import com.zerofall.ezstorage.util.EZStorageUtils;
@@ -49,27 +49,48 @@ public class TileEntityStorageCore extends EZTileEntity {
 		inventory = new EZInventory(this);
 	}
 	
-	/** Inputs a stack to the inventory */
+	/** Inputs a stack to the inventory (not from the player) */
 	public ItemStack input(ItemStack stack) {
-		ItemStack result = this.inventory.input(stack);
-		sortInventory();
+		ItemStack result = this.inventory.input(stack, false);
 		return result;
 	}
 	
-	/** Gets the first full stack in the inventory */
-	public ItemStack getRandomStack() {
-		ItemStack result = this.inventory.getItemsAt(0, 0);
-		sortInventory();
-		return result;
+	/** Retrieves the first applicable stack in the inventory with a set amount */
+	public ItemStack getFirstStack(int size, EnumListMode mode, InventoryExtractList list) {
+		switch(mode) {
+		case IGNORE: // get the first item no matter what
+			return this.inventory.getItemsAt(0, 0, size);
+		default: // find a matching item
+			return this.inventory.getItemsExtractList(mode, list, size);
+		}
+	}
+	
+	/** Peeks the first applicable stack in the inventory */
+	public ItemStack peekFirstStack(EnumListMode mode, InventoryExtractList list) {
+		switch(mode) {
+		case IGNORE: // get the first item no matter what
+			ItemGroup g = this.inventory.inventory.get(0);
+			int count = (int)Math.min(g.itemStack.getMaxStackSize(), g.count);
+			ItemStack ret = g.itemStack.copy();
+			ret.stackSize = count;
+			return ret;
+		default: // peek a matching item
+			return this.inventory.peekItemsExtractList(mode, list);
+		}
 	}
 	
 	/** Sorts the inventory on change and tells clients to update their filtered lists */
 	public void sortInventory() {
 		if(!this.worldObj.isRemote) {
 			this.inventory.sort();
-			updateTileEntity();
-			EZStorage.networkWrapper.sendToDimension(new MessageFilterUpdate(this), worldObj.provider.getDimension());
+			updateInventory();
 		}
+	}
+	
+	/** Creates a block update and sends client data to update their filtered lists */
+	public void updateInventory() {
+		updateTileEntity();
+		EZStorage.nw.sendToDimension(new MessageFilterUpdate(this), worldObj.provider.getDimension());
 	}
 	
 	/** Updates the tile entity position in the world and marks it to be saved */
@@ -158,6 +179,10 @@ public class TileEntityStorageCore extends EZTileEntity {
 					}
 					if (blockRef.block instanceof BlockOutputPort) {
 						TileEntityOutputPort entity = (TileEntityOutputPort)this.worldObj.getTileEntity(blockRef.pos);
+						entity.core = this;
+					}
+					if (blockRef.block instanceof BlockExtractPort) {
+						TileEntityExtractPort entity = (TileEntityExtractPort)this.worldObj.getTileEntity(blockRef.pos);
 						entity.core = this;
 					}
 					if (blockRef.block instanceof BlockCraftingBox) {

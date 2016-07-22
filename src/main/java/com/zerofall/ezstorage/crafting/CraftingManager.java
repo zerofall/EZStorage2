@@ -90,7 +90,7 @@ public class CraftingManager {
 		
 		// condensed storage box
 		RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.condensed_storage_box), "ACA","CBC","ACA",
-				'A', "blockIron", 'B', EZBlocks.storage_box, 'C', Blocks.IRON_BARS);
+				'A',"blockIron", 'B',EZBlocks.storage_box, 'C',Blocks.IRON_BARS);
 		
 		// super storage box
 		RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.super_storage_box), "ACA","CBC","ACA", 
@@ -102,11 +102,15 @@ public class CraftingManager {
 
 		// hyper storage box
 		RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.hyper_storage_box), "ABA","ACA", EZConfig.toughHyper ? "ABA" : "AAA",
-				'A', Blocks.OBSIDIAN, 'B', Items.NETHER_STAR, 'C', EZBlocks.ultra_storage_box);
+				'A', Blocks.OBSIDIAN, 'B',Items.NETHER_STAR, 'C',EZBlocks.ultra_storage_box);
 
-		// output port
-		RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.output_port), "A","B","A",
-				'A', Blocks.PISTON, 'B', EZBlocks.input_port);
+		// ejection port
+		RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.output_port), " D ","ABA"," A ",
+				'A',Blocks.PISTON, 'D',Blocks.DISPENSER, 'B',EZBlocks.input_port);
+		
+		// extraction port
+		RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.extract_port), "ICI","ABA","ICI",
+				'A',Blocks.HOPPER, 'C',Items.COMPARATOR, 'I',Blocks.IRON_BARS, 'B',EZBlocks.input_port);
 		
 		// terminal
 		if(EZConfig.enableTerminal) RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.access_terminal), "IXI","XAX","IXI", 
