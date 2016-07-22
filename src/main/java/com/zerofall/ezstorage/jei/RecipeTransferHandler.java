@@ -64,7 +64,7 @@ public class RecipeTransferHandler implements IRecipeTransferHandler {
 			}
 
 			// update the recipe serverside
-			EZStorage.networkWrapper.sendToServer(new MessageRecipeSync(recipe));
+			EZStorage.nw.sendToServer(new MessageRecipeSync(recipe));
 		}
 		return null;
 	}

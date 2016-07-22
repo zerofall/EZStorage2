@@ -35,7 +35,7 @@ public class EZStorage {
     @SidedProxy(clientSide = RefStrings.CLIENT_PROXY, serverSide = RefStrings.SERVER_PROXY)
     public static CommonProxy proxy;
     
-    public static SimpleNetworkWrapper networkWrapper;
+    public static SimpleNetworkWrapper nw;
     public static Configuration config;
     
     public EZTab creativeTab;
@@ -48,7 +48,7 @@ public class EZStorage {
     	EZBlocks.mainRegistry();
     	EZItems.mainRegistry();
     	NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-    	networkWrapper = EZNetwork.registerNetwork();
+    	nw = EZNetwork.registerNetwork();
     	MinecraftForge.EVENT_BUS.register(new CoreEvents());
     	MinecraftForge.EVENT_BUS.register(new SecurityEvents());
     }

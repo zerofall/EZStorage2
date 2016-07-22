@@ -11,7 +11,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
-public class TileEntityInputPort extends EZTileEntity implements IInventory, ISidedInventory {
+public class TileEntityInputPort extends EZTileEntity implements ISidedInventory {
 
 	private ItemStack[] inv = new ItemStack[1];
 	public TileEntityStorageCore core;
@@ -117,7 +117,7 @@ public class TileEntityInputPort extends EZTileEntity implements IInventory, ISi
 	@Override
 	public boolean canInsertItem(int index, ItemStack itemStackIn,
 			EnumFacing direction) {
-		return true;
+		return !worldObj.isBlockPowered(pos);
 	}
 
 	@Override
@@ -125,7 +125,6 @@ public class TileEntityInputPort extends EZTileEntity implements IInventory, ISi
 			EnumFacing direction) {
 		return false;
 	}
-	
 
 	@Override
 	public void update() {

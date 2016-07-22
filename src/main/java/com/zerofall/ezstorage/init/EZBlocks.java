@@ -10,6 +10,7 @@ import com.zerofall.ezstorage.block.BlockAccessTerminal;
 import com.zerofall.ezstorage.block.BlockBlankBox;
 import com.zerofall.ezstorage.block.BlockCondensedStorage;
 import com.zerofall.ezstorage.block.BlockCraftingBox;
+import com.zerofall.ezstorage.block.BlockExtractPort;
 import com.zerofall.ezstorage.block.BlockHyperStorage;
 import com.zerofall.ezstorage.block.BlockInputPort;
 import com.zerofall.ezstorage.block.BlockOutputPort;
@@ -24,6 +25,7 @@ import com.zerofall.ezstorage.block.EZBlock;
 import com.zerofall.ezstorage.config.EZConfig;
 import com.zerofall.ezstorage.ref.RefStrings;
 import com.zerofall.ezstorage.registry.IRegistryBlock;
+import com.zerofall.ezstorage.tileentity.TileEntityExtractPort;
 import com.zerofall.ezstorage.tileentity.TileEntityInputPort;
 import com.zerofall.ezstorage.tileentity.TileEntityOutputPort;
 import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
@@ -50,6 +52,7 @@ public class EZBlocks {
 	public static EZBlock hyper_storage_box;
 	public static EZBlock input_port;
 	public static EZBlock output_port;
+	public static EZBlock extract_port;
 	public static EZBlock crafting_box;
 	public static EZBlock search_box;
 	public static EZBlock sort_box;
@@ -67,6 +70,7 @@ public class EZBlocks {
 			hyper_storage_box = new BlockHyperStorage(),
 			input_port = new BlockInputPort(),
 			output_port = new BlockOutputPort(),
+			extract_port = new BlockExtractPort(),
 			crafting_box = new BlockCraftingBox(),
 			search_box = new BlockSearchBox(),
 			sort_box = new BlockSortBox(),
@@ -85,6 +89,7 @@ public class EZBlocks {
 		GameRegistry.registerTileEntity(TileEntityStorageCore.class, RefStrings.MODID + ":TileEntityStorageCore");
 		GameRegistry.registerTileEntity(TileEntityInputPort.class, RefStrings.MODID + ":TileEntityInputPort");
 		GameRegistry.registerTileEntity(TileEntityOutputPort.class, RefStrings.MODID + ":TileEntityOutputPort");
+		GameRegistry.registerTileEntity(TileEntityExtractPort.class, RefStrings.MODID + ":TileEntityExtractPort");
 		GameRegistry.registerTileEntity(TileEntitySecurityBox.class, RefStrings.MODID + ":TileEntitySecurityBox");
 	}
 	
