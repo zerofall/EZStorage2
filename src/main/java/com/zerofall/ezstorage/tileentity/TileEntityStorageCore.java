@@ -57,6 +57,7 @@ public class TileEntityStorageCore extends EZTileEntity {
 	
 	/** Retrieves the first applicable stack in the inventory with a set amount */
 	public ItemStack getFirstStack(int size, EnumListMode mode, InventoryExtractList list) {
+		if(this.inventory.inventory.isEmpty()) return null; // make sure the inventory isn't empty
 		switch(mode) {
 		case IGNORE: // get the first item no matter what
 			return this.inventory.getItemsAt(0, 0, size);
@@ -67,6 +68,7 @@ public class TileEntityStorageCore extends EZTileEntity {
 	
 	/** Peeks the first applicable stack in the inventory */
 	public ItemStack peekFirstStack(EnumListMode mode, InventoryExtractList list) {
+		if(this.inventory.inventory.isEmpty()) return null; // make sure the inventory isn't empty
 		switch(mode) {
 		case IGNORE: // get the first item no matter what
 			ItemGroup g = this.inventory.inventory.get(0);
