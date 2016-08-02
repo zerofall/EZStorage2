@@ -1,6 +1,6 @@
 package com.zerofall.ezstorage.block;
 
-import com.zerofall.ezstorage.tileentity.TileEntityOutputPort;
+import com.zerofall.ezstorage.tileentity.TileEntityEjectPort;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -15,7 +15,7 @@ public class BlockOutputPort extends EZBlockContainer {
 	
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileEntityOutputPort();
+		return new TileEntityEjectPort();
 	}
 	
 }

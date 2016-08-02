@@ -13,7 +13,7 @@ import com.zerofall.ezstorage.util.JointList;
 import com.zerofall.ezstorage.util.SecurityOverrideHelper;
 
 /** The security box tile entity */
-public class TileEntitySecurityBox extends EZTileEntity {
+public class TileEntitySecurityBox extends TileEntityBase {
 	
 	// list of allowed players
 	private JointList<SecurePlayer> allowedPlayers = new JointList();

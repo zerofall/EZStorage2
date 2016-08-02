@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import com.zerofall.ezstorage.util.ItemGroup;
 
 /** The ejection port (now with fewer bugs!) */
-public class TileEntityOutputPort extends EZTileEntity {
+public class TileEntityEjectPort extends TileEntityBase {
 
 	public TileEntityStorageCore core;
 

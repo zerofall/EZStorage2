@@ -33,7 +33,7 @@ import com.zerofall.ezstorage.util.ItemGroup;
 import com.zerofall.ezstorage.util.ItemGroup.EnumSortMode;
 
 /** The storage core tile entity */
-public class TileEntityStorageCore extends EZTileEntity {
+public class TileEntityStorageCore extends TileEntityBase {
 	
 	public EZInventory inventory;
 	
@@ -180,7 +180,7 @@ public class TileEntityStorageCore extends EZTileEntity {
 						entity.core = this;
 					}
 					if (blockRef.block instanceof BlockOutputPort) {
-						TileEntityOutputPort entity = (TileEntityOutputPort)this.worldObj.getTileEntity(blockRef.pos);
+						TileEntityEjectPort entity = (TileEntityEjectPort)this.worldObj.getTileEntity(blockRef.pos);
 						entity.core = this;
 					}
 					if (blockRef.block instanceof BlockExtractPort) {

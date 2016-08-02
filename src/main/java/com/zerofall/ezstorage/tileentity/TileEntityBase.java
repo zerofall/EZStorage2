@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 
 /** The parent tile entity for this mod */
-public abstract class EZTileEntity extends TileEntity implements ITickable {
+public abstract class TileEntityBase extends TileEntity implements ITickable {
 	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
