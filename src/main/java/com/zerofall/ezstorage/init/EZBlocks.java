@@ -27,7 +27,7 @@ import com.zerofall.ezstorage.ref.RefStrings;
 import com.zerofall.ezstorage.registry.IRegistryBlock;
 import com.zerofall.ezstorage.tileentity.TileEntityExtractPort;
 import com.zerofall.ezstorage.tileentity.TileEntityInputPort;
-import com.zerofall.ezstorage.tileentity.TileEntityOutputPort;
+import com.zerofall.ezstorage.tileentity.TileEntityEjectPort;
 import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
 import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 import com.zerofall.ezstorage.util.JointList;
@@ -88,7 +88,7 @@ public class EZBlocks {
 		}
 		GameRegistry.registerTileEntity(TileEntityStorageCore.class, RefStrings.MODID + ":TileEntityStorageCore");
 		GameRegistry.registerTileEntity(TileEntityInputPort.class, RefStrings.MODID + ":TileEntityInputPort");
-		GameRegistry.registerTileEntity(TileEntityOutputPort.class, RefStrings.MODID + ":TileEntityOutputPort");
+		GameRegistry.registerTileEntity(TileEntityEjectPort.class, RefStrings.MODID + ":TileEntityOutputPort");
 		GameRegistry.registerTileEntity(TileEntityExtractPort.class, RefStrings.MODID + ":TileEntityExtractPort");
 		GameRegistry.registerTileEntity(TileEntitySecurityBox.class, RefStrings.MODID + ":TileEntitySecurityBox");
 	}

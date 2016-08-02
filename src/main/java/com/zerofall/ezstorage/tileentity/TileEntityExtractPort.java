@@ -1,7 +1,6 @@
 package com.zerofall.ezstorage.tileentity;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -12,7 +11,7 @@ import net.minecraft.util.text.TextComponentString;
 import com.zerofall.ezstorage.gui.server.InventoryExtractList;
 
 /** The extraction port, a virtual output inventory */
-public class TileEntityExtractPort extends EZTileEntity implements ISidedInventory {
+public class TileEntityExtractPort extends TileEntityItemHandler {
 	
 	public TileEntityStorageCore core;
 	public InventoryExtractList extractList = new InventoryExtractList("extract_port", 9);
