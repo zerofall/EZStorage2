@@ -17,7 +17,11 @@ public abstract class TileEntityItemHandler extends TileEntityBase implements IS
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		return this.getCapability(capability, facing) != null;
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return true;
+		} else {
+			return super.hasCapability(capability, facing);
+		}
 	}
 
 	@Override
