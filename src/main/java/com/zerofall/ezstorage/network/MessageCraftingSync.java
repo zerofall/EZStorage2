@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.zerofall.ezstorage.EZStorage;
 import com.zerofall.ezstorage.gui.server.ContainerStorageCoreCrafting;
@@ -63,14 +66,20 @@ public class MessageCraftingSync implements IMessage {
 		@Override
 		public IMessage onMessage(MessageCraftingSync message, MessageContext ctx) {
 			EntityPlayer player = EZStorage.proxy.getClientPlayer();
-			if(player != null && player.openContainer != null && player.openContainer instanceof ContainerStorageCoreCrafting) {
+			if(player != null) Minecraft.getMinecraft().addScheduledTask(() -> handle(player, message));
+			return null; // end of message chain
+		}
+		
+		/** Do the crafting sync */
+		@SideOnly(Side.CLIENT)
+		public void handle(EntityPlayer player, MessageCraftingSync message) {
+			if(player.openContainer != null && player.openContainer instanceof ContainerStorageCoreCrafting) {
 				InventoryCrafting craft = ((ContainerStorageCoreCrafting)player.openContainer).craftMatrix;
 				int i = 0;
 				for(ItemStack s : message.stackList) {
 					craft.setInventorySlotContents(i++, s);
 				}
 			}
-			return null; // end of message chain
 		}
 		
 	}
