@@ -11,6 +11,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
 import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox.SecurePlayer;
@@ -57,13 +59,19 @@ public class MessageSecureSync implements IMessage {
 	public static class Handler implements IMessageHandler<MessageSecureSync, IMessage> {
         @Override
         public IMessage onMessage(MessageSecureSync m, MessageContext ctx) {
+        	Minecraft.getMinecraft().addScheduledTask(() -> handle(m));
+            return null; // no response in this case
+        }
+        
+        /** Do the update */
+        @SideOnly(Side.CLIENT)
+        public void handle(MessageSecureSync m) {
         	try {
 	        	TileEntitySecurityBox tile = (TileEntitySecurityBox)Minecraft.getMinecraft().theWorld.getTileEntity(m.pos);
 	        	tile.setAllowedPlayers(m.whitelist);
         	} catch (Exception e) {
         		System.out.println("Message exception caught: " + e.getMessage());
         	}
-            return null; // no response in this case
         }
 	}
 

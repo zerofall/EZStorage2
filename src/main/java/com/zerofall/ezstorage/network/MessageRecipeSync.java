@@ -1,22 +1,25 @@
 package com.zerofall.ezstorage.network;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.List;
 
-import com.zerofall.ezstorage.gui.server.ContainerStorageCoreCrafting;
-import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
-
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.oredict.OreDictionary;
+
+import com.zerofall.ezstorage.EZStorage;
+import com.zerofall.ezstorage.gui.server.ContainerStorageCoreCrafting;
+import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 
 /** The JEI crafting recipe server sync message */
 public class MessageRecipeSync implements IMessage {
@@ -47,6 +50,12 @@ public class MessageRecipeSync implements IMessage {
 		@Override
 		public MessageCraftingSync onMessage(MessageRecipeSync message, MessageContext ctx) {
 			EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+			if(player != null) ((WorldServer)player.worldObj).addScheduledTask(() -> handle(player, message));
+			return null;
+		}
+		
+		/** Do the operation on the server thread */
+		public void handle(EntityPlayerMP player, MessageRecipeSync message) {
 			Container container = player.openContainer;
 			if (container instanceof ContainerStorageCoreCrafting) {
 				ContainerStorageCoreCrafting con = (ContainerStorageCoreCrafting)container;
@@ -91,11 +100,8 @@ public class MessageRecipeSync implements IMessage {
 				tileEntity.sortInventory();
 				
 				// reply with a crafting matrix sync message
-				return new MessageCraftingSync(con.craftMatrix);
+				EZStorage.nw.sendTo(new MessageCraftingSync(con.craftMatrix), player);
 			}
-			
-			
-			return null;
 		}
 
 	}

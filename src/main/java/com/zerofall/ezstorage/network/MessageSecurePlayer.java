@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -55,6 +56,13 @@ public class MessageSecurePlayer implements IMessage {
 	public static class Handler implements IMessageHandler<MessageSecurePlayer, IMessage> {
         @Override
         public IMessage onMessage(MessageSecurePlayer m, MessageContext ctx) {        	
+        	EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+			if(player != null) ((WorldServer)player.worldObj).addScheduledTask(() -> handle(m));
+            return null; // no specific replies
+        }
+        
+        /** Actually handle it on the server thread here */
+        public void handle(MessageSecurePlayer m) {
         	// make sure the provided player is valid
         	PlayerList list = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList();
         	for(EntityPlayerMP p : list.getPlayerList()) {
@@ -70,8 +78,6 @@ public class MessageSecurePlayer implements IMessage {
         			EZNetwork.sendSecureSyncMsg(p.worldObj, m.pos, tile.getAllowedPlayers()); // now resync with clients
         		}
         	}
-        	
-            return null; // no specific replies
         }
 	}
 
