@@ -14,10 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import com.zerofall.ezstorage.EZStorage;
 import com.zerofall.ezstorage.gui.server.ContainerStorageCore;
 
-/**
- * A message to tell clients to update their filtered lists if they are on the
- * same storage GUI
- */
+/** A message to tell clients to update their filtered lists if they are on the same storage GUI */
 public class MessageFilterUpdate implements IMessage {
 
 	private BlockPos pos;

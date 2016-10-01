@@ -80,10 +80,7 @@ public class ContainerStorageCore extends Container {
 		return null;
 	}
 
-	/**
-	 * Default slot click handling. Also checks for shift-clicking to sort the
-	 * inventory appropriately
-	 */
+	/** Default slot click handling. Also checks for shift-clicking to sort the inventory appropriately */
 	@Override
 	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
 		ItemStack val = null;

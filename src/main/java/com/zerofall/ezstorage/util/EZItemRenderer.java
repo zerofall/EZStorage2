@@ -89,9 +89,7 @@ public class EZItemRenderer extends RenderItem {
 
 	}
 
-	/**
-	 * Draw with the WorldRenderer
-	 */
+	/** Draw with the WorldRenderer */
 	private void draw(VertexBuffer renderer, int x, int y, int width, int height, int red, int green, int blue, int alpha) {
 		renderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
 		renderer.pos(x + 0, y + 0, 0.0D).color(red, green, blue, alpha).endVertex();

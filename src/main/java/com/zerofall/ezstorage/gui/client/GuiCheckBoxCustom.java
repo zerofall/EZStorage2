@@ -16,9 +16,7 @@ public class GuiCheckBoxCustom extends GuiCheckBox {
 		this.checkStr = checkStr;
 	}
 
-	/**
-	 * Draws this button to the screen.
-	 */
+	/** Draws this button to the screen. */
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
 		if (this.visible) {

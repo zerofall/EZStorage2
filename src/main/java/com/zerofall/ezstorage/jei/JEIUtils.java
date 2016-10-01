@@ -25,9 +25,7 @@ public class JEIUtils {
 			EZStoragePlugin.jeiOverlay.setFilterText(text);
 	}
 
-	/**
-	 * Returns true when the search text differs from the previous queried value
-	 */
+	/** Returns true when the search text differs from the previous queried value */
 	public static boolean jeiSearchTextChanged() {
 		boolean flag = false;
 		if (EZStoragePlugin.jeiOverlay != null) {

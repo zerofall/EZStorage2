@@ -38,13 +38,9 @@ public abstract class TileEntityBase extends TileEntity implements ITickable {
 		return new SPacketUpdateTileEntity(this.pos, 1, getUpdateTag());
 	}
 
-	/**
-	 * Writes custom data to the NBT tag after writing basic tile entity data
-	 */
+	/** Writes custom data to the NBT tag after writing basic tile entity data */
 	public abstract NBTTagCompound writeDataToNBT(NBTTagCompound paramNBTTagCompound);
 
-	/**
-	 * Reads custom data from the NBT tag after reading basic tile entity data
-	 */
+	/** Reads custom data from the NBT tag after reading basic tile entity data */
 	public abstract void readDataFromNBT(NBTTagCompound paramNBTTagCompound);
 }

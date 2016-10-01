@@ -51,15 +51,12 @@ public class StorageMultiblock extends EZBlock {
 		return super.canPlaceBlockAt(worldIn, pos);
 	}
 
-	/**
-	 * Attempt to form the multiblock structure by searching for the core, then
-	 * telling the core to scan the multiblock
+	/** Attempt to form the multiblock structure by searching for the core, then telling the core to scan the multiblock
 	 * 
 	 * @param world
 	 * @param x
 	 * @param y
-	 * @param z
-	 */
+	 * @param z */
 	public void attemptMultiblock(World world, BlockPos position) {
 		if (!world.isRemote) {
 			if (!(this instanceof BlockStorageCore)) {
@@ -72,15 +69,12 @@ public class StorageMultiblock extends EZBlock {
 		}
 	}
 
-	/**
-	 * Recursive function that searches for a StorageCore in a multiblock
-	 * structure
+	/** Recursive function that searches for a StorageCore in a multiblock structure
 	 * 
 	 * @param br
 	 * @param world
 	 * @param scanned
-	 * @return
-	 */
+	 * @return */
 	public TileEntityStorageCore findCore(BlockRef br, World world, Set<BlockRef> scanned) {
 		if (scanned == null) {
 			scanned = new HashSet<BlockRef>();
@@ -103,15 +97,12 @@ public class StorageMultiblock extends EZBlock {
 		return null;
 	}
 
-	/**
-	 * Recursive function that searches for a StorageCore in a multiblock
-	 * structure
+	/** Recursive function that searches for a StorageCore in a multiblock structure
 	 * 
 	 * @param br
 	 * @param world
 	 * @param scanned
-	 * @return
-	 */
+	 * @return */
 	public void findMultipleCores(BlockRef br, World world, Set<BlockRef> scanned, Set<TileEntityStorageCore> cores) {
 		if (scanned == null) {
 			scanned = new HashSet<BlockRef>();

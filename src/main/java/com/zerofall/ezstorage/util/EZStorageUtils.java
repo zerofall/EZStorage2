@@ -42,8 +42,7 @@ public class EZStorageUtils {
 	public static String getItemStackDisplayName(ItemStack stack) {
 		try { // try the default display name getter
 			return stack.getDisplayName();
-		} catch (Exception e) { // if any problem occurs, go to fallback
-								// translation
+		} catch (Exception e) { // if any problem occurs, go to fallback translation
 			return FallbackTranslator.translate(stack.getUnlocalizedName());
 		}
 	}

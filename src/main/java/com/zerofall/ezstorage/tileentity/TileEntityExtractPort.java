@@ -148,7 +148,10 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 
 	/** List modes */
 	public static enum EnumListMode {
-		IGNORE("Ignore"), WHITELIST("Whitelist"), BLACKLIST("Blacklist"), DISABLED("Disabled");
+		IGNORE("Ignore"),
+		WHITELIST("Whitelist"),
+		BLACKLIST("Blacklist"),
+		DISABLED("Disabled");
 
 		private String name;
 

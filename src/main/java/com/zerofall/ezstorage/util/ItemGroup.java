@@ -32,11 +32,12 @@ public class ItemGroup {
 
 	/** Sort modes */
 	public static enum EnumSortMode {
-		COUNT(CountComparator.class, "Count Down", "Sorts by descending item counts, then from A-Z for equal cases."), INVERSE_COUNT(InverseCountComparator.class, "Count Up",
-				"Sorts by ascending item counts, then from Z-A for equal cases."), NAME(NameComparator.class, "Name A - Z", "Sorts A-Z, then by descending item counts for equal cases."), INVERSE_NAME(
-						InverseNameComparator.class, "Name Z - A", "Sorts Z-A, then by ascending item counts for equal cases."), MOD_NAME(ModNameComparator.class, "Mod A - Z",
-								"Sorts by mod name A-Z, then by descending item counts for equal cases."), INVERSE_MOD_NAME(InverseModNameComparator.class, "Mod Z - A",
-										"Sorts by mod name Z-A, then by ascending item counts for equal cases.");
+		COUNT(CountComparator.class, "Count Down", "Sorts by descending item counts, then from A-Z for equal cases."),
+		INVERSE_COUNT(InverseCountComparator.class, "Count Up", "Sorts by ascending item counts, then from Z-A for equal cases."),
+		NAME(NameComparator.class, "Name A - Z", "Sorts A-Z, then by descending item counts for equal cases."),
+		INVERSE_NAME(InverseNameComparator.class, "Name Z - A", "Sorts Z-A, then by ascending item counts for equal cases."),
+		MOD_NAME(ModNameComparator.class, "Mod A - Z", "Sorts by mod name A-Z, then by descending item counts for equal cases."),
+		INVERSE_MOD_NAME(InverseModNameComparator.class, "Mod Z - A", "Sorts by mod name Z-A, then by ascending item counts for equal cases.");
 
 		private Class<? extends ItemGroupComparator> sortClass;
 		private String name;
@@ -169,9 +170,7 @@ public class ItemGroup {
 		}
 	}
 
-	/**
-	 * Sort by mod inverse alphabetically, then fall back to inverse item count
-	 */
+	/** Sort by mod inverse alphabetically, then fall back to inverse item count */
 	public static class InverseModNameComparator extends ItemGroupComparator {
 
 		@Override

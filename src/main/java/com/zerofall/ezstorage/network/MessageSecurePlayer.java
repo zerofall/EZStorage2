@@ -15,10 +15,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
 import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox.SecurePlayer;
 
-/**
- * Send a single SecurePlayer instance from client to server for addition or
- * removal from a security box
- */
+/** Send a single SecurePlayer instance from client to server for addition or removal from a security box */
 public class MessageSecurePlayer implements IMessage {
 
 	private BlockPos pos;

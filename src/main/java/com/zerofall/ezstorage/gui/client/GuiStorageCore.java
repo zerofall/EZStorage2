@@ -262,10 +262,7 @@ public class GuiStorageCore extends GuiContainer {
 		this.itemRender.zLevel = 0.0F;
 	}
 
-	/**
-	 * Send a packet to the server when the sort mode is toggled or the crafting
-	 * matrix is cleared
-	 */
+	/** Send a packet to the server when the sort mode is toggled or the crafting matrix is cleared */
 	@Override
 	protected void actionPerformed(GuiButton parButton) {
 		if (parButton == modeToggle) {
@@ -329,10 +326,7 @@ public class GuiStorageCore extends GuiContainer {
 		}
 	}
 
-	/**
-	 * Call this to change the search box and update the filter and scroll
-	 * position
-	 */
+	/** Call this to change the search box and update the filter and scroll position */
 	private void searchBoxChange(String text) {
 		if (text != null)
 			this.searchField.setText(text);
@@ -346,10 +340,7 @@ public class GuiStorageCore extends GuiContainer {
 		}
 	}
 
-	/**
-	 * Update the filtered list of items that the core needs to function
-	 * correctly
-	 */
+	/** Update the filtered list of items that the core needs to function correctly */
 	private void updateFilteredItems() {
 		filteredList = new ArrayList<ItemGroup>(this.tileEntity.inventory.inventory);
 		Iterator iterator = this.filteredList.iterator();

@@ -55,9 +55,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 		return result;
 	}
 
-	/**
-	 * Retrieves the first applicable stack in the inventory with a set amount
-	 */
+	/** Retrieves the first applicable stack in the inventory with a set amount */
 	public ItemStack getFirstStack(int size, EnumListMode mode, InventoryExtractList list) {
 		if (this.inventory.inventory.isEmpty())
 			return null; // make sure the inventory isn't empty
@@ -85,10 +83,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 		}
 	}
 
-	/**
-	 * Sorts the inventory on change and tells clients to update their filtered
-	 * lists
-	 */
+	/** Sorts the inventory on change and tells clients to update their filtered lists */
 	public void sortInventory() {
 		if (!this.worldObj.isRemote) {
 			this.inventory.sort();
@@ -96,18 +91,13 @@ public class TileEntityStorageCore extends TileEntityBase {
 		}
 	}
 
-	/**
-	 * Creates a block update and sends client data to update their filtered
-	 * lists
-	 */
+	/** Creates a block update and sends client data to update their filtered lists */
 	public void updateInventory() {
 		updateTileEntity();
 		EZStorage.nw.sendToDimension(new MessageFilterUpdate(this), worldObj.provider.getDimension());
 	}
 
-	/**
-	 * Updates the tile entity position in the world and marks it to be saved
-	 */
+	/** Updates the tile entity position in the world and marks it to be saved */
 	public void updateTileEntity() {
 		EZStorageUtils.notifyBlockUpdate(this);
 		this.markDirty();
@@ -177,12 +167,9 @@ public class TileEntityStorageCore extends TileEntityBase {
 		EZStorageUtils.notifyBlockUpdate(this);
 	}
 
-	/**
-	 * Recursive function that scans a block's neighbors, and adds valid blocks
-	 * to the multiblock list
+	/** Recursive function that scans a block's neighbors, and adds valid blocks to the multiblock list
 	 * 
-	 * @param br
-	 */
+	 * @param br */
 	private void getValidNeighbors(BlockRef br) {
 		List<BlockRef> neighbors = EZStorageUtils.getNeighbors(br.pos.getX(), br.pos.getY(), br.pos.getZ(), worldObj);
 		for (BlockRef blockRef : neighbors) {

@@ -13,10 +13,7 @@ import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox.SecurePlayer;
 /** Helps with overrides for the security system */
 public class SecurityOverrideHelper {
 
-	/**
-	 * Returns true if the given player is opped and has at least level 2
-	 * permissions
-	 */
+	/** Returns true if the given player is opped and has at least level 2 permissions */
 	public static boolean isPlayerOpLv2(EntityPlayerMP p) {
 		return getPlayerOpLevel(p) >= 2;
 	}

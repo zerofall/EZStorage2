@@ -42,10 +42,7 @@ public class MessageRecipeSync implements IMessage {
 		ByteBufUtils.writeTag(buf, this.recipe);
 	}
 
-	/**
-	 * Draw items from the server's inventory to fulfill the crafting matrix
-	 * request
-	 */
+	/** Draw items from the server's inventory to fulfill the crafting matrix request */
 	public static class Handler implements IMessageHandler<MessageRecipeSync, MessageCraftingSync> {
 
 		ItemStack[][] recipe;

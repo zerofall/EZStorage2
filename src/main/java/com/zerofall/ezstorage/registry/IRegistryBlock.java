@@ -18,9 +18,7 @@ public interface IRegistryBlock extends IRegistryBase {
 		return ItemBlock.class;
 	}
 
-	/**
-	 * Gets additional arguments to pass through to the ItemBlock constructor
-	 */
+	/** Gets additional arguments to pass through to the ItemBlock constructor */
 	public default Object[] getItemClassArgs() {
 		return new Object[0];
 	}
