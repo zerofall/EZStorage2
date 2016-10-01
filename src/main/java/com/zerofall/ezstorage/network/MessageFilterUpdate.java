@@ -16,11 +16,11 @@ import com.zerofall.ezstorage.gui.server.ContainerStorageCore;
 
 /** A message to tell clients to update their filtered lists if they are on the same storage GUI */
 public class MessageFilterUpdate implements IMessage {
-	
+
 	private BlockPos pos;
-	
+
 	public MessageFilterUpdate() {}
-	
+
 	public MessageFilterUpdate(TileEntity t) {
 		pos = t.getPos();
 	}
@@ -34,27 +34,29 @@ public class MessageFilterUpdate implements IMessage {
 	public void toBytes(ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 	}
-	
+
 	/** Update the clientside filtered list */
 	public static class Handler implements IMessageHandler<MessageFilterUpdate, IMessage> {
+
 		@Override
 		public IMessage onMessage(MessageFilterUpdate message, MessageContext ctx) {
 			EntityPlayer p = EZStorage.proxy.getClientPlayer();
-			if(p != null) Minecraft.getMinecraft().addScheduledTask(() -> handle(p, message));
+			if (p != null)
+				Minecraft.getMinecraft().addScheduledTask(() -> handle(p, message));
 			return null;
 		}
-		
+
 		/** Do the filter sync */
 		@SideOnly(Side.CLIENT)
 		public void handle(EntityPlayer p, MessageFilterUpdate message) {
-			if(p.openContainer != null && p.openContainer instanceof ContainerStorageCore) {
-				ContainerStorageCore c = (ContainerStorageCore)p.openContainer;
-				if(message.pos.equals(c.tileEntity.getPos())) {
+			if (p.openContainer != null && p.openContainer instanceof ContainerStorageCore) {
+				ContainerStorageCore c = (ContainerStorageCore) p.openContainer;
+				if (message.pos.equals(c.tileEntity.getPos())) {
 					EZStorage.proxy.markGuiDirty();
 				}
 			}
 		}
-		
+
 	}
 
 }

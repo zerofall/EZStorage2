@@ -26,26 +26,32 @@ public class TileEntityEjectPort extends TileEntityBase {
 			boolean updateCore = false;
 			BlockPos targetPos = getPos().offset(EnumFacing.UP);
 			TileEntity targetTile = worldObj.getTileEntity(targetPos);
-			
+
 			// make sure there's a inventory tile entity above it
-            if (targetTile != null && targetTile instanceof IInventory) {
-				IInventory targetInv = (IInventory)targetTile;
+			if (targetTile != null && targetTile instanceof IInventory) {
+				IInventory targetInv = (IInventory) targetTile;
 				Block targetBlock = worldObj.getBlockState(targetPos).getBlock();
-				
+
 				// double chest support
-                if (targetInv != null && targetInv instanceof TileEntityChest && targetBlock instanceof BlockChest) {
-                	targetInv = ((BlockChest)targetBlock).getContainer(worldObj, targetPos, true);
-                }
-				
-                // make sure the inventory exists
+				if (targetInv != null && targetInv instanceof TileEntityChest && targetBlock instanceof BlockChest) {
+					targetInv = ((BlockChest) targetBlock).getContainer(worldObj, targetPos, true);
+				}
+
+				// make sure the inventory exists
 				if (targetInv != null) {
-					
-	                // now spit the items into the above inventory
+
+					// now spit the items into the above inventory
 					List<ItemGroup> inventoryList = core.inventory.inventory;
 					if (inventoryList != null && inventoryList.size() > 0) {
 						ItemGroup group = inventoryList.get(0);
 						if (group != null) {
-							ItemStack stack = group.itemStack.copy(); // wasn't a copy before... WEIRD STUFF HAPPENED.
+							ItemStack stack = group.itemStack.copy(); // wasn't
+																		// a
+																		// copy
+																		// before...
+																		// WEIRD
+																		// STUFF
+																		// HAPPENED.
 							stack.stackSize = (int) Math.min(stack.getMaxStackSize(), group.count);
 							int stackSize = stack.stackSize;
 							ItemStack leftOver = TileEntityHopper.putStackInInventoryAllSlots(targetInv, stack, EnumFacing.DOWN);
@@ -65,12 +71,12 @@ public class TileEntityEjectPort extends TileEntityBase {
 						}
 					}
 				}
-            }
-            
-            // make sure to sort the inventory on change
-            if (updateCore) {
-            	core.sortInventory();
-            }
+			}
+
+			// make sure to sort the inventory on change
+			if (updateCore) {
+				core.sortInventory();
+			}
 		}
 	}
 

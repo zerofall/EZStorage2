@@ -23,11 +23,11 @@ import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 
 /** The JEI crafting recipe server sync message */
 public class MessageRecipeSync implements IMessage {
-	
+
 	private NBTTagCompound recipe;
-	
+
 	public MessageRecipeSync() {}
-	
+
 	public MessageRecipeSync(NBTTagCompound recipe) {
 		this.recipe = recipe;
 	}
@@ -41,45 +41,46 @@ public class MessageRecipeSync implements IMessage {
 	public void toBytes(ByteBuf buf) {
 		ByteBufUtils.writeTag(buf, this.recipe);
 	}
-	
+
 	/** Draw items from the server's inventory to fulfill the crafting matrix request */
 	public static class Handler implements IMessageHandler<MessageRecipeSync, MessageCraftingSync> {
-		
+
 		ItemStack[][] recipe;
 
 		@Override
 		public MessageCraftingSync onMessage(MessageRecipeSync message, MessageContext ctx) {
 			EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-			if(player != null) ((WorldServer)player.worldObj).addScheduledTask(() -> handle(player, message));
+			if (player != null)
+				((WorldServer) player.worldObj).addScheduledTask(() -> handle(player, message));
 			return null;
 		}
-		
+
 		/** Do the operation on the server thread */
 		public void handle(EntityPlayerMP player, MessageRecipeSync message) {
 			Container container = player.openContainer;
 			if (container instanceof ContainerStorageCoreCrafting) {
-				ContainerStorageCoreCrafting con = (ContainerStorageCoreCrafting)container;
+				ContainerStorageCoreCrafting con = (ContainerStorageCoreCrafting) container;
 				TileEntityStorageCore tileEntity = con.tileEntity;
-				
+
 				// Empty grid into inventory
 				con.clearGrid(player);
-				
+
 				this.recipe = new ItemStack[9][];
-				for( int x = 0; x < this.recipe.length; x++ ) {
-					NBTTagList list = message.recipe.getTagList( "#" + x, 10 );
-					if( list.tagCount() > 0 ) {
+				for (int x = 0; x < this.recipe.length; x++) {
+					NBTTagList list = message.recipe.getTagList("#" + x, 10);
+					if (list.tagCount() > 0) {
 						NBTTagCompound tag = list.getCompoundTagAt(0);
 						boolean hasOre = tag.hasKey("ore");
-						if(hasOre) { // sent an oredict entry
+						if (hasOre) { // sent an oredict entry
 							List<ItemStack> items = OreDictionary.getOres(tag.getString("ore"));
 							this.recipe[x] = new ItemStack[items.size()];
-							for( int y = 0; y < items.size(); y++ ) {
+							for (int y = 0; y < items.size(); y++) {
 								this.recipe[x][y] = items.get(y).copy();
 							}
 						} else { // sent an itemstack list
 							this.recipe[x] = new ItemStack[list.tagCount()];
-							for( int y = 0; y < list.tagCount(); y++ ) {
-								this.recipe[x][y] = ItemStack.loadItemStackFromNBT( list.getCompoundTagAt( y ) );
+							for (int y = 0; y < list.tagCount(); y++) {
+								this.recipe[x][y] = ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(y));
 							}
 						}
 					}
@@ -95,10 +96,10 @@ public class MessageRecipeSync implements IMessage {
 						}
 					}
 				}
-				
+
 				// resort and update the tile entity
 				tileEntity.sortInventory();
-				
+
 				// reply with a crafting matrix sync message
 				EZStorage.nw.sendTo(new MessageCraftingSync(con.craftMatrix), player);
 			}

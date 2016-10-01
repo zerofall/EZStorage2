@@ -34,9 +34,9 @@ import com.zerofall.ezstorage.util.ItemGroup.EnumSortMode;
 
 /** The storage core tile entity */
 public class TileEntityStorageCore extends TileEntityBase {
-	
+
 	public EZInventory inventory;
-	
+
 	Set<BlockRef> multiblock = new HashSet<BlockRef>();
 	public boolean disabled = false;
 	private boolean firstTick = false;
@@ -44,35 +44,37 @@ public class TileEntityStorageCore extends TileEntityBase {
 	public boolean hasSearchBox = false;
 	public EnumSortMode sortMode = EnumSortMode.COUNT;
 	public boolean hasSortBox = false;
-	
+
 	public TileEntityStorageCore() {
 		inventory = new EZInventory(this);
 	}
-	
+
 	/** Inputs a stack to the inventory (not from the player) */
 	public ItemStack input(ItemStack stack) {
 		ItemStack result = this.inventory.input(stack, false);
 		return result;
 	}
-	
+
 	/** Retrieves the first applicable stack in the inventory with a set amount */
 	public ItemStack getFirstStack(int size, EnumListMode mode, InventoryExtractList list) {
-		if(this.inventory.inventory.isEmpty()) return null; // make sure the inventory isn't empty
-		switch(mode) {
+		if (this.inventory.inventory.isEmpty())
+			return null; // make sure the inventory isn't empty
+		switch (mode) {
 		case IGNORE: // get the first item no matter what
 			return this.inventory.getItemsAt(0, 0, size);
 		default: // find a matching item
 			return this.inventory.getItemsExtractList(mode, list, size);
 		}
 	}
-	
+
 	/** Peeks the first applicable stack in the inventory */
 	public ItemStack peekFirstStack(EnumListMode mode, InventoryExtractList list) {
-		if(this.inventory.inventory.isEmpty()) return null; // make sure the inventory isn't empty
-		switch(mode) {
+		if (this.inventory.inventory.isEmpty())
+			return null; // make sure the inventory isn't empty
+		switch (mode) {
 		case IGNORE: // get the first item no matter what
 			ItemGroup g = this.inventory.inventory.get(0);
-			int count = (int)Math.min(g.itemStack.getMaxStackSize(), g.count);
+			int count = (int) Math.min(g.itemStack.getMaxStackSize(), g.count);
 			ItemStack ret = g.itemStack.copy();
 			ret.stackSize = count;
 			return ret;
@@ -80,21 +82,21 @@ public class TileEntityStorageCore extends TileEntityBase {
 			return this.inventory.peekItemsExtractList(mode, list);
 		}
 	}
-	
+
 	/** Sorts the inventory on change and tells clients to update their filtered lists */
 	public void sortInventory() {
-		if(!this.worldObj.isRemote) {
+		if (!this.worldObj.isRemote) {
 			this.inventory.sort();
 			updateInventory();
 		}
 	}
-	
+
 	/** Creates a block update and sends client data to update their filtered lists */
 	public void updateInventory() {
 		updateTileEntity();
 		EZStorage.nw.sendToDimension(new MessageFilterUpdate(this), worldObj.provider.getDimension());
 	}
-	
+
 	/** Updates the tile entity position in the world and marks it to be saved */
 	public void updateTileEntity() {
 		EZStorageUtils.notifyBlockUpdate(this);
@@ -120,7 +122,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 		nbt.setBoolean("isDisabled", this.disabled);
 		nbt.setInteger("sortMode", this.sortMode.ordinal());
 		nbt.setBoolean("hasSortBox", this.hasSortBox);
-		return nbt; 
+		return nbt;
 	}
 
 	@Override
@@ -145,7 +147,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 		this.sortMode = EnumSortMode.fromInt(nbt.getInteger("sortMode"));
 		this.hasSortBox = nbt.getBoolean("hasSortBox");
 	}
-	
+
 	/** Scans the multiblock structure for valid blocks */
 	public void scanMultiblock() {
 		inventory.maxItems = 0;
@@ -158,33 +160,31 @@ public class TileEntityStorageCore extends TileEntityBase {
 		getValidNeighbors(ref);
 		for (BlockRef blockRef : multiblock) {
 			if (blockRef.block instanceof BlockStorage) {
-				BlockStorage sb = (BlockStorage)blockRef.block;
+				BlockStorage sb = (BlockStorage) blockRef.block;
 				inventory.maxItems += sb.getCapacity();
 			}
 		}
 		EZStorageUtils.notifyBlockUpdate(this);
 	}
-	
-	
-	/**
-	 * Recursive function that scans a block's neighbors, and adds valid blocks to the multiblock list
-	 * @param br
-	 */
+
+	/** Recursive function that scans a block's neighbors, and adds valid blocks to the multiblock list
+	 * 
+	 * @param br */
 	private void getValidNeighbors(BlockRef br) {
 		List<BlockRef> neighbors = EZStorageUtils.getNeighbors(br.pos.getX(), br.pos.getY(), br.pos.getZ(), worldObj);
 		for (BlockRef blockRef : neighbors) {
 			if (blockRef.block instanceof StorageMultiblock) {
 				if (multiblock.add(blockRef) == true && validateSystem() == true) {
 					if (blockRef.block instanceof BlockInputPort) {
-						TileEntityInputPort entity = (TileEntityInputPort)this.worldObj.getTileEntity(blockRef.pos);
+						TileEntityInputPort entity = (TileEntityInputPort) this.worldObj.getTileEntity(blockRef.pos);
 						entity.core = this;
 					}
 					if (blockRef.block instanceof BlockOutputPort) {
-						TileEntityEjectPort entity = (TileEntityEjectPort)this.worldObj.getTileEntity(blockRef.pos);
+						TileEntityEjectPort entity = (TileEntityEjectPort) this.worldObj.getTileEntity(blockRef.pos);
 						entity.core = this;
 					}
 					if (blockRef.block instanceof BlockExtractPort) {
-						TileEntityExtractPort entity = (TileEntityExtractPort)this.worldObj.getTileEntity(blockRef.pos);
+						TileEntityExtractPort entity = (TileEntityExtractPort) this.worldObj.getTileEntity(blockRef.pos);
 						entity.core = this;
 					}
 					if (blockRef.block instanceof BlockCraftingBox) {
@@ -201,13 +201,13 @@ public class TileEntityStorageCore extends TileEntityBase {
 			}
 		}
 	}
-	
+
 	/** Makes sure the storage system doesn't have multiple storage cores */
 	public boolean validateSystem() {
 		int count = 0;
 		for (BlockRef ref : multiblock) {
 			if (ref.block instanceof BlockStorageCore) {
-				count ++;
+				count++;
 			}
 			if (count > 1) {
 				if (worldObj.isRemote) {
@@ -223,7 +223,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 		}
 		return true;
 	}
-	
+
 	public boolean isPartOfMultiblock(BlockRef blockRef) {
 		if (multiblock != null) {
 			if (multiblock.contains(blockRef)) {
@@ -241,7 +241,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 				scanMultiblock();
 			}
 		}
-		
+
 	}
-	
+
 }

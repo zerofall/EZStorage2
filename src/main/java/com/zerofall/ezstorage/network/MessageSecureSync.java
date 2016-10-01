@@ -20,12 +20,12 @@ import com.zerofall.ezstorage.util.JointList;
 
 /** Send a message from server to client to sync security boxes */
 public class MessageSecureSync implements IMessage {
-	
+
 	private BlockPos pos;
 	private JointList<SecurePlayer> whitelist;
-	
+
 	public MessageSecureSync() {}
-	
+
 	public MessageSecureSync(BlockPos pos, List<SecurePlayer> list) {
 		this.pos = pos;
 		this.whitelist = new JointList().join(list);
@@ -37,7 +37,7 @@ public class MessageSecureSync implements IMessage {
 		pos = BlockPos.fromLong(tag.getLong("pos"));
 		int count = tag.getInteger("whitelistCount");
 		whitelist = new JointList();
-		for(int i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) {
 			whitelist.join(new SecurePlayer(tag.getUniqueId("whitelist" + i + "_id"), tag.getString("whitelist" + i + "_name")));
 		}
 	}
@@ -48,31 +48,32 @@ public class MessageSecureSync implements IMessage {
 		tag.setLong("pos", pos.toLong());
 		tag.setInteger("whitelistCount", whitelist.size());
 		int i = 0;
-		for(SecurePlayer p : whitelist) {
+		for (SecurePlayer p : whitelist) {
 			tag.setUniqueId("whitelist" + i + "_id", p.id);
 			tag.setString("whitelist" + (i++) + "_name", p.name);
 		}
 		ByteBufUtils.writeTag(buf, tag);
 	}
-	
+
 	/** Update the tile entity whitelist */
 	public static class Handler implements IMessageHandler<MessageSecureSync, IMessage> {
-        @Override
-        public IMessage onMessage(MessageSecureSync m, MessageContext ctx) {
-        	Minecraft.getMinecraft().addScheduledTask(() -> handle(m));
-            return null; // no response in this case
-        }
-        
-        /** Do the update */
-        @SideOnly(Side.CLIENT)
-        public void handle(MessageSecureSync m) {
-        	try {
-	        	TileEntitySecurityBox tile = (TileEntitySecurityBox)Minecraft.getMinecraft().theWorld.getTileEntity(m.pos);
-	        	tile.setAllowedPlayers(m.whitelist);
-        	} catch (Exception e) {
-        		System.out.println("Message exception caught: " + e.getMessage());
-        	}
-        }
+
+		@Override
+		public IMessage onMessage(MessageSecureSync m, MessageContext ctx) {
+			Minecraft.getMinecraft().addScheduledTask(() -> handle(m));
+			return null; // no response in this case
+		}
+
+		/** Do the update */
+		@SideOnly(Side.CLIENT)
+		public void handle(MessageSecureSync m) {
+			try {
+				TileEntitySecurityBox tile = (TileEntitySecurityBox) Minecraft.getMinecraft().theWorld.getTileEntity(m.pos);
+				tile.setAllowedPlayers(m.whitelist);
+			} catch (Exception e) {
+				System.out.println("Message exception caught: " + e.getMessage());
+			}
+		}
 	}
 
 }

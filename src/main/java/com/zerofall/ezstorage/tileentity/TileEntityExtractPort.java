@@ -12,19 +12,20 @@ import com.zerofall.ezstorage.gui.server.InventoryExtractList;
 
 /** The extraction port, a virtual output inventory */
 public class TileEntityExtractPort extends TileEntityItemHandler {
-	
+
 	public TileEntityStorageCore core;
 	public InventoryExtractList extractList = new InventoryExtractList("extract_port", 9);
 	public EnumListMode listMode = EnumListMode.IGNORE;
-	
+
 	@Override
 	public NBTTagCompound writeDataToNBT(NBTTagCompound nbt) {
 		nbt.setInteger("listMode", listMode.ordinal());
 		NBTTagList list = new NBTTagList();
-		for(int i = 0; i < extractList.getSizeInventory(); i++) {
+		for (int i = 0; i < extractList.getSizeInventory(); i++) {
 			NBTTagCompound stackTag = new NBTTagCompound();
 			ItemStack slot = extractList.getStackInSlot(i);
-			if(slot != null) slot.writeToNBT(stackTag);
+			if (slot != null)
+				slot.writeToNBT(stackTag);
 			list.appendTag(stackTag);
 		}
 		nbt.setTag("slots", list);
@@ -35,7 +36,7 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 	public void readDataFromNBT(NBTTagCompound nbt) {
 		listMode = EnumListMode.fromInt(nbt.getInteger("listMode"));
 		NBTTagList list = nbt.getTagList("slots", 10);
-		for(int i = 0; i < extractList.getSizeInventory(); i++) {
+		for (int i = 0; i < extractList.getSizeInventory(); i++) {
 			NBTTagCompound stackTag = list.getCompoundTagAt(i);
 			ItemStack slot = ItemStack.loadItemStackFromNBT(stackTag);
 			extractList.setInventorySlotContents(i, slot);
@@ -46,7 +47,7 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 	public boolean hasCustomName() {
 		return false;
 	}
-	
+
 	@Override
 	public ITextComponent getDisplayName() {
 		return new TextComponentString("extract_port");
@@ -59,7 +60,7 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		if(core != null && listMode != EnumListMode.DISABLED && !worldObj.isBlockPowered(pos)) {
+		if (core != null && listMode != EnumListMode.DISABLED && !worldObj.isBlockPowered(pos)) {
 			return core.peekFirstStack(listMode, extractList);
 		} else {
 			return null;
@@ -68,13 +69,13 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
-		if(core != null && listMode != EnumListMode.DISABLED && !worldObj.isBlockPowered(pos)) {
+		if (core != null && listMode != EnumListMode.DISABLED && !worldObj.isBlockPowered(pos)) {
 			return core.getFirstStack(count, listMode, extractList);
 		} else {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		return decrStackSize(index, getInventoryStackLimit());
@@ -144,20 +145,20 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 	public String getName() {
 		return "extract_port";
 	}
-	
+
 	/** List modes */
 	public static enum EnumListMode {
 		IGNORE("Ignore"),
 		WHITELIST("Whitelist"),
 		BLACKLIST("Blacklist"),
 		DISABLED("Disabled");
-		
+
 		private String name;
-		
+
 		private EnumListMode(String name) {
 			this.name = name;
 		}
-		
+
 		/** Get the mode from an integer (corrects overflow) */
 		public static EnumListMode fromInt(int mode) {
 			return values()[mode % values().length];
@@ -167,7 +168,7 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 		public EnumListMode rotateMode() {
 			return fromInt(this.ordinal() + 1);
 		}
-		
+
 		/** Get the name of this list mode */
 		@Override
 		public String toString() {

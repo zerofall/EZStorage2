@@ -9,7 +9,7 @@ public class BlockHyperStorage extends BlockStorage {
 	public BlockHyperStorage() {
 		super("hyper_storage_box", Material.IRON);
 	}
-	
+
 	@Override
 	public int getCapacity() {
 		return EZConfig.hyperCapacity;

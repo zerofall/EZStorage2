@@ -15,36 +15,34 @@ import com.zerofall.ezstorage.util.BlockRef;
 import com.zerofall.ezstorage.util.EZStorageUtils;
 
 public class StorageMultiblock extends EZBlock {
-	
+
 	protected StorageMultiblock(String name, Material material) {
 		super(name, material);
 	}
-	
+
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos,
-			IBlockState state) {
+	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
 		super.onBlockDestroyedByPlayer(worldIn, pos, state);
 		attemptMultiblock(worldIn, pos);
 	}
-	
+
 	@Override
-	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos,
-			Explosion explosionIn) {
+	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
 		super.onBlockDestroyedByExplosion(worldIn, pos, explosionIn);
 		attemptMultiblock(worldIn, pos);
 	}
-	
+
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
 		super.onBlockAdded(worldIn, pos, state);
 		attemptMultiblock(worldIn, pos);
 	}
-	
+
 	@Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
 		if (!worldIn.isRemote) {
 			Set<TileEntityStorageCore> coreSet = new HashSet<TileEntityStorageCore>();
-			BlockRef br = new BlockRef(this, pos.getX(),  pos.getY(),  pos.getZ());
+			BlockRef br = new BlockRef(this, pos.getX(), pos.getY(), pos.getZ());
 			findMultipleCores(br, worldIn, null, coreSet);
 			if (coreSet.size() > 1) {
 				return false;
@@ -52,18 +50,17 @@ public class StorageMultiblock extends EZBlock {
 		}
 		return super.canPlaceBlockAt(worldIn, pos);
 	}
-	
-	/**
-	 * Attempt to form the multiblock structure by searching for the core, then telling the core to scan the multiblock
+
+	/** Attempt to form the multiblock structure by searching for the core, then telling the core to scan the multiblock
+	 * 
 	 * @param world
 	 * @param x
 	 * @param y
-	 * @param z
-	 */
+	 * @param z */
 	public void attemptMultiblock(World world, BlockPos position) {
 		if (!world.isRemote) {
 			if (!(this instanceof BlockStorageCore)) {
-				BlockRef br = new BlockRef(this, position.getX(),  position.getY(),  position.getZ());
+				BlockRef br = new BlockRef(this, position.getX(), position.getY(), position.getZ());
 				TileEntityStorageCore core = findCore(br, world, null);
 				if (core != null) {
 					core.scanMultiblock();
@@ -71,15 +68,13 @@ public class StorageMultiblock extends EZBlock {
 			}
 		}
 	}
-	
-	
-	/**
-	 * Recursive function that searches for a StorageCore in a multiblock structure
+
+	/** Recursive function that searches for a StorageCore in a multiblock structure
+	 * 
 	 * @param br
 	 * @param world
 	 * @param scanned
-	 * @return
-	 */
+	 * @return */
 	public TileEntityStorageCore findCore(BlockRef br, World world, Set<BlockRef> scanned) {
 		if (scanned == null) {
 			scanned = new HashSet<BlockRef>();
@@ -88,7 +83,7 @@ public class StorageMultiblock extends EZBlock {
 		for (BlockRef blockRef : neighbors) {
 			if (blockRef.block instanceof StorageMultiblock) {
 				if (blockRef.block instanceof BlockStorageCore) {
-					return (TileEntityStorageCore)world.getTileEntity(blockRef.pos);
+					return (TileEntityStorageCore) world.getTileEntity(blockRef.pos);
 				} else {
 					if (scanned.add(blockRef) == true) {
 						TileEntityStorageCore entity = findCore(blockRef, world, scanned);
@@ -101,14 +96,13 @@ public class StorageMultiblock extends EZBlock {
 		}
 		return null;
 	}
-	
-	/**
-	 * Recursive function that searches for a StorageCore in a multiblock structure
+
+	/** Recursive function that searches for a StorageCore in a multiblock structure
+	 * 
 	 * @param br
 	 * @param world
 	 * @param scanned
-	 * @return
-	 */
+	 * @return */
 	public void findMultipleCores(BlockRef br, World world, Set<BlockRef> scanned, Set<TileEntityStorageCore> cores) {
 		if (scanned == null) {
 			scanned = new HashSet<BlockRef>();
@@ -117,7 +111,7 @@ public class StorageMultiblock extends EZBlock {
 		for (BlockRef blockRef : neighbors) {
 			if (blockRef.block instanceof StorageMultiblock) {
 				if (blockRef.block instanceof BlockStorageCore) {
-					cores.add((TileEntityStorageCore)world.getTileEntity(blockRef.pos));
+					cores.add((TileEntityStorageCore) world.getTileEntity(blockRef.pos));
 				} else {
 					if (scanned.add(blockRef) == true) {
 						findMultipleCores(blockRef, world, scanned, cores);

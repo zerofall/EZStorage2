@@ -9,7 +9,7 @@ public class BlockCondensedStorage extends BlockStorage {
 	public BlockCondensedStorage() {
 		super("condensed_storage_box", Material.IRON);
 	}
-	
+
 	@Override
 	public int getCapacity() {
 		return EZConfig.condensedCapacity;
