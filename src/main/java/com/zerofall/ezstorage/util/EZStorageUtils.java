@@ -6,16 +6,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.zerofall.ezstorage.block.BlockSecurityBox;
+import com.zerofall.ezstorage.block.StorageMultiblock;
+import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
-
-import com.zerofall.ezstorage.block.BlockSecurityBox;
-import com.zerofall.ezstorage.block.StorageMultiblock;
-import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
 
 /** Useful stuff */
 public class EZStorageUtils {
@@ -34,6 +35,15 @@ public class EZStorageUtils {
 			return modMap.get(modid);
 		} else {
 			return "";
+		}
+	}
+	
+	/** Gets an ItemStack's display name, compatible with common code */
+	public static String getItemStackDisplayName(ItemStack stack) {
+		try { // try the default display name getter
+			return stack.getDisplayName();
+		} catch(Exception e) { // if any problem occurs, go to fallback translation
+			return FallbackTranslator.translate(stack.getUnlocalizedName());
 		}
 	}
 	

@@ -21,7 +21,7 @@ repositories {
     }
 }
 
-version = "2.2.3"
+version = "2.2.4"
 group= "com.zerofall.ezstorage2"
 archivesBaseName = "ezstorage"
 
@@ -29,7 +29,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 minecraft {
-    version = "1.10.2-12.18.1.2011"
+    version = "1.10.2-12.18.1.2094"
     runDir = "run"
 	useDepAts = true
     mappings = "snapshot_20160518"

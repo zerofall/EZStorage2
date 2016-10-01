@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 
+/** Render items in the storage core GUI */
 public class EZItemRenderer extends RenderItem {
 	
 	public EZItemRenderer(TextureManager textureManager,
@@ -30,9 +31,6 @@ public class EZItemRenderer extends RenderItem {
 			fr.setUnicodeFlag( false );
 
 			long amount = Long.parseLong(text);
-			
-			if ( amount > 999999999999L )
-				amount = 999999999999L;
 
 			if ( amount != 0 )
 			{
@@ -61,23 +59,31 @@ public class EZItemRenderer extends RenderItem {
 				
 				String var6 = String.valueOf( Math.abs( amount ) );
 
-				if ( amount > 999999999 )
+				if ( amount > 999999999999L )
+				{
+					var6 = String.valueOf( ( int ) Math.floor( amount / 1000000000000.0 ) ) + 'T';
+				}
+				else if ( amount > 9999999999L )
+				{
+					var6 = "." + String.valueOf( ( int ) Math.floor( amount / 1000000000000.0 ) ) + 'T';
+				}
+				else if ( amount > 999999999L )
 				{
 					var6 = String.valueOf( ( int ) Math.floor( amount / 1000000000.0 ) ) + 'B';
 				}
-				else if ( amount > 99999999 )
+				else if ( amount > 99999999L )
 				{
 					var6 = "." + (int) Math.floor( amount / 100000000.0 ) + 'B';
 				}
-				else if ( amount > 999999 )
+				else if ( amount > 999999L )
 				{
 					var6 = String.valueOf( ( int ) Math.floor( amount / 1000000.0 ) ) + 'M';
 				}
-				else if ( amount > 99999 )
+				else if ( amount > 99999L )
 				{
 					var6 = "." + (int) Math.floor( amount / 100000.0 ) + 'M';
 				}
-				else if ( amount > 9999 )
+				else if ( amount > 9999L )
 				{
 					var6 = String.valueOf( ( int ) Math.floor( amount / 1000.0 ) ) + 'K';
 				}

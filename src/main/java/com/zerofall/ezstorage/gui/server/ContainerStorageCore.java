@@ -53,7 +53,6 @@ public class ContainerStorageCore extends Container {
 		return true;
 	}
 	
-	/** Rotate the sorting mode from client packet */
 	@Override
 	public boolean enchantItem(EntityPlayer player, int action) {
 		switch(action) {
@@ -61,7 +60,7 @@ public class ContainerStorageCore extends Container {
 			tileEntity.sortMode = tileEntity.sortMode.rotateMode();
 			tileEntity.sortInventory();
 			return true;
-		case 1:
+		case 1: // clear the crafting grid if it exists
 			if(this instanceof ContainerStorageCoreCrafting) {
 				((ContainerStorageCoreCrafting)this).clearGrid(player);
 				tileEntity.sortInventory();
@@ -86,7 +85,7 @@ public class ContainerStorageCore extends Container {
 	 *  Also checks for shift-clicking to sort the inventory appropriately */
 	@Override
 	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
-		ItemStack val;
+		ItemStack val = null;
 		if (slotId < this.rowCount() * 9 && slotId >= 0) {
 			val = null; // use custom handler for clicks on the inventory
 		} else {

@@ -92,8 +92,8 @@ public class ItemGroup {
 			if(l1 != l2) {
 				return l2.compareTo(l1);
 			} else {
-				String n1 = group1.itemStack.getDisplayName();
-				String n2 = group2.itemStack.getDisplayName();
+				String n1 = EZStorageUtils.getItemStackDisplayName(group1.itemStack);
+				String n2 = EZStorageUtils.getItemStackDisplayName(group2.itemStack);
 				return n1.compareTo(n2);
 			}
 		}
@@ -108,8 +108,8 @@ public class ItemGroup {
 			if(l1 != l2) {
 				return l1.compareTo(l2);
 			} else {
-				String n1 = group1.itemStack.getDisplayName();
-				String n2 = group2.itemStack.getDisplayName();
+				String n1 = EZStorageUtils.getItemStackDisplayName(group1.itemStack);
+				String n2 = EZStorageUtils.getItemStackDisplayName(group2.itemStack);
 				return n2.compareTo(n1);
 			}
 		}
@@ -119,8 +119,8 @@ public class ItemGroup {
 	public static class NameComparator extends ItemGroupComparator {
 		@Override
 		public int compare(ItemGroup group1, ItemGroup group2) {
-			String n1 = group1.itemStack.getDisplayName();
-			String n2 = group2.itemStack.getDisplayName();
+			String n1 = EZStorageUtils.getItemStackDisplayName(group1.itemStack);
+			String n2 = EZStorageUtils.getItemStackDisplayName(group2.itemStack);
 			if(!n1.equals(n2)) {
 				return n1.compareTo(n2);
 			} else {
@@ -135,8 +135,8 @@ public class ItemGroup {
 	public static class InverseNameComparator extends ItemGroupComparator {
 		@Override
 		public int compare(ItemGroup group1, ItemGroup group2) {
-			String n1 = group1.itemStack.getDisplayName();
-			String n2 = group2.itemStack.getDisplayName();
+			String n1 = EZStorageUtils.getItemStackDisplayName(group1.itemStack);
+			String n2 = EZStorageUtils.getItemStackDisplayName(group2.itemStack);
 			if(!n1.equals(n2)) {
 				return n2.compareTo(n1);
 			} else {

@@ -2,6 +2,7 @@ package com.zerofall.ezstorage.config;
 
 import com.zerofall.ezstorage.EZStorage;
 import com.zerofall.ezstorage.ref.Log;
+import com.zerofall.ezstorage.ref.RefStrings;
 
 import net.minecraftforge.common.config.Configuration;
 
@@ -18,6 +19,7 @@ public class EZConfig {
 	public static boolean enableSecurity;
 	public static boolean enableSearchModes;
 	public static boolean enableOpOverride;
+	public static boolean jeiIntegration;
 
 	public static void syncConfig() {
 		final Configuration config = EZStorage.config;
@@ -38,6 +40,7 @@ public class EZConfig {
 				"Should '$' in front of a term search ore dictionary names, '@' search mod ids and names, and '%' search creative tab names?");
 		enableOpOverride = config.getBoolean("Enable Op Override", OPTIONS, true,
 				"Should a server op with permission level 2+ in creative mode be able to override the security of systems on their server?");
+		jeiIntegration = config.getBoolean("JEI Integration", OPTIONS, true, "Integrate " + RefStrings.NAME + " with JEI?");
 
 		if(config.hasChanged()) config.save();
 		Log.logger.info("Configuration loaded.");

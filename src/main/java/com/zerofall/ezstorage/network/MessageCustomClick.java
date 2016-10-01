@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import com.zerofall.ezstorage.gui.server.ContainerStorageCore;
 
-/** Custom click message */
+/** Custom click message to be processed on the server */
 public class MessageCustomClick implements IMessage {
 
 	private int index;
