@@ -8,14 +8,14 @@ import net.minecraft.world.World;
 import com.zerofall.ezstorage.tileentity.TileEntityInputPort;
 
 public class BlockInputPort extends EZBlockContainer {
-	
+
 	public BlockInputPort() {
 		super("input_port", Material.IRON);
 	}
-	
+
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityInputPort();
 	}
-	
+
 }

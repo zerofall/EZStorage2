@@ -14,9 +14,9 @@ public class GuiCraftingCore extends GuiStorageCore {
 		this.xSize = 195;
 		this.ySize = 244;
 	}
-	
+
 	@Override
-    public void initGui() {
+	public void initGui() {
 		super.initGui();
 		craftClear.visible = true;
 	}
@@ -25,7 +25,7 @@ public class GuiCraftingCore extends GuiStorageCore {
 	public int rowsVisible() {
 		return 4;
 	}
-	
+
 	@Override
 	protected ResourceLocation getBackground() {
 		return new ResourceLocation(RefStrings.MODID + ":textures/gui/storageCraftingGui.png");

@@ -36,11 +36,11 @@ public class EZInventory {
 		long space = maxItems - getTotalCount();
 
 		// Only part of the stack can fit
-		int amount = (int)Math.min(space, itemStack.stackSize);
+		int amount = (int) Math.min(space, itemStack.stackSize);
 		ItemStack result = mergeStack(itemStack, amount);
 
 		// sort or no sort?
-		if(sort) {
+		if (sort) {
 			tile.sortInventory();
 		} else {
 			tile.updateInventory();
@@ -80,7 +80,7 @@ public class EZInventory {
 	}
 
 	/** Extract items from the inventory */
-	//Type: 0= full stack, 1= half stack, 2= single
+	// Type: 0= full stack, 1= half stack, 2= single
 	public ItemStack getItemsAt(int index, int type) {
 		return getItemsAt(index, type, -1);
 	}
@@ -89,7 +89,7 @@ public class EZInventory {
 	public ItemStack getItemsAt(int index, int type, int size) {
 		return getItemsAt(index, type, size, false);
 	}
-	
+
 	/** Extract items from the inventory with precision and peek support */
 	public ItemStack getItemsAt(int index, int type, int size, boolean peek) {
 		if (index >= inventory.size()) {
@@ -99,35 +99,37 @@ public class EZInventory {
 		ItemStack stack = group.itemStack.copy();
 		if (size > 1) {
 			if (type == 1) {
-				size = size/2;
+				size = size / 2;
 			} else if (type == 2) {
 				size = 1;
 			}
 		}
-		
+
 		return extractStack(group, size, peek);
 	}
 
 	/** Extract items on whitelist / blacklist match */
 	public ItemStack getItemsExtractList(EnumListMode mode, InventoryExtractList list, int size, boolean peek) {
-		
-		// inventory is empty, treat it like IGNORE mode
-		if(list.isEmpty()) return getItemsAt(0, 0, size, peek);
-		
-		// not empty
-		for(int i = 0; i < list.getSizeInventory(); i++) {
-			ItemStack comp = list.getStackInSlot(i);
-			if(comp == null) continue; // ignore empty slots
 
-			for(ItemGroup g : this.inventory) {
-				if(EZInventory.stacksEqualOreDict(comp, g.itemStack)) {
-					if(mode == EnumListMode.BLACKLIST) {
+		// inventory is empty, treat it like IGNORE mode
+		if (list.isEmpty())
+			return getItemsAt(0, 0, size, peek);
+
+		// not empty
+		for (int i = 0; i < list.getSizeInventory(); i++) {
+			ItemStack comp = list.getStackInSlot(i);
+			if (comp == null)
+				continue; // ignore empty slots
+
+			for (ItemGroup g : this.inventory) {
+				if (EZInventory.stacksEqualOreDict(comp, g.itemStack)) {
+					if (mode == EnumListMode.BLACKLIST) {
 						continue;
 					} else {
 						return extractStack(g, size, peek);
 					}
 				} else {
-					if(mode == EnumListMode.WHITELIST) {
+					if (mode == EnumListMode.WHITELIST) {
 						continue;
 					} else {
 						return extractStack(g, size, peek);
@@ -138,28 +140,41 @@ public class EZInventory {
 		}
 		return null;
 	}
-	
+
 	/** Extract items on whitelist / blacklist match */
 	public ItemStack getItemsExtractList(EnumListMode mode, InventoryExtractList list, int size) {
 		return getItemsExtractList(mode, list, size, false);
 	}
-	
+
 	/** Peeks items on whitelist / blacklist match */
 	public ItemStack peekItemsExtractList(EnumListMode mode, InventoryExtractList list) {
 		return getItemsExtractList(mode, list, -1, true);
 	}
-	
+
 	/** Extracts an itemstack from an item group */
 	private ItemStack extractStack(ItemGroup group, int stackSize, boolean peek) {
 		ItemStack stack = group.itemStack.copy();
-		if(stackSize < 0) {
-			stackSize = (int)Math.min(stack.getMaxStackSize(), group.count);
+		if (stackSize < 0) {
+			stackSize = (int) Math.min(stack.getMaxStackSize(), group.count);
 		} else {
-			stackSize = Math.min(stack.getMaxStackSize(), (int)Math.min(stackSize, group.count)); // no more than 64 at a time, and no more than the system has
+			stackSize = Math.min(stack.getMaxStackSize(), (int) Math.min(stackSize, group.count)); // no
+																									// more
+																									// than
+																									// 64
+																									// at
+																									// a
+																									// time,
+																									// and
+																									// no
+																									// more
+																									// than
+																									// the
+																									// system
+																									// has
 		}
 		stack.stackSize = stackSize;
-		
-		if(!peek) { // remove items when not peeking
+
+		if (!peek) { // remove items when not peeking
 			group.count -= stackSize;
 			if (group.count <= 0) {
 				inventory.remove(group);
@@ -168,7 +183,7 @@ public class EZInventory {
 				tile.updateInventory();
 			}
 		}
-		
+
 		return stack;
 	}
 
@@ -208,7 +223,7 @@ public class EZInventory {
 		}
 		if (stack1.getItem() == stack2.getItem()) {
 			if (stack1.getItemDamage() == stack2.getItemDamage()) {
-				if((!stack1.hasTagCompound() && !stack2.hasTagCompound()) || (stack1.hasTagCompound() && stack1.getTagCompound().equals(stack2.getTagCompound()))) {
+				if ((!stack1.hasTagCompound() && !stack2.hasTagCompound()) || (stack1.hasTagCompound() && stack1.getTagCompound().equals(stack2.getTagCompound()))) {
 					return true;
 				}
 			}
@@ -237,8 +252,8 @@ public class EZInventory {
 	/** Gets the index of an itemgroup in the inventory */
 	public int indexOf(ItemGroup group) {
 		int n = 0;
-		for(ItemGroup g : inventory) {
-			if(stacksEqual(g.itemStack, group.itemStack)) {
+		for (ItemGroup g : inventory) {
+			if (stacksEqual(g.itemStack, group.itemStack)) {
 				return n;
 			}
 			n++;

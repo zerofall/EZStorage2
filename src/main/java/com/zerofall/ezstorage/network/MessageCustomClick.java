@@ -46,7 +46,8 @@ public class MessageCustomClick implements IMessage {
 		@Override
 		public IMessage onMessage(MessageCustomClick message, MessageContext ctx) {
 			EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-			if(player != null) ((WorldServer)player.worldObj).addScheduledTask(() -> handle(player, message));
+			if (player != null)
+				((WorldServer) player.worldObj).addScheduledTask(() -> handle(player, message));
 			return null; // no response in this case
 		}
 
@@ -54,7 +55,7 @@ public class MessageCustomClick implements IMessage {
 		public void handle(EntityPlayerMP player, MessageCustomClick message) {
 			Container container = player.openContainer;
 			if (container != null && container instanceof ContainerStorageCore) {
-				ContainerStorageCore storageContainer = (ContainerStorageCore)container;
+				ContainerStorageCore storageContainer = (ContainerStorageCore) container;
 				storageContainer.customSlotClick(message.index, message.button, message.mode, player);
 			}
 		}

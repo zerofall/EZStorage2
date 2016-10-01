@@ -19,7 +19,7 @@ public class TileEntityInputPort extends TileEntityItemHandler {
 	public boolean hasCustomName() {
 		return false;
 	}
-	
+
 	@Override
 	public ITextComponent getDisplayName() {
 		return new TextComponentString("input_port");
@@ -38,25 +38,25 @@ public class TileEntityInputPort extends TileEntityItemHandler {
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
 		ItemStack stack = getStackInSlot(index);
-	      if(stack != null) {
-	         if(stack.stackSize <= count) {
-	            setInventorySlotContents(index, null);
-	         } else {
-	            stack = stack.splitStack(count);
-	            if(stack.stackSize == 0) {
-	               setInventorySlotContents(index, null);
-	            }
-	         }
-	      }
-	      return stack;
+		if (stack != null) {
+			if (stack.stackSize <= count) {
+				setInventorySlotContents(index, null);
+			} else {
+				stack = stack.splitStack(count);
+				if (stack.stackSize == 0) {
+					setInventorySlotContents(index, null);
+				}
+			}
+		}
+		return stack;
 	}
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		inv[index] = stack;
-        if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-        	stack.stackSize = getInventoryStackLimit();
-        }  
+		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
+			stack.stackSize = getInventoryStackLimit();
+		}
 	}
 
 	@Override
@@ -71,12 +71,12 @@ public class TileEntityInputPort extends TileEntityItemHandler {
 
 	@Override
 	public void openInventory(EntityPlayer player) {
-		
+
 	}
 
 	@Override
 	public void closeInventory(EntityPlayer player) {
-		
+
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class TileEntityInputPort extends TileEntityItemHandler {
 
 	@Override
 	public void setField(int id, int value) {
-		
+
 	}
 
 	@Override
@@ -114,24 +114,22 @@ public class TileEntityInputPort extends TileEntityItemHandler {
 	}
 
 	@Override
-	public boolean canInsertItem(int index, ItemStack itemStackIn,
-			EnumFacing direction) {
+	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
 		return !worldObj.isBlockPowered(pos);
 	}
 
 	@Override
-	public boolean canExtractItem(int index, ItemStack stack,
-			EnumFacing direction) {
+	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
 		return false;
 	}
 
 	@Override
 	public void update() {
-		
+
 		if (this.core != null) {
 			ItemStack stack = this.inv[0];
 			if (stack != null && stack.stackSize > 0) {
-				if (this.core.isPartOfMultiblock(new BlockRef(this))) { 
+				if (this.core.isPartOfMultiblock(new BlockRef(this))) {
 					this.inv[0] = this.core.input(stack);
 				} else {
 					this.core = null;

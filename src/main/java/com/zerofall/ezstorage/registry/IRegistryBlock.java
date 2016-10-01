@@ -12,26 +12,28 @@ import com.zerofall.ezstorage.ref.RefStrings;
 
 /** Interface to help with block registration */
 public interface IRegistryBlock extends IRegistryBase {
-	
+
 	/** Gets the block's item class to use when registering */
 	public default Class<? extends ItemBlock> getItemClass() {
 		return ItemBlock.class;
 	}
-	
-	/** Gets additional arguments to pass through to the ItemBlock constructor */
+
+	/**
+	 * Gets additional arguments to pass through to the ItemBlock constructor
+	 */
 	public default Object[] getItemClassArgs() {
 		return new Object[0];
 	}
-	
+
 	@Override
 	public default String getShorthandName() {
-		return ((Block)this).getUnlocalizedName().substring(5);
+		return ((Block) this).getUnlocalizedName().substring(5);
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public default void registerRender(ItemModelMesher mesher) {
-		mesher.register(Item.getItemFromBlock((Block)this), 0, new ModelResourceLocation(RefStrings.MODID + ":" + this.getShorthandName(), "inventory"));
+		mesher.register(Item.getItemFromBlock((Block) this), 0, new ModelResourceLocation(RefStrings.MODID + ":" + this.getShorthandName(), "inventory"));
 	}
 
 }

@@ -37,7 +37,7 @@ public class RecipeTransferHandler implements IRecipeTransferHandler {
 	@Override
 	public IRecipeTransferError transferRecipe(Container container, IRecipeLayout recipeLayout, EntityPlayer player, boolean maxTransfer, boolean doTransfer) {
 		if (doTransfer) {
-			Map<Integer, GuiIngredient<ItemStack>> inputs = (Map<Integer, GuiIngredient<ItemStack>>)recipeLayout.getItemStacks().getGuiIngredients();
+			Map<Integer, GuiIngredient<ItemStack>> inputs = (Map<Integer, GuiIngredient<ItemStack>>) recipeLayout.getItemStacks().getGuiIngredients();
 			NBTTagCompound recipe = new NBTTagCompound();
 			StackHelper helper = new StackHelper();
 			for (Slot slot : container.inventorySlots) {
@@ -47,7 +47,7 @@ public class RecipeTransferHandler implements IRecipeTransferHandler {
 						List<ItemStack> possibleItems = ingredient.getAllIngredients();
 						NBTTagList tags = new NBTTagList();
 						String ore = null;
-						if((ore = helper.getOreDictEquivalent(possibleItems)) != null) {
+						if ((ore = helper.getOreDictEquivalent(possibleItems)) != null) {
 							NBTTagCompound tag = new NBTTagCompound();
 							tag.setString("ore", ore);
 							tags.appendTag(tag);

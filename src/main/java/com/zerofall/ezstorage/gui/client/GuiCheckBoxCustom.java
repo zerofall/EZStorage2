@@ -21,19 +21,15 @@ public class GuiCheckBoxCustom extends GuiCheckBox {
 	 */
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-		if (this.visible)
-		{
+		if (this.visible) {
 			this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.boxWidth && mouseY < this.yPosition + this.height;
 			GuiUtils.drawContinuousTexturedBox(BUTTON_TEXTURES, this.xPosition, this.yPosition, 0, 46, this.boxWidth, this.height, 200, 20, 2, 3, 2, 2, this.zLevel);
 			this.mouseDragged(mc, mouseX, mouseY);
 			int color = 14737632;
 
-			if (packedFGColour != 0)
-			{
+			if (packedFGColour != 0) {
 				color = packedFGColour;
-			}
-			else if (!this.enabled)
-			{
+			} else if (!this.enabled) {
 				color = 10526880;
 			}
 

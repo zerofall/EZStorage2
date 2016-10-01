@@ -36,13 +36,14 @@ public class EZConfig {
 		toughHyper = config.getBoolean("Harder Hyper Recipe", OPTIONS, true, "If true, the hyper storage box will use 2 nether stars instead of 1.");
 		enableTerminal = config.getBoolean("Enable Access Terminal", OPTIONS, true, "Should the access terminal be enabled?");
 		enableSecurity = config.getBoolean("Enable Security", OPTIONS, true, "Should the security features be enabled?");
-		enableSearchModes = config.getBoolean("Enable Search Modes", OPTIONS, true, 
+		enableSearchModes = config.getBoolean("Enable Search Modes", OPTIONS, true,
 				"Should '$' in front of a term search ore dictionary names, '@' search mod ids and names, and '%' search creative tab names?");
 		enableOpOverride = config.getBoolean("Enable Op Override", OPTIONS, true,
 				"Should a server op with permission level 2+ in creative mode be able to override the security of systems on their server?");
 		jeiIntegration = config.getBoolean("JEI Integration", OPTIONS, true, "Integrate " + RefStrings.NAME + " with JEI?");
 
-		if(config.hasChanged()) config.save();
+		if (config.hasChanged())
+			config.save();
 		Log.logger.info("Configuration loaded.");
 	}
 }

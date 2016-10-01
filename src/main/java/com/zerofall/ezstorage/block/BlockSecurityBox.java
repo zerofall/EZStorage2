@@ -23,32 +23,36 @@ public class BlockSecurityBox extends EZBlockContainer {
 		super("security_box", Material.IRON);
 		this.setBlockUnbreakable(); // no conventional breakability
 	}
-	
+
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntitySecurityBox();
 	}
-	
+
 	/** Add the owner to the allowed players list */
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-		if(placer instanceof EntityPlayer) {
-			EntityPlayer p = (EntityPlayer)placer;
-			TileEntitySecurityBox tile = (TileEntitySecurityBox)worldIn.getTileEntity(pos);
+		if (placer instanceof EntityPlayer) {
+			EntityPlayer p = (EntityPlayer) placer;
+			TileEntitySecurityBox tile = (TileEntitySecurityBox) worldIn.getTileEntity(pos);
 			tile.addAllowedPlayer(p);
 			tile.markDirty();
 		}
 	}
-	
+
 	/** Destroy the block / open its gui */
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		TileEntitySecurityBox tile = (TileEntitySecurityBox)worldIn.getTileEntity(pos);
-		if(tile.isPlayerAllowed(playerIn)) { // allowed player actions:
-			if(heldItem != null && heldItem.getItem() == EZItems.key) { // try to break the block
-				if(!worldIn.isRemote) worldIn.destroyBlock(pos, true); // permitted block breaking
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		TileEntitySecurityBox tile = (TileEntitySecurityBox) worldIn.getTileEntity(pos);
+		if (tile.isPlayerAllowed(playerIn)) { // allowed player actions:
+			if (heldItem != null && heldItem.getItem() == EZItems.key) { // try
+																			// to
+																			// break
+																			// the
+																			// block
+				if (!worldIn.isRemote)
+					worldIn.destroyBlock(pos, true); // permitted block breaking
 				return true;
 			} else { // simply access the block GUI
 				playerIn.openGui(EZStorage.instance, GuiHandler.SECURITY, worldIn, pos.getX(), pos.getY(), pos.getZ());

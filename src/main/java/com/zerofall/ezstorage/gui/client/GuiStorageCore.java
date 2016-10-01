@@ -71,18 +71,18 @@ public class GuiStorageCore extends GuiContainer {
 
 	@Override
 	public void initGui() {
-		super.initGui();    	
-		this.searchField = new GuiTextField(0, this.fontRendererObj, this.guiLeft+10, this.guiTop+6, 80, this.fontRendererObj.FONT_HEIGHT);
+		super.initGui();
+		this.searchField = new GuiTextField(0, this.fontRendererObj, this.guiLeft + 10, this.guiTop + 6, 80, this.fontRendererObj.FONT_HEIGHT);
 		this.searchField.setMaxStringLength(20);
 		this.searchField.setEnableBackgroundDrawing(false);
 		this.searchField.setTextColor(0xFFFFFF);
 		this.searchField.setCanLoseFocus(true);
 		this.searchField.setFocused(true);
 		this.searchField.setText("");
-		this.jeiSearchToggle = new GuiCheckBoxCustom(0, this.guiLeft+83, this.guiTop+4, "\u2714", false);
+		this.jeiSearchToggle = new GuiCheckBoxCustom(0, this.guiLeft + 83, this.guiTop + 4, "\u2714", false);
 		this.jeiSearchToggle.visible = false;
 
-		if(JEIUtils.isJEIAvailable()) {
+		if (JEIUtils.isJEIAvailable()) {
 			this.searchField.width = 64;
 		} else {
 			this.jeiSearchToggle.enabled = false;
@@ -98,14 +98,14 @@ public class GuiStorageCore extends GuiContainer {
 
 	public GuiStorageCore(EntityPlayer player, World world, int x, int y, int z) {
 		super(new ContainerStorageCore(player, world, x, y, z));
-		this.tileEntity = ((TileEntityStorageCore)world.getTileEntity(new BlockPos(x, y, z)));
+		this.tileEntity = ((TileEntityStorageCore) world.getTileEntity(new BlockPos(x, y, z)));
 		this.xSize = 195;
 		this.ySize = 222;
 	}
 
 	public GuiStorageCore(ContainerStorageCore containerStorageCore, World world, int x, int y, int z) {
 		super(containerStorageCore);
-		this.tileEntity = ((TileEntityStorageCore)world.getTileEntity(new BlockPos(x, y, z)));
+		this.tileEntity = ((TileEntityStorageCore) world.getTileEntity(new BlockPos(x, y, z)));
 		this.xSize = 195;
 		this.ySize = 222;
 	}
@@ -119,7 +119,7 @@ public class GuiStorageCore extends GuiContainer {
 		drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 
 		// sorting gui
-		if(this.tileEntity.hasSortBox) {
+		if (this.tileEntity.hasSortBox) {
 			this.mc.renderEngine.bindTexture(sortGui);
 			drawTexturedModalRect(guiLeft - 108, guiTop, 0, 128, 112, 128);
 			modeToggle.visible = true;
@@ -129,16 +129,16 @@ public class GuiStorageCore extends GuiContainer {
 
 		// search box
 		this.searchField.setVisible(this.tileEntity.hasSearchBox);
-		if(this.tileEntity.hasSearchBox) {
+		if (this.tileEntity.hasSearchBox) {
 			this.mc.renderEngine.bindTexture(searchBar);
 			drawTexturedModalRect(guiLeft + 8, guiTop + 4, 80, 4, this.searchField.width + 10, 12);
 			this.searchField.drawTextBox();
 		}
 
 		// match the JEI search box to the storage search box
-		if(JEIUtils.isJEIAvailable()) {
+		if (JEIUtils.isJEIAvailable()) {
 			jeiSearchToggle.visible = this.tileEntity.hasSearchBox;
-			if(jeiSearchToggle.isChecked() && JEIUtils.jeiSearchTextChanged()) {
+			if (jeiSearchToggle.isChecked() && JEIUtils.jeiSearchTextChanged()) {
 				searchBoxChange(JEIUtils.getSearchText());
 			}
 		} else {
@@ -160,14 +160,14 @@ public class GuiStorageCore extends GuiContainer {
 
 		// check if this inventory needs a filter update
 		// then update it after no more than 0.1s have passed
-		if(needsUpdate) {
-			if(mc.thePlayer.ticksExisted > updateTicksCurrent) {
+		if (needsUpdate) {
+			if (mc.thePlayer.ticksExisted > updateTicksCurrent) {
 				updateTicksPassed++;
 				updateTicksCurrent = mc.thePlayer.ticksExisted;
 			}
 
 			// update the filtered list
-			if(updateTicksPassed >= 2) {
+			if (updateTicksPassed >= 2) {
 				updateFilteredItems();
 				needsUpdate = false;
 			}
@@ -186,7 +186,7 @@ public class GuiStorageCore extends GuiContainer {
 			double ScaleFactor = 0.7;
 			double RScaleFactor = 1.0 / ScaleFactor;
 			GL11.glPushMatrix();
-			GL11.glScaled( ScaleFactor, ScaleFactor, ScaleFactor );
+			GL11.glScaled(ScaleFactor, ScaleFactor, ScaleFactor);
 			int X = (int) ((187 - stringWidth * ScaleFactor) * RScaleFactor);
 			fontRendererObj.drawString(amount, X, 10, 4210752);
 			GL11.glPopMatrix();
@@ -196,18 +196,19 @@ public class GuiStorageCore extends GuiContainer {
 
 		// sorting mode
 		modeToggle.displayString = tileEntity.sortMode.toString();
-		if(this.tileEntity.hasSortBox) {
+		if (this.tileEntity.hasSortBox) {
 			this.fontRendererObj.drawString("Sorting Mode", -100, 6, 4210752);
 			GL11.glPushMatrix();
 			double scale = 0.7;
 			GL11.glScaled(scale, scale, scale);
-			this.fontRendererObj.drawSplitString(tileEntity.sortMode.getDesc(), (int)(-100 / scale), (int)(42 / scale), (int)(96 / scale), 4210752);
+			this.fontRendererObj.drawSplitString(tileEntity.sortMode.getDesc(), (int) (-100 / scale), (int) (42 / scale), (int) (96 / scale), 4210752);
 			GL11.glPopMatrix();
 		}
-		
+
 		// JEI toggle box
 		List<String> lines = new JointList().join("JEI search link");
-		if(jeiSearchToggle.isMouseOver()) this.drawHoveringText(lines, mouseX - guiLeft, mouseY - guiTop);
+		if (jeiSearchToggle.isMouseOver())
+			this.drawHoveringText(lines, mouseX - guiLeft, mouseY - guiTop);
 
 		// item list
 		int x = 8;
@@ -233,11 +234,13 @@ public class GuiStorageCore extends GuiContainer {
 
 				// get the item group
 				ItemGroup group = this.filteredList.get(index);
-				ItemStack stack = group.itemStack;        		
+				ItemStack stack = group.itemStack;
 
 				FontRenderer font = null;
-				if (stack != null) font = stack.getItem().getFontRenderer(stack);
-				if (font == null) font = fontRendererObj;
+				if (stack != null)
+					font = stack.getItem().getFontRenderer(stack);
+				if (font == null)
+					font = fontRendererObj;
 				RenderHelper.enableGUIStandardItemLighting();
 				this.itemRender.renderItemAndEffectIntoGUI(stack, x, y);
 				ezRenderer.renderItemOverlayIntoGUI(font, stack, x, y, "" + group.count);
@@ -254,17 +257,20 @@ public class GuiStorageCore extends GuiContainer {
 		int k = 18;
 		int l = k + 108;
 		this.mc.getTextureManager().bindTexture(creativeInventoryTabs);
-		this.drawTexturedModalRect(i1, k + (int)((l - k - 17) * this.currentScroll), 232, 0, 12, 15);
+		this.drawTexturedModalRect(i1, k + (int) ((l - k - 17) * this.currentScroll), 232, 0, 12, 15);
 		this.zLevel = 0.0F;
 		this.itemRender.zLevel = 0.0F;
 	}
 
-	/** Send a packet to the server when the sort mode is toggled or the crafting matrix is cleared */
+	/**
+	 * Send a packet to the server when the sort mode is toggled or the crafting
+	 * matrix is cleared
+	 */
 	@Override
 	protected void actionPerformed(GuiButton parButton) {
-		if(parButton == modeToggle) {
+		if (parButton == modeToggle) {
 			this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, 0);
-		} else if(parButton == craftClear) {
+		} else if (parButton == craftClear) {
 			this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, 1);
 		}
 	}
@@ -297,15 +303,11 @@ public class GuiStorageCore extends GuiContainer {
 		ItemStack stack = group.itemStack;
 		List<String> list = stack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
 
-		for (int i = 0; i < list.size(); ++i)
-		{
-			if (i == 0)
-			{
-				list.set(i, stack.getRarity().rarityColor + (String)list.get(i));
-			}
-			else
-			{
-				list.set(i, TextFormatting.GRAY + (String)list.get(i));
+		for (int i = 0; i < list.size(); ++i) {
+			if (i == 0) {
+				list.set(i, stack.getRarity().rarityColor + list.get(i));
+			} else {
+				list.set(i, TextFormatting.GRAY + list.get(i));
 			}
 		}
 
@@ -327,20 +329,27 @@ public class GuiStorageCore extends GuiContainer {
 		}
 	}
 
-	/** Call this to change the search box and update the filter and scroll position */
+	/**
+	 * Call this to change the search box and update the filter and scroll
+	 * position
+	 */
 	private void searchBoxChange(String text) {
-		if(text != null) this.searchField.setText(text);
+		if (text != null)
+			this.searchField.setText(text);
 
 		updateFilteredItems();
 		scrollTo(this.currentScroll = 0); // reset scrolling
 
 		// sync the search bars if applicable
-		if(JEIUtils.isJEIAvailable() && this.jeiSearchToggle.isChecked()) {
+		if (JEIUtils.isJEIAvailable() && this.jeiSearchToggle.isChecked()) {
 			JEIUtils.setSearchText(this.searchField.getText());
 		}
 	}
 
-	/** Update the filtered list of items that the core needs to function correctly */
+	/**
+	 * Update the filtered list of items that the core needs to function
+	 * correctly
+	 */
 	private void updateFilteredItems() {
 		filteredList = new ArrayList<ItemGroup>(this.tileEntity.inventory.inventory);
 		Iterator iterator = this.filteredList.iterator();
@@ -350,47 +359,47 @@ public class GuiStorageCore extends GuiContainer {
 		boolean tabSearch = false;
 
 		// search modes
-		if(EZConfig.enableSearchModes) {
+		if (EZConfig.enableSearchModes) {
 			// ore dictionary search
-			if(searchText.startsWith("$")) {
+			if (searchText.startsWith("$")) {
 				oreSearch = true;
 				searchText = searchText.substring(1);
 			} else
 
-				// mod id and mod name search
-				if(searchText.startsWith("@")) {
-					modSearch = true;
-					searchText = searchText.substring(1);
-				} else
+			// mod id and mod name search
+			if (searchText.startsWith("@")) {
+				modSearch = true;
+				searchText = searchText.substring(1);
+			} else
 
-					// creative tab name search
-					if(searchText.startsWith("%")) {
-						tabSearch = true;
-						searchText = searchText.substring(1);
-					}
+			// creative tab name search
+			if (searchText.startsWith("%")) {
+				tabSearch = true;
+				searchText = searchText.substring(1);
+			}
 		}
 
-		while (iterator.hasNext())
-		{
-			ItemGroup group = (ItemGroup)iterator.next();
+		while (iterator.hasNext()) {
+			ItemGroup group = (ItemGroup) iterator.next();
 			ItemStack itemstack = group.itemStack;
 			boolean flag = false;
 			Iterator<String> iterator1 = null;
 			String compare = "";
 			String compare2 = "";
 
-			if(oreSearch) { // searches oredict entries
+			if (oreSearch) { // searches oredict entries
 				int[] oreIds = OreDictionary.getOreIDs(itemstack);
 				List<String> ores = new JointList();
-				for(int id : oreIds) ores.add(OreDictionary.getOreName(id));
+				for (int id : oreIds)
+					ores.add(OreDictionary.getOreName(id));
 				iterator1 = ores.iterator();
 
-			} else if(modSearch) { // searches mod ids and mod names
+			} else if (modSearch) { // searches mod ids and mod names
 				compare = itemstack.getItem().getRegistryName().getResourceDomain();
 				compare2 = EZStorageUtils.getModNameFromID(compare).toLowerCase();
 				compare = compare.toLowerCase();
 
-			} else if(tabSearch) { // searches the item's creative tab
+			} else if (tabSearch) { // searches the item's creative tab
 				try {
 					compare = itemstack.getItem().getCreativeTab().getTabLabel().toLowerCase();
 				} catch (Exception e) {}
@@ -399,8 +408,7 @@ public class GuiStorageCore extends GuiContainer {
 				iterator1 = itemstack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips).iterator();
 			}
 
-			while (true)
-			{
+			while (true) {
 
 				if (modSearch || tabSearch) { // mod or creative tab search
 
@@ -410,8 +418,7 @@ public class GuiStorageCore extends GuiContainer {
 					if (iterator1.hasNext()) {
 						String s = iterator1.next();
 
-						if (!s.toLowerCase().contains(searchText))
-						{
+						if (!s.toLowerCase().contains(searchText)) {
 							continue;
 						}
 
@@ -419,8 +426,7 @@ public class GuiStorageCore extends GuiContainer {
 					}
 				}
 
-				if (!flag)
-				{
+				if (!flag) {
 					iterator.remove();
 				}
 
@@ -439,20 +445,17 @@ public class GuiStorageCore extends GuiContainer {
 		int k1 = i1 + 14;
 		int l1 = j1 + 108;
 
-		if (!this.wasClicking && flag && mouseX >= i1 && mouseY >= j1 && mouseX < k1 && mouseY < l1)
-		{
+		if (!this.wasClicking && flag && mouseX >= i1 && mouseY >= j1 && mouseX < k1 && mouseY < l1) {
 			this.isScrolling = true;
 		}
 
-		if (!flag)
-		{
+		if (!flag) {
 			this.isScrolling = false;
 		}
 
 		this.wasClicking = flag;
 
-		if (this.isScrolling)
-		{
+		if (this.isScrolling) {
 			this.currentScroll = (mouseY - j1 - 7.5F) / (l1 - j1 - 15.0F);
 			this.currentScroll = MathHelper.clamp_float(this.currentScroll, 0.0F, 1.0F);
 			scrollTo(this.currentScroll);
@@ -460,8 +463,7 @@ public class GuiStorageCore extends GuiContainer {
 	}
 
 	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton)
-			throws IOException {
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 
 		Integer slot = getSlotAt(mouseX, mouseY);
 		if (slot != null) {
@@ -482,13 +484,13 @@ public class GuiStorageCore extends GuiContainer {
 			}
 
 			EZStorage.nw.sendToServer(new MessageCustomClick(index, mouseButton, mode));
-			ContainerStorageCore container = (ContainerStorageCore)this.inventorySlots;
+			ContainerStorageCore container = (ContainerStorageCore) this.inventorySlots;
 			container.customSlotClick(index, mouseButton, mode, this.mc.thePlayer);
 		} else {
 			int elementX = this.searchField.xPosition;
 			int elementY = this.searchField.yPosition;
 			if (mouseX >= elementX && mouseX <= elementX + this.searchField.width && mouseY >= elementY && mouseY <= elementY + this.searchField.height) {
-				if(mouseButton == 1 || GuiScreen.isShiftKeyDown()){
+				if (mouseButton == 1 || GuiScreen.isShiftKeyDown()) {
 					this.searchField.setText("");
 				}
 				this.searchField.setFocused(true);
@@ -519,29 +521,24 @@ public class GuiStorageCore extends GuiContainer {
 		return null;
 	}
 
-
-
 	@Override
 	public void handleMouseInput() throws IOException {
 
 		super.handleMouseInput();
 		int i = Mouse.getEventDWheel();
 
-		if (i != 0)
-		{
+		if (i != 0) {
 			int j = this.tileEntity.inventory.slotCount() / 9 - this.rowsVisible() + 1;
 
-			if (i > 0)
-			{
+			if (i > 0) {
 				i = 1;
 			}
 
-			if (i < 0)
-			{
+			if (i < 0) {
 				i = -1;
 			}
 
-			this.currentScroll = (float)(this.currentScroll - (double)i / (double)j);
+			this.currentScroll = (float) (this.currentScroll - (double) i / (double) j);
 			this.currentScroll = MathHelper.clamp_float(this.currentScroll, 0.0F, 1.0F);
 			scrollTo(this.currentScroll);
 		}
@@ -550,9 +547,8 @@ public class GuiStorageCore extends GuiContainer {
 
 	private void scrollTo(float scroll) {
 		int i = (this.tileEntity.inventory.slotCount() + 8) / 9 - this.rowsVisible();
-		int j = (int)(scroll * i + 0.5D);
-		if (j < 0)
-		{
+		int j = (int) (scroll * i + 0.5D);
+		if (j < 0) {
 			j = 0;
 		}
 		this.scrollRow = j;

@@ -18,17 +18,16 @@ public class BlockAccessTerminal extends StorageMultiblock {
 	public BlockAccessTerminal() {
 		super("access_terminal", Material.IRON);
 	}
-	
+
 	/** Activate the core's gui from afar */
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-			TileEntityStorageCore core;
-			if((core = this.findCore(new BlockRef(this, pos.getX(), pos.getY(), pos.getZ()), worldIn, null)) != null) {
-				IBlockState state1 = worldIn.getBlockState(core.getPos());
-				BlockStorageCore block = (BlockStorageCore)state1.getBlock();
-				return block.onBlockActivated(worldIn, core.getPos(), state1, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
-			}
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		TileEntityStorageCore core;
+		if ((core = this.findCore(new BlockRef(this, pos.getX(), pos.getY(), pos.getZ()), worldIn, null)) != null) {
+			IBlockState state1 = worldIn.getBlockState(core.getPos());
+			BlockStorageCore block = (BlockStorageCore) state1.getBlock();
+			return block.onBlockActivated(worldIn, core.getPos(), state1, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+		}
 		return false;
 	}
 

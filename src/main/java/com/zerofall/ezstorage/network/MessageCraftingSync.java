@@ -23,14 +23,14 @@ import com.zerofall.ezstorage.util.JointList;
 
 /** A message to sync the crafting matrix to the client */
 public class MessageCraftingSync implements IMessage {
-	
+
 	private List<ItemStack> stackList;
-	
+
 	public MessageCraftingSync() {}
-	
+
 	public MessageCraftingSync(InventoryCrafting matrix) {
 		stackList = new JointList();
-		for(int i = 0; i < matrix.getSizeInventory(); i++) {
+		for (int i = 0; i < matrix.getSizeInventory(); i++) {
 			stackList.add(matrix.getStackInSlot(i));
 		}
 	}
@@ -41,7 +41,7 @@ public class MessageCraftingSync implements IMessage {
 		int count = tag.getInteger("count");
 		NBTTagList list = tag.getTagList("items", 10);
 		stackList = new JointList();
-		for(int i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) {
 			NBTTagCompound item = list.getCompoundTagAt(i);
 			stackList.add(ItemStack.loadItemStackFromNBT(item));
 		}
@@ -52,36 +52,39 @@ public class MessageCraftingSync implements IMessage {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setInteger("count", stackList.size());
 		NBTTagList list = new NBTTagList();
-		for(ItemStack s : stackList) {
+		for (ItemStack s : stackList) {
 			NBTTagCompound nTag = new NBTTagCompound();
-			if(s != null) s.writeToNBT(nTag);
+			if (s != null)
+				s.writeToNBT(nTag);
 			list.appendTag(nTag);
 		}
 		tag.setTag("items", list);
 		ByteBufUtils.writeTag(buf, tag);
 	}
-	
+
 	/** Update the clientside crafting matrix */
 	public static class Handler implements IMessageHandler<MessageCraftingSync, IMessage> {
+
 		@Override
 		public IMessage onMessage(MessageCraftingSync message, MessageContext ctx) {
 			EntityPlayer player = EZStorage.proxy.getClientPlayer();
-			if(player != null) Minecraft.getMinecraft().addScheduledTask(() -> handle(player, message));
+			if (player != null)
+				Minecraft.getMinecraft().addScheduledTask(() -> handle(player, message));
 			return null; // end of message chain
 		}
-		
+
 		/** Do the crafting sync */
 		@SideOnly(Side.CLIENT)
 		public void handle(EntityPlayer player, MessageCraftingSync message) {
-			if(player.openContainer != null && player.openContainer instanceof ContainerStorageCoreCrafting) {
-				InventoryCrafting craft = ((ContainerStorageCoreCrafting)player.openContainer).craftMatrix;
+			if (player.openContainer != null && player.openContainer instanceof ContainerStorageCoreCrafting) {
+				InventoryCrafting craft = ((ContainerStorageCoreCrafting) player.openContainer).craftMatrix;
 				int i = 0;
-				for(ItemStack s : message.stackList) {
+				for (ItemStack s : message.stackList) {
 					craft.setInventorySlotContents(i++, s);
 				}
 			}
 		}
-		
+
 	}
 
 }

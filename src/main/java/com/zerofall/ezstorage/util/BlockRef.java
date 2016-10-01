@@ -5,10 +5,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class BlockRef {
-	
+
 	public BlockPos pos;
 	public Block block;
-	
+
 	public BlockRef(Block block, int x, int y, int z) {
 		this.block = block;
 		this.pos = new BlockPos(x, y, z);
@@ -24,8 +24,7 @@ public class BlockRef {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((block == null) ? 0 : block.hashCode());
-		result = prime * result
-				+ ((pos == null) ? 0 : pos.hashCode());
+		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
 		return result;
 	}
 

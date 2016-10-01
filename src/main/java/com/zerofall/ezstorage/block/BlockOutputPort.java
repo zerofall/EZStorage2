@@ -8,14 +8,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class BlockOutputPort extends EZBlockContainer {
-	
+
 	public BlockOutputPort() {
 		super("output_port", Material.IRON);
 	}
-	
+
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityEjectPort();
 	}
-	
+
 }

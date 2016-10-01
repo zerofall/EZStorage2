@@ -11,12 +11,12 @@ import mezz.jei.api.JEIPlugin;
 /** Support for JEI things */
 @JEIPlugin
 public class EZStoragePlugin implements IModPlugin {
-	
+
 	public static IItemListOverlay jeiOverlay;
 
 	@Override
 	public void register(IModRegistry registry) {
-		if(EZConfig.jeiIntegration) {
+		if (EZConfig.jeiIntegration) {
 			RecipeTransferHandler helper = new RecipeTransferHandler();
 			registry.getRecipeTransferRegistry().addRecipeTransferHandler(helper);
 			JEIUtils.jeiLoaded = true;

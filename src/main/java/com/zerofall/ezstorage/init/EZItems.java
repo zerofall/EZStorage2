@@ -14,34 +14,33 @@ import com.zerofall.ezstorage.util.JointList;
 
 /** Mod items */
 public class EZItems {
-	
+
 	private static JointList<IRegistryItem> items;
-	
+
 	public static void mainRegistry() {
 		items = new JointList();
 		init();
 		register();
 	}
-	
+
 	public static EZItem key;
-	
+
 	private static void init() {
-		items.join(
-			key = new ItemKey()
-		);
-		if(!EZConfig.enableSecurity) items.remove(key); // security disabled
+		items.join(key = new ItemKey());
+		if (!EZConfig.enableSecurity)
+			items.remove(key); // security disabled
 	}
-	
+
 	private static void register() {
-		for(IRegistryItem item : items) {
-			GameRegistry.registerItem((Item)item, item.getShorthandName());
+		for (IRegistryItem item : items) {
+			GameRegistry.registerItem((Item) item, item.getShorthandName());
 		}
 	}
-	
+
 	/** Register model information */
 	@SideOnly(Side.CLIENT)
 	public static void registerRenders() {
-		for(IRegistryItem item : items) {
+		for (IRegistryItem item : items) {
 			item.registerRender(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
 		}
 	}

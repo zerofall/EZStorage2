@@ -8,7 +8,7 @@ public class SlotExtractList extends Slot {
 	public SlotExtractList(InventoryExtractList inventoryIn, int index, int xPosition, int yPosition) {
 		super(inventoryIn, index, xPosition, yPosition);
 	}
-	
+
 	// make sure the stack doesn't show zero items (visual only)
 	@Override
 	public ItemStack getStack() {
@@ -16,7 +16,7 @@ public class SlotExtractList extends Slot {
 		try {
 			s = super.getStack().copy();
 			s.stackSize = 1;
-		} catch(NullPointerException e) {}
+		} catch (NullPointerException e) {}
 		return s;
 	}
 
