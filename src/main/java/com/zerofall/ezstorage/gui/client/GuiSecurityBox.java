@@ -65,7 +65,8 @@ public class GuiSecurityBox extends GuiContainer {
 		if (parButton.id < nButtons) {
 			this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, parButton.id);
 		} else { // add a whitelist entry
-			EZNetwork.sendSecurePlayerMsg(tileSecure.getWorld(), tileSecure.getPos(), new SecurePlayer(nearbyPlayers.get(parButton.id - nButtons)), true);
+			EZNetwork.sendSecurePlayerMsg(tileSecure.getWorld(), tileSecure.getPos(), new SecurePlayer(nearbyPlayers.get(parButton.id - nButtons)),
+					true);
 		}
 	}
 

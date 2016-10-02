@@ -8,7 +8,6 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.gui.ingredients.GuiIngredient;
-import mezz.jei.util.StackHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -35,11 +34,12 @@ public class RecipeTransferHandler implements IRecipeTransferHandler {
 	}
 
 	@Override
-	public IRecipeTransferError transferRecipe(Container container, IRecipeLayout recipeLayout, EntityPlayer player, boolean maxTransfer, boolean doTransfer) {
+	public IRecipeTransferError transferRecipe(Container container, IRecipeLayout recipeLayout, EntityPlayer player, boolean maxTransfer,
+			boolean doTransfer) {
 		if (doTransfer) {
 			Map<Integer, GuiIngredient<ItemStack>> inputs = (Map<Integer, GuiIngredient<ItemStack>>) recipeLayout.getItemStacks().getGuiIngredients();
 			NBTTagCompound recipe = new NBTTagCompound();
-			StackHelper helper = new StackHelper();
+			JEIStackHelper helper = new JEIStackHelper();
 			for (Slot slot : container.inventorySlots) {
 				if (slot.inventory instanceof InventoryCrafting) {
 					GuiIngredient<ItemStack> ingredient = inputs.get(slot.getSlotIndex() + 1);

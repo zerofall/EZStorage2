@@ -6,7 +6,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-/** Like an ItemStack, but with a discrete count */
+/** Like an ItemStack, but with a discrete, mostly unbounded item count */
 public class ItemGroup {
 
 	public ItemStack itemStack;
@@ -27,7 +27,7 @@ public class ItemGroup {
 
 	@Override
 	public String toString() {
-		return itemStack.getDisplayName() + ":" + count;
+		return EZStorageUtils.getStackDisplayName(itemStack) + ":" + count;
 	}
 
 	/** Sort modes */
@@ -93,8 +93,8 @@ public class ItemGroup {
 			if (l1 != l2) {
 				return l2.compareTo(l1);
 			} else {
-				String n1 = EZStorageUtils.getItemStackDisplayName(group1.itemStack);
-				String n2 = EZStorageUtils.getItemStackDisplayName(group2.itemStack);
+				String n1 = EZStorageUtils.getStackDisplayName(group1.itemStack);
+				String n2 = EZStorageUtils.getStackDisplayName(group2.itemStack);
 				return n1.compareTo(n2);
 			}
 		}
@@ -110,8 +110,8 @@ public class ItemGroup {
 			if (l1 != l2) {
 				return l1.compareTo(l2);
 			} else {
-				String n1 = EZStorageUtils.getItemStackDisplayName(group1.itemStack);
-				String n2 = EZStorageUtils.getItemStackDisplayName(group2.itemStack);
+				String n1 = EZStorageUtils.getStackDisplayName(group1.itemStack);
+				String n2 = EZStorageUtils.getStackDisplayName(group2.itemStack);
 				return n2.compareTo(n1);
 			}
 		}
@@ -122,8 +122,8 @@ public class ItemGroup {
 
 		@Override
 		public int compare(ItemGroup group1, ItemGroup group2) {
-			String n1 = EZStorageUtils.getItemStackDisplayName(group1.itemStack);
-			String n2 = EZStorageUtils.getItemStackDisplayName(group2.itemStack);
+			String n1 = EZStorageUtils.getStackDisplayName(group1.itemStack);
+			String n2 = EZStorageUtils.getStackDisplayName(group2.itemStack);
 			if (!n1.equals(n2)) {
 				return n1.compareTo(n2);
 			} else {
@@ -139,8 +139,8 @@ public class ItemGroup {
 
 		@Override
 		public int compare(ItemGroup group1, ItemGroup group2) {
-			String n1 = EZStorageUtils.getItemStackDisplayName(group1.itemStack);
-			String n2 = EZStorageUtils.getItemStackDisplayName(group2.itemStack);
+			String n1 = EZStorageUtils.getStackDisplayName(group1.itemStack);
+			String n2 = EZStorageUtils.getStackDisplayName(group2.itemStack);
 			if (!n1.equals(n2)) {
 				return n2.compareTo(n1);
 			} else {

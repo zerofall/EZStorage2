@@ -6,6 +6,7 @@ import com.zerofall.ezstorage.ref.RefStrings;
 
 import net.minecraftforge.common.config.Configuration;
 
+/** The config settings */
 public class EZConfig {
 
 	public static int basicCapacity;
@@ -32,7 +33,8 @@ public class EZConfig {
 		superCapacity = config.getInt("Super Storage Capacity", OPTIONS, 20000, 100, 100000, "Super");
 		ultraCapacity = config.getInt("Ultra Storage Capacity", OPTIONS, 80000, 100, 400000, "Ultra");
 		hyperCapacity = config.getInt("Hyper Storage Capacity", OPTIONS, 400000, 100, 4000000, "Hyper");
-		classicRecipes = config.getBoolean("Enable Classic Recipes", OPTIONS, false, "If true, classic recipes (not using blank boxes) will be used.");
+		classicRecipes = config.getBoolean("Enable Classic Recipes", OPTIONS, false,
+				"If true, classic recipes (not using blank boxes) will be used.");
 		toughHyper = config.getBoolean("Harder Hyper Recipe", OPTIONS, true, "If true, the hyper storage box will use 2 nether stars instead of 1.");
 		enableTerminal = config.getBoolean("Enable Access Terminal", OPTIONS, true, "Should the access terminal be enabled?");
 		enableSecurity = config.getBoolean("Enable Security", OPTIONS, true, "Should the security features be enabled?");

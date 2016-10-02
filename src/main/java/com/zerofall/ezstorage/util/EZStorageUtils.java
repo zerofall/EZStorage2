@@ -39,7 +39,7 @@ public class EZStorageUtils {
 	}
 
 	/** Gets an ItemStack's display name, compatible with common code */
-	public static String getItemStackDisplayName(ItemStack stack) {
+	public static String getStackDisplayName(ItemStack stack) {
 		try { // try the default display name getter
 			return stack.getDisplayName();
 		} catch (Exception e) { // if any problem occurs, go to fallback translation

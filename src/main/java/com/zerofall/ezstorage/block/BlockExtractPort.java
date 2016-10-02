@@ -26,7 +26,8 @@ public class BlockExtractPort extends EZBlockContainer {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem,
+			EnumFacing side, float hitX, float hitY, float hitZ) {
 		playerIn.openGui(EZStorage.instance, GuiHandler.EXTRACT, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}

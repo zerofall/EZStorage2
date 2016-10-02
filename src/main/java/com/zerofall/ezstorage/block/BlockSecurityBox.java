@@ -43,7 +43,8 @@ public class BlockSecurityBox extends EZBlockContainer {
 
 	/** Destroy the block / open its gui */
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem,
+			EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileEntitySecurityBox tile = (TileEntitySecurityBox) worldIn.getTileEntity(pos);
 		if (tile.isPlayerAllowed(playerIn)) { // allowed player actions:
 			if (heldItem != null && heldItem.getItem() == EZItems.key) { // try
