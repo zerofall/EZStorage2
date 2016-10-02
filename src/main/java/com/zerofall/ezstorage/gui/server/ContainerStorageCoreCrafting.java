@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
 
+/** The crafting-expansion storage core container */
 public class ContainerStorageCoreCrafting extends ContainerStorageCore {
 
 	public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);

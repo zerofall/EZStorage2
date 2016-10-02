@@ -31,7 +31,8 @@ public interface IRegistryBlock extends IRegistryBase {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public default void registerRender(ItemModelMesher mesher) {
-		mesher.register(Item.getItemFromBlock((Block) this), 0, new ModelResourceLocation(RefStrings.MODID + ":" + this.getShorthandName(), "inventory"));
+		mesher.register(Item.getItemFromBlock((Block) this), 0,
+				new ModelResourceLocation(RefStrings.MODID + ":" + this.getShorthandName(), "inventory"));
 	}
 
 }

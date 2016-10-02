@@ -59,7 +59,8 @@ public class TileEntitySecurityBox extends TileEntityBase {
 		}
 
 		// allowed due to op level 2 override
-		if (EZConfig.enableOpOverride && !p.worldObj.isRemote && p.capabilities.isCreativeMode && SecurityOverrideHelper.isPlayerOpLv2((EntityPlayerMP) p)) {
+		if (EZConfig.enableOpOverride && !p.worldObj.isRemote && p.capabilities.isCreativeMode
+				&& SecurityOverrideHelper.isPlayerOpLv2((EntityPlayerMP) p)) {
 			op = (EntityPlayerMP) p;
 			sendOpNotification = true;
 			return true;

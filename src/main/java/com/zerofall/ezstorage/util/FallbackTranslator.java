@@ -5,7 +5,8 @@ import net.minecraft.util.text.translation.LanguageMap;
 /** A translator to use in case of exceptions in sorting */
 public class FallbackTranslator {
 
-	/** A StringTranslate instance using the hardcoded default locale (en_US). Used as a fallback in case the shared StringTranslate singleton instance fails to translate a key. */
+	/** A StringTranslate instance using the hardcoded default locale (en_US). Used as a fallback in case the shared StringTranslate singleton
+	 * instance fails to translate a key. */
 	private static final LanguageMap fallbackTranslator = new LanguageMap();
 
 	/** Translates a Stat name */

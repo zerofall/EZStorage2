@@ -201,7 +201,8 @@ public class GuiStorageCore extends GuiContainer {
 			GL11.glPushMatrix();
 			double scale = 0.7;
 			GL11.glScaled(scale, scale, scale);
-			this.fontRendererObj.drawSplitString(tileEntity.sortMode.getDesc(), (int) (-100 / scale), (int) (42 / scale), (int) (96 / scale), 4210752);
+			this.fontRendererObj.drawSplitString(tileEntity.sortMode.getDesc(), (int) (-100 / scale), (int) (42 / scale), (int) (96 / scale),
+					4210752);
 			GL11.glPopMatrix();
 		}
 
@@ -480,7 +481,8 @@ public class GuiStorageCore extends GuiContainer {
 		} else {
 			int elementX = this.searchField.xPosition;
 			int elementY = this.searchField.yPosition;
-			if (mouseX >= elementX && mouseX <= elementX + this.searchField.width && mouseY >= elementY && mouseY <= elementY + this.searchField.height) {
+			if (mouseX >= elementX && mouseX <= elementX + this.searchField.width && mouseY >= elementY
+					&& mouseY <= elementY + this.searchField.height) {
 				if (mouseButton == 1 || GuiScreen.isShiftKeyDown()) {
 					this.searchField.setText("");
 				}

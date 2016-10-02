@@ -21,7 +21,8 @@ public class BlockAccessTerminal extends StorageMultiblock {
 
 	/** Activate the core's gui from afar */
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem,
+			EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileEntityStorageCore core;
 		if ((core = this.findCore(new BlockRef(this, pos.getX(), pos.getY(), pos.getZ()), worldIn, null)) != null) {
 			IBlockState state1 = worldIn.getBlockState(core.getPos());

@@ -223,7 +223,8 @@ public class EZInventory {
 		}
 		if (stack1.getItem() == stack2.getItem()) {
 			if (stack1.getItemDamage() == stack2.getItemDamage()) {
-				if ((!stack1.hasTagCompound() && !stack2.hasTagCompound()) || (stack1.hasTagCompound() && stack1.getTagCompound().equals(stack2.getTagCompound()))) {
+				if ((!stack1.hasTagCompound() && !stack2.hasTagCompound())
+						|| (stack1.hasTagCompound() && stack1.getTagCompound().equals(stack2.getTagCompound()))) {
 					return true;
 				}
 			}

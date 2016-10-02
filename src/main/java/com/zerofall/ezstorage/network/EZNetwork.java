@@ -31,7 +31,8 @@ public class EZNetwork {
 
 	/** Send a message to sync a security box to the client(s) */
 	public static void sendSecureSyncMsg(World world, BlockPos pos, List<SecurePlayer> whitelist) {
-		net.sendToAllAround(new MessageSecureSync(pos, whitelist), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), maxDistance));
+		net.sendToAllAround(new MessageSecureSync(pos, whitelist),
+				new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), maxDistance));
 	}
 
 	/** Send an addition or removal request from client to server */

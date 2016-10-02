@@ -55,7 +55,8 @@ public class SecurityEvents {
 		TileEntitySecurityBox tile;
 		for (BlockRef b : blocks) {
 			if (b.block instanceof StorageMultiblock) {
-				if ((tile = EZStorageUtils.findSecurityBox(new BlockRef(b.block, b.pos.getX(), b.pos.getY(), b.pos.getZ()), e.getWorld(), null)) != null) {
+				if ((tile = EZStorageUtils.findSecurityBox(new BlockRef(b.block, b.pos.getX(), b.pos.getY(), b.pos.getZ()), e.getWorld(),
+						null)) != null) {
 					if (!tile.isPlayerAllowed(e.getPlayer()))
 						e.setCanceled(true); // cancel everything
 				}

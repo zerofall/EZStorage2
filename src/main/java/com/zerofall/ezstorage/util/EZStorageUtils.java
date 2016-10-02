@@ -1,10 +1,13 @@
 package com.zerofall.ezstorage.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
 
 import com.zerofall.ezstorage.block.BlockSecurityBox;
 import com.zerofall.ezstorage.block.StorageMultiblock;
@@ -17,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.oredict.OreDictionary;
 
 /** Useful stuff */
 public class EZStorageUtils {
@@ -39,7 +43,7 @@ public class EZStorageUtils {
 	}
 
 	/** Gets an ItemStack's display name, compatible with common code */
-	public static String getItemStackDisplayName(ItemStack stack) {
+	public static String getStackDisplayName(ItemStack stack) {
 		try { // try the default display name getter
 			return stack.getDisplayName();
 		} catch (Exception e) { // if any problem occurs, go to fallback translation

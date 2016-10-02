@@ -60,10 +60,12 @@ public class EZBlocks {
 	public static EZBlock security_box;
 
 	private static void init() {
-		blocks.join(blank_box = new BlockBlankBox(), storage_core = new BlockStorageCore(), storage_box = new BlockStorage(), condensed_storage_box = new BlockCondensedStorage(),
-				super_storage_box = new BlockSuperStorage(), ultra_storage_box = new BlockUltraStorage(), hyper_storage_box = new BlockHyperStorage(), input_port = new BlockInputPort(),
-				output_port = new BlockOutputPort(), extract_port = new BlockExtractPort(), crafting_box = new BlockCraftingBox(), search_box = new BlockSearchBox(), sort_box = new BlockSortBox(),
-				access_terminal = new BlockAccessTerminal(), security_box = new BlockSecurityBox());
+		blocks.join(blank_box = new BlockBlankBox(), storage_core = new BlockStorageCore(), storage_box = new BlockStorage(),
+				condensed_storage_box = new BlockCondensedStorage(), super_storage_box = new BlockSuperStorage(),
+				ultra_storage_box = new BlockUltraStorage(), hyper_storage_box = new BlockHyperStorage(), input_port = new BlockInputPort(),
+				output_port = new BlockOutputPort(), extract_port = new BlockExtractPort(), crafting_box = new BlockCraftingBox(),
+				search_box = new BlockSearchBox(), sort_box = new BlockSortBox(), access_terminal = new BlockAccessTerminal(),
+				security_box = new BlockSecurityBox());
 		if (!EZConfig.enableTerminal)
 			blocks.remove(access_terminal); // terminal disabled
 		if (!EZConfig.enableSecurity)
