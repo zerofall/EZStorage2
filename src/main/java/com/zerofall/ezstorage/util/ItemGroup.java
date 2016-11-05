@@ -4,30 +4,43 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 /** Like an ItemStack, but with a discrete, mostly unbounded item count */
 public class ItemGroup {
 
 	public ItemStack itemStack;
 	public long count;
+	public String name;
 
 	// whether or not this ItemGroup is highlighted
 	public boolean highlighted;
 
-	public ItemGroup(ItemStack itemStack) {
+	public ItemGroup(@Nonnull ItemStack itemStack) {
 		this.itemStack = itemStack;
 		this.count = itemStack.stackSize;
+		this.name = itemStack.getItem().getRegistryName().toString();
 	}
-
-	public ItemGroup(ItemStack itemStack, long count) {
+	
+	public ItemGroup(@Nullable ItemStack itemStack, long count) {
 		this.itemStack = itemStack;
 		this.count = count;
+		this.name = itemStack.getItem().getRegistryName().toString();
+	}
+
+	public ItemGroup(@Nullable ItemStack itemStack, long count, String name) {
+		this.itemStack = itemStack;
+		this.count = count;
+		this.name = name;
 	}
 
 	@Override
 	public String toString() {
-		return EZStorageUtils.getStackDisplayName(itemStack) + ":" + count;
+		return "ItemGroup[" + name + " (" + count + ")]";
 	}
 
 	/** Sort modes */
