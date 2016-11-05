@@ -2,15 +2,9 @@ package com.zerofall.ezstorage.tileentity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.text.TextComponentString;
 
 import com.zerofall.ezstorage.EZStorage;
 import com.zerofall.ezstorage.block.BlockCraftingBox;
@@ -25,12 +19,21 @@ import com.zerofall.ezstorage.block.StorageMultiblock;
 import com.zerofall.ezstorage.gui.server.InventoryExtractList;
 import com.zerofall.ezstorage.init.EZBlocks;
 import com.zerofall.ezstorage.network.MessageFilterUpdate;
+import com.zerofall.ezstorage.ref.Log;
 import com.zerofall.ezstorage.tileentity.TileEntityExtractPort.EnumListMode;
 import com.zerofall.ezstorage.util.BlockRef;
 import com.zerofall.ezstorage.util.EZInventory;
 import com.zerofall.ezstorage.util.EZStorageUtils;
 import com.zerofall.ezstorage.util.ItemGroup;
 import com.zerofall.ezstorage.util.ItemGroup.EnumSortMode;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.common.Loader;
 
 /** The storage core tile entity */
 public class TileEntityStorageCore extends TileEntityBase {
@@ -44,6 +47,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 	public boolean hasSearchBox = false;
 	public EnumSortMode sortMode = EnumSortMode.COUNT;
 	public boolean hasSortBox = false;
+	public boolean jeiLink = false;
 
 	public TileEntityStorageCore() {
 		inventory = new EZInventory(this);
@@ -136,7 +140,8 @@ public class TileEntityStorageCore extends TileEntityBase {
 				int j = tag.getByte("Index") & 255;
 				ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
 				long count = tag.getLong("InternalCount");
-				ItemGroup group = new ItemGroup(stack, count);
+				String name = tag.getString("id");
+				ItemGroup group = new ItemGroup(stack, count, name);
 				this.inventory.inventory.add(group);
 			}
 		}
@@ -146,6 +151,31 @@ public class TileEntityStorageCore extends TileEntityBase {
 		this.disabled = nbt.getBoolean("isDisabled");
 		this.sortMode = EnumSortMode.fromInt(nbt.getInteger("sortMode"));
 		this.hasSortBox = nbt.getBoolean("hasSortBox");
+	}
+	
+
+	// process things on first-tick here only
+	@Override
+	public void update() {
+		if (!firstTick) {
+			if(worldObj != null) {
+				firstTick = true;
+				scanMultiblock(); // scan the multiblock
+				scanInventory(); // make sure the inventory has valid items
+			}
+		}
+	}
+	
+	// remove invalid inventory items as needed
+	public void scanInventory() {
+		Iterator<ItemGroup> iterator = inventory.inventory.iterator();
+		while(iterator.hasNext()) {
+			ItemGroup g = iterator.next();
+			if(g.itemStack == null || g.itemStack.getItem() == null) {
+				Log.logger.warn("Removing " + g + " due to block/item removal!");
+				iterator.remove();
+			}
+		}
 	}
 
 	/** Scans the multiblock structure for valid blocks */
@@ -231,17 +261,6 @@ public class TileEntityStorageCore extends TileEntityBase {
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public void update() {
-		if (!firstTick) {
-			if (worldObj != null) {
-				firstTick = true;
-				scanMultiblock();
-			}
-		}
-
 	}
 
 }

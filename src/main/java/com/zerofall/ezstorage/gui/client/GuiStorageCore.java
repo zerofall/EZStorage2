@@ -55,6 +55,7 @@ public class GuiStorageCore extends GuiContainer {
 	private static final ResourceLocation searchBar = new ResourceLocation("textures/gui/container/creative_inventory/tab_item_search.png");
 	private static final ResourceLocation sortGui = new ResourceLocation(RefStrings.MODID, "textures/gui/customGui.png");
 	private float currentScroll;
+	
 	private GuiTextField searchField;
 	private GuiCheckBox jeiSearchToggle;
 
@@ -79,7 +80,7 @@ public class GuiStorageCore extends GuiContainer {
 		this.searchField.setCanLoseFocus(true);
 		this.searchField.setFocused(true);
 		this.searchField.setText("");
-		this.jeiSearchToggle = new GuiCheckBoxCustom(0, this.guiLeft + 83, this.guiTop + 4, "\u2714", false);
+		this.jeiSearchToggle = new GuiCheckBoxCustom(0, this.guiLeft + 83, this.guiTop + 4, "\u2714", tileEntity.jeiLink);
 		this.jeiSearchToggle.visible = false;
 
 		if (JEIUtils.isJEIAvailable()) {
@@ -263,13 +264,15 @@ public class GuiStorageCore extends GuiContainer {
 		this.itemRender.zLevel = 0.0F;
 	}
 
-	/** Send a packet to the server when the sort mode is toggled or the crafting matrix is cleared */
+	/** Perform various tasks when buttons are pushed */
 	@Override
 	protected void actionPerformed(GuiButton parButton) {
 		if (parButton == modeToggle) {
 			this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, 0);
 		} else if (parButton == craftClear) {
 			this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, 1);
+		} else if (parButton == jeiSearchToggle) {
+			tileEntity.jeiLink = jeiSearchToggle.isChecked(); // update the checked status (clientside)
 		}
 	}
 
