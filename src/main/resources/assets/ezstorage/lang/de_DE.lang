@@ -1,0 +1,24 @@
+# language file
+
+# creative tab
+itemGroup.EZStorage=EZStorage
+
+# blocks
+tile.blank_box.name=Leere Kiste
+tile.storage_core.name=Lagerungskern
+tile.storage_box.name=Lagerungskiste
+tile.condensed_storage_box.name=Verdichtete Lagerungskiste
+tile.super_storage_box.name=Super-Lagerungskiste
+tile.ultra_storage_box.name=Ultra-Lagerungskiste
+tile.hyper_storage_box.name=Hyper-Lagerungskiste
+tile.input_port.name=Eingangsanschluss
+tile.output_port.name=Ausgangsanschluss
+tile.extract_port.name=Extraktionsanschluss
+tile.crafting_box.name=Werkkiste
+tile.search_box.name=Suchkiste
+tile.sort_box.name=Sortierkiste
+tile.access_terminal.name=Zugriffsstation
+tile.security_box.name=Sicherheitskiste
+
+# items
+item.key.name=EZ-Schlüssel
