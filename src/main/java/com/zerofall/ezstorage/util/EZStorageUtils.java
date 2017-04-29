@@ -51,6 +51,8 @@ public class EZStorageUtils {
 	/** Get a block's neighbors */
 	public static List<BlockRef> getNeighbors(int xCoord, int yCoord, int zCoord, World world) {
 		List<BlockRef> blockList = new ArrayList<BlockRef>();
+		
+		// build the list
 		blockList.add(new BlockRef(world.getBlockState(new BlockPos(xCoord - 1, yCoord, zCoord)).getBlock(), xCoord - 1, yCoord, zCoord));
 		blockList.add(new BlockRef(world.getBlockState(new BlockPos(xCoord + 1, yCoord, zCoord)).getBlock(), xCoord + 1, yCoord, zCoord));
 		blockList.add(new BlockRef(world.getBlockState(new BlockPos(xCoord, yCoord - 1, zCoord)).getBlock(), xCoord, yCoord - 1, zCoord));
@@ -58,6 +60,15 @@ public class EZStorageUtils {
 		blockList.add(new BlockRef(world.getBlockState(new BlockPos(xCoord, yCoord, zCoord - 1)).getBlock(), xCoord, yCoord, zCoord - 1));
 		blockList.add(new BlockRef(world.getBlockState(new BlockPos(xCoord - 1, yCoord, zCoord)).getBlock(), xCoord - 1, yCoord, zCoord));
 		blockList.add(new BlockRef(world.getBlockState(new BlockPos(xCoord, yCoord, zCoord + 1)).getBlock(), xCoord, yCoord, zCoord + 1));
+		
+		// load each block's chunk if not loaded
+		for(BlockRef r : blockList) {
+			if(!world.isBlockLoaded(r.pos)) {
+				world.getChunkFromBlockCoords(r.pos); // loads the chunk
+			}
+		}
+		
+		// return the list
 		return blockList;
 	}
 

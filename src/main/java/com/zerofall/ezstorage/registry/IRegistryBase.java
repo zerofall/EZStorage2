@@ -16,6 +16,6 @@ public interface IRegistryBase {
 
 	/** register this item with the renderer */
 	@SideOnly(Side.CLIENT)
-	public void registerRender(ItemModelMesher mesher);
+	public void registerRender();
 
 }

@@ -10,7 +10,7 @@ import com.zerofall.ezstorage.EZStorage;
 import com.zerofall.ezstorage.block.BlockCraftingBox;
 import com.zerofall.ezstorage.block.BlockExtractPort;
 import com.zerofall.ezstorage.block.BlockInputPort;
-import com.zerofall.ezstorage.block.BlockOutputPort;
+import com.zerofall.ezstorage.block.BlockEjectPort;
 import com.zerofall.ezstorage.block.BlockSearchBox;
 import com.zerofall.ezstorage.block.BlockSortBox;
 import com.zerofall.ezstorage.block.BlockStorage;
@@ -33,7 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.fml.common.Loader;
 
 /** The storage core tile entity */
 public class TileEntityStorageCore extends TileEntityBase {
@@ -48,6 +47,8 @@ public class TileEntityStorageCore extends TileEntityBase {
 	public EnumSortMode sortMode = EnumSortMode.COUNT;
 	public boolean hasSortBox = false;
 	public boolean jeiLink = false;
+	
+	private int robinIndex = 0;
 
 	public TileEntityStorageCore() {
 		inventory = new EZInventory(this);
@@ -60,14 +61,17 @@ public class TileEntityStorageCore extends TileEntityBase {
 	}
 
 	/** Retrieves the first applicable stack in the inventory with a set amount */
-	public ItemStack getFirstStack(int size, EnumListMode mode, InventoryExtractList list) {
+	public ItemStack getFirstStack(int size, EnumListMode mode, boolean roundRobin, InventoryExtractList list) {
+		// make sure the round robin mode resets properly
+		if(robinIndex >= this.inventory.slotCount()) robinIndex = 0;
+		
 		if (this.inventory.inventory.isEmpty())
 			return null; // make sure the inventory isn't empty
 		switch (mode) {
 		case IGNORE: // get the first item no matter what
-			return this.inventory.getItemsAt(0, 0, size);
+			return this.inventory.getItemsAt(roundRobin ? robinIndex++ : 0, 0, size);
 		default: // find a matching item
-			return this.inventory.getItemsExtractList(mode, list, size);
+			return this.inventory.getItemsExtractList(mode, roundRobin, list, size);
 		}
 	}
 
@@ -83,7 +87,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 			ret.stackSize = count;
 			return ret;
 		default: // peek a matching item
-			return this.inventory.peekItemsExtractList(mode, list);
+			return this.inventory.peekItemsExtractList(mode, false, list);
 		}
 	}
 
@@ -209,7 +213,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 						TileEntityInputPort entity = (TileEntityInputPort) this.worldObj.getTileEntity(blockRef.pos);
 						entity.core = this;
 					}
-					if (blockRef.block instanceof BlockOutputPort) {
+					if (blockRef.block instanceof BlockEjectPort) {
 						TileEntityEjectPort entity = (TileEntityEjectPort) this.worldObj.getTileEntity(blockRef.pos);
 						entity.core = this;
 					}

@@ -2,6 +2,7 @@ package com.zerofall.ezstorage.gui.server;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
@@ -48,12 +49,26 @@ public class ContainerExtractPort extends Container {
 
 	@Override
 	public boolean enchantItem(EntityPlayer player, int action) {
-		if (action == 0) {
+		boolean update = false;
+		if(action == 0) {
 			tileExtract.listMode = tileExtract.listMode.rotateMode();
+			update = true;
+		}
+		if(action >= 10) {
+			tileExtract.roundRobin = (action % 10) > 0;
+			update = true;
+		}
+		if(update) {
 			EZStorageUtils.notifyBlockUpdate(tileExtract);
 			tileExtract.markDirty();
 		}
 		return false;
+	}
+	
+	@Override
+	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+		tileExtract.markDirty();
+		return super.slotClick(slotId, dragType, clickTypeIn, player);
 	}
 
 	/** Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that. */

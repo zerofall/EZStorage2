@@ -79,7 +79,7 @@ public class ContainerStorageCoreCrafting extends ContainerStorageCore {
 				for (int i = 0; i < itemstack1.getMaxStackSize(); i++) {
 
 					if (slotObject.getHasStack() && slotObject.getStack().isItemEqual(itemstack1)) {
-						if (crafting >= maxStackSize) {
+						if (crafting > maxStackSize) {
 							return null;
 						}
 						itemstack1 = slotObject.getStack();
@@ -126,15 +126,12 @@ public class ContainerStorageCoreCrafting extends ContainerStorageCore {
 		// if (clickTypeIn == ClickType.QUICK_CRAFT) {
 		if (slotId >= 0 && slotId < inventorySlots.size()) {
 			Slot slotObject = inventorySlots.get(slotId);
-			if (slotObject != null && slotObject instanceof SlotCrafting) { // user
-																			// clicked
-																			// on
-																			// result
-																			// slot
+			if (slotObject != null && slotObject instanceof SlotCrafting) { // user clicked on result slot
 				ItemStack[] recipe = new ItemStack[9];
 				for (int i = 0; i < 9; i++) {
 					recipe[i] = this.craftMatrix.getStackInSlot(i);
 				}
+				
 				ItemStack result = super.slotClick(slotId, dragType, clickTypeIn, player);
 				if (result != null) {
 					tryToPopulateCraftingGrid(recipe, player);

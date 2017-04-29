@@ -13,7 +13,6 @@ import com.zerofall.ezstorage.util.BlockRef;
 public class TileEntityInputPort extends TileEntityItemHandler {
 
 	private ItemStack[] inv = new ItemStack[1];
-	public TileEntityStorageCore core;
 
 	@Override
 	public boolean hasCustomName() {
@@ -125,6 +124,7 @@ public class TileEntityInputPort extends TileEntityItemHandler {
 
 	@Override
 	public void update() {
+		super.update();
 
 		if (this.core != null) {
 			ItemStack stack = this.inv[0];

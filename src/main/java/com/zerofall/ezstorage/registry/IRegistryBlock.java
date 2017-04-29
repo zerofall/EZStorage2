@@ -1,14 +1,12 @@
 package com.zerofall.ezstorage.registry;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.zerofall.ezstorage.ref.RefStrings;
 
 /** Interface to help with block registration */
 public interface IRegistryBlock extends IRegistryBase {
@@ -30,9 +28,8 @@ public interface IRegistryBlock extends IRegistryBase {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public default void registerRender(ItemModelMesher mesher) {
-		mesher.register(Item.getItemFromBlock((Block) this), 0,
-				new ModelResourceLocation(RefStrings.MODID + ":" + this.getShorthandName(), "inventory"));
+	public default void registerRender() {
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock((Block)this), 0, new ModelResourceLocation(((Block)this).getRegistryName(), "inventory"));
 	}
 
 }

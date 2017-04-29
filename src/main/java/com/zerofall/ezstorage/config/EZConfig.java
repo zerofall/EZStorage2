@@ -20,6 +20,7 @@ public class EZConfig {
 	public static boolean enableSecurity;
 	public static boolean enableSearchModes;
 	public static boolean enableOpOverride;
+	public static boolean enableDolly;
 	public static boolean jeiIntegration;
 
 	public static void syncConfig() {
@@ -42,6 +43,9 @@ public class EZConfig {
 				"Should '$' in front of a term search ore dictionary names, '@' search mod ids and names, and '%' search creative tab names?");
 		enableOpOverride = config.getBoolean("Enable Op Override", OPTIONS, true,
 				"Should a server op with permission level 2+ in creative mode be able to override the security of systems on their server?");
+		enableDolly = config.getBoolean("Enable Dolly", OPTIONS, true,
+				"Should dollies, which can move storage cores (while respecting security), be enabled?");
+		
 		jeiIntegration = config.getBoolean("JEI Integration", OPTIONS, true, "Integrate " + RefStrings.NAME + " with JEI?");
 
 		if (config.hasChanged())

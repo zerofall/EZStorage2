@@ -9,7 +9,7 @@ import com.zerofall.ezstorage.registry.IRegistryItem;
 public abstract class EZItem extends Item implements IRegistryItem {
 
 	public EZItem(String name) {
-		this.setUnlocalizedName(name);
+		this.setRegistryName(name);
 		this.setCreativeTab(EZStorage.instance.creativeTab);
 	}
 

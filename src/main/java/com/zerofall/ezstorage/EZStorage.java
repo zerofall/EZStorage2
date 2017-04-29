@@ -1,16 +1,5 @@
 package com.zerofall.ezstorage;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-
 import com.zerofall.ezstorage.config.EZConfig;
 import com.zerofall.ezstorage.crafting.CraftingManager;
 import com.zerofall.ezstorage.events.CoreEvents;
@@ -24,6 +13,17 @@ import com.zerofall.ezstorage.ref.EZTab;
 import com.zerofall.ezstorage.ref.Log;
 import com.zerofall.ezstorage.ref.RefStrings;
 import com.zerofall.ezstorage.util.EZStorageUtils;
+
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 /** EZStorage main mod class */
 @Mod(modid = RefStrings.MODID, name = RefStrings.NAME, version = RefStrings.VERSION)
@@ -51,12 +51,12 @@ public class EZStorage {
 		nw = EZNetwork.registerNetwork();
 		MinecraftForge.EVENT_BUS.register(new CoreEvents());
 		MinecraftForge.EVENT_BUS.register(new SecurityEvents());
+		proxy.registerRenders();
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		CraftingManager.mainRegistry();
-		proxy.registerRenders();
 	}
 
 	@EventHandler

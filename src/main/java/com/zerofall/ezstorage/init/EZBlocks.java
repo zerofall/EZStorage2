@@ -1,19 +1,13 @@
 package com.zerofall.ezstorage.init;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.zerofall.ezstorage.block.BlockAccessTerminal;
 import com.zerofall.ezstorage.block.BlockBlankBox;
 import com.zerofall.ezstorage.block.BlockCondensedStorage;
 import com.zerofall.ezstorage.block.BlockCraftingBox;
+import com.zerofall.ezstorage.block.BlockEjectPort;
 import com.zerofall.ezstorage.block.BlockExtractPort;
 import com.zerofall.ezstorage.block.BlockHyperStorage;
 import com.zerofall.ezstorage.block.BlockInputPort;
-import com.zerofall.ezstorage.block.BlockOutputPort;
 import com.zerofall.ezstorage.block.BlockSearchBox;
 import com.zerofall.ezstorage.block.BlockSecurityBox;
 import com.zerofall.ezstorage.block.BlockSortBox;
@@ -25,12 +19,17 @@ import com.zerofall.ezstorage.block.EZBlock;
 import com.zerofall.ezstorage.config.EZConfig;
 import com.zerofall.ezstorage.ref.RefStrings;
 import com.zerofall.ezstorage.registry.IRegistryBlock;
+import com.zerofall.ezstorage.registry.RegistryHelper;
+import com.zerofall.ezstorage.tileentity.TileEntityEjectPort;
 import com.zerofall.ezstorage.tileentity.TileEntityExtractPort;
 import com.zerofall.ezstorage.tileentity.TileEntityInputPort;
-import com.zerofall.ezstorage.tileentity.TileEntityEjectPort;
 import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
 import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 import com.zerofall.ezstorage.util.JointList;
+
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /** Mod blocks */
 public class EZBlocks {
@@ -63,7 +62,7 @@ public class EZBlocks {
 		blocks.join(blank_box = new BlockBlankBox(), storage_core = new BlockStorageCore(), storage_box = new BlockStorage(),
 				condensed_storage_box = new BlockCondensedStorage(), super_storage_box = new BlockSuperStorage(),
 				ultra_storage_box = new BlockUltraStorage(), hyper_storage_box = new BlockHyperStorage(), input_port = new BlockInputPort(),
-				output_port = new BlockOutputPort(), extract_port = new BlockExtractPort(), crafting_box = new BlockCraftingBox(),
+				output_port = new BlockEjectPort(), extract_port = new BlockExtractPort(), crafting_box = new BlockCraftingBox(),
 				search_box = new BlockSearchBox(), sort_box = new BlockSortBox(), access_terminal = new BlockAccessTerminal(),
 				security_box = new BlockSecurityBox());
 		if (!EZConfig.enableTerminal)
@@ -74,9 +73,7 @@ public class EZBlocks {
 
 	/** Register the blocks and tile entities */
 	private static void register() {
-		for (IRegistryBlock block : blocks) {
-			GameRegistry.registerBlock((Block) block, block.getItemClass(), block.getShorthandName(), block.getItemClassArgs());
-		}
+		RegistryHelper.registerBlocks(blocks);
 		GameRegistry.registerTileEntity(TileEntityStorageCore.class, RefStrings.MODID + ":TileEntityStorageCore");
 		GameRegistry.registerTileEntity(TileEntityInputPort.class, RefStrings.MODID + ":TileEntityInputPort");
 		GameRegistry.registerTileEntity(TileEntityEjectPort.class, RefStrings.MODID + ":TileEntityOutputPort");
@@ -88,7 +85,7 @@ public class EZBlocks {
 	@SideOnly(Side.CLIENT)
 	public static void registerRenders() {
 		for (IRegistryBlock block : blocks) {
-			block.registerRender(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
+			block.registerRender();
 		}
 	}
 }

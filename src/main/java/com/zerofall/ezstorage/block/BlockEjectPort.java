@@ -7,9 +7,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockOutputPort extends EZBlockContainer {
+public class BlockEjectPort extends EZBlockContainer {
 
-	public BlockOutputPort() {
+	public BlockEjectPort() {
 		super("output_port", Material.IRON);
 	}
 
