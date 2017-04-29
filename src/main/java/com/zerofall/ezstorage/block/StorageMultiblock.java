@@ -57,7 +57,7 @@ public class StorageMultiblock extends EZBlock {
 	 * @param x
 	 * @param y
 	 * @param z */
-	public void attemptMultiblock(World world, BlockPos position) {
+	public TileEntityStorageCore attemptMultiblock(World world, BlockPos position) {
 		if (!world.isRemote) {
 			if (!(this instanceof BlockStorageCore)) {
 				BlockRef br = new BlockRef(this, position.getX(), position.getY(), position.getZ());
@@ -65,8 +65,10 @@ public class StorageMultiblock extends EZBlock {
 				if (core != null) {
 					core.scanMultiblock();
 				}
+				return core;
 			}
 		}
+		return null;
 	}
 
 	/** Recursive function that searches for a StorageCore in a multiblock structure

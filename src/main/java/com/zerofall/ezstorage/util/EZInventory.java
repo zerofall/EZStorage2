@@ -16,9 +16,12 @@ public class EZInventory {
 	public TileEntityStorageCore tile;
 	public List<ItemGroup> inventory;
 	public long maxItems = 0;
+	
+	private List<ItemGroup> ignore;
 
 	public EZInventory(TileEntityStorageCore tile) {
 		this.inventory = new ArrayList<ItemGroup>();
+		this.ignore = new ArrayList<ItemGroup>();
 		this.tile = tile;
 	}
 
@@ -109,7 +112,7 @@ public class EZInventory {
 	}
 
 	/** Extract items on whitelist / blacklist match */
-	public ItemStack getItemsExtractList(EnumListMode mode, InventoryExtractList list, int size, boolean peek) {
+	public ItemStack getItemsExtractList(EnumListMode mode, boolean roundRobin, InventoryExtractList list, int size, boolean peek) {
 
 		// inventory is empty, treat it like IGNORE mode
 		if (list.isEmpty())
@@ -122,33 +125,37 @@ public class EZInventory {
 				continue; // ignore empty slots
 
 			for (ItemGroup g : this.inventory) {
-				if (EZInventory.stacksEqualOreDict(comp, g.itemStack)) {
-					if (mode == EnumListMode.BLACKLIST) {
-						continue;
+				if(!roundRobin || !ignore.contains(g)) {
+					if (EZInventory.stacksEqualOreDict(comp, g.itemStack)) {
+						if (mode == EnumListMode.BLACKLIST) {
+							continue;
+						} else {
+							if(roundRobin) ignore.add(g);
+							return extractStack(g, size, peek);
+						}
 					} else {
-						return extractStack(g, size, peek);
-					}
-				} else {
-					if (mode == EnumListMode.WHITELIST) {
-						continue;
-					} else {
-						return extractStack(g, size, peek);
+						if (mode == EnumListMode.WHITELIST) {
+							continue;
+						} else {
+							if(roundRobin) ignore.add(g);
+							return extractStack(g, size, peek);
+						}
 					}
 				}
-
 			}
+			if(roundRobin) ignore.clear();	// no more matches for the round robin mode
 		}
 		return null;
 	}
 
 	/** Extract items on whitelist / blacklist match */
-	public ItemStack getItemsExtractList(EnumListMode mode, InventoryExtractList list, int size) {
-		return getItemsExtractList(mode, list, size, false);
+	public ItemStack getItemsExtractList(EnumListMode mode, boolean roundRobin, InventoryExtractList list, int size) {
+		return getItemsExtractList(mode, roundRobin, list, size, false);
 	}
 
 	/** Peeks items on whitelist / blacklist match */
-	public ItemStack peekItemsExtractList(EnumListMode mode, InventoryExtractList list) {
-		return getItemsExtractList(mode, list, -1, true);
+	public ItemStack peekItemsExtractList(EnumListMode mode, boolean roundRobin, InventoryExtractList list) {
+		return getItemsExtractList(mode, roundRobin, list, -1, true);
 	}
 
 	/** Extracts an itemstack from an item group */
@@ -157,20 +164,7 @@ public class EZInventory {
 		if (stackSize < 0) {
 			stackSize = (int) Math.min(stack.getMaxStackSize(), group.count);
 		} else {
-			stackSize = Math.min(stack.getMaxStackSize(), (int) Math.min(stackSize, group.count)); // no
-																									// more
-																									// than
-																									// 64
-																									// at
-																									// a
-																									// time,
-																									// and
-																									// no
-																									// more
-																									// than
-																									// the
-																									// system
-																									// has
+			stackSize = Math.min(stack.getMaxStackSize(), (int) Math.min(stackSize, group.count));
 		}
 		stack.stackSize = stackSize;
 

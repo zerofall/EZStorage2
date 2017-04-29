@@ -121,6 +121,12 @@ public class CraftingManager {
 		// key
 		if (EZConfig.enableSecurity)
 			RecipeHelper.addShapedOreRecipe(new ItemStack(EZItems.key), "XXI", "XX ", 'I', "ingotGold", 'X', "nuggetGold");
+		
+		// dollies
+		if (EZConfig.enableDolly) {
+			RecipeHelper.addShapedOreRecipe(new ItemStack(EZItems.dolly_basic), "X X","X X","PPP", 'X',"ingotIron", 'P',Blocks.STONE_PRESSURE_PLATE);
+			RecipeHelper.addShapedOreRecipe(new ItemStack(EZItems.dolly_super), " X "," D "," X ", 'X',"ingotGold", 'D',EZItems.dolly_basic);
+		}
 
 	}
 

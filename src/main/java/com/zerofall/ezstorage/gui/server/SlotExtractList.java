@@ -1,5 +1,6 @@
 package com.zerofall.ezstorage.gui.server;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -9,15 +10,19 @@ public class SlotExtractList extends Slot {
 		super(inventoryIn, index, xPosition, yPosition);
 	}
 
-	// make sure the stack doesn't show zero items (visual only)
-	@Override
-	public ItemStack getStack() {
-		ItemStack s = null;
-		try {
-			s = super.getStack().copy();
-			s.stackSize = 1;
-		} catch (NullPointerException e) {}
-		return s;
-	}
+	// make sure the stack doesn't show zero items (clientside only)
+//	@Override
+//	public ItemStack getStack() {
+//		if(!serverside) {
+//			ItemStack s = null;
+//			try {
+//				s = super.getStack().copy();
+//				s.stackSize = 1;
+//			} catch (NullPointerException e) {}
+//			return s;
+//		} else {
+//			return super.getStack();
+//		}
+//	}
 
 }

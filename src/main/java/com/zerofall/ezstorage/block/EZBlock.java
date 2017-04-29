@@ -11,7 +11,7 @@ public abstract class EZBlock extends Block implements IRegistryBlock {
 
 	protected EZBlock(String name, Material materialIn) {
 		super(materialIn);
-		this.setUnlocalizedName(name);
+		this.setRegistryName(name);
 		this.setCreativeTab(EZStorage.instance.creativeTab);
 		this.setHardness(2.0f);
 	}

@@ -13,7 +13,7 @@ import com.zerofall.ezstorage.util.JointList;
 import com.zerofall.ezstorage.util.SecurityOverrideHelper;
 
 /** The security box tile entity */
-public class TileEntitySecurityBox extends TileEntityBase {
+public class TileEntitySecurityBox extends TileEntityMultiblock {
 
 	// list of allowed players
 	private JointList<SecurePlayer> allowedPlayers = new JointList();
@@ -26,6 +26,8 @@ public class TileEntitySecurityBox extends TileEntityBase {
 	// then send it if needed
 	@Override
 	public void update() {
+		super.update();
+		
 		if (!worldObj.isRemote && sendOpNotification && op != null) {
 			SecurityOverrideHelper.sendOpNotification(op, allowedPlayers);
 			sendOpNotification = false;

@@ -16,13 +16,13 @@ import net.minecraft.util.math.BlockPos;
 import com.zerofall.ezstorage.util.ItemGroup;
 
 /** The ejection port (now with fewer bugs!) */
-public class TileEntityEjectPort extends TileEntityBase {
-
-	public TileEntityStorageCore core;
+public class TileEntityEjectPort extends TileEntityMultiblock {
 
 	@Override
 	public void update() {
-		if (core != null && !worldObj.isRemote && !worldObj.isBlockPowered(pos)) {
+		super.update();
+		
+		if(core != null && !worldObj.isRemote && !worldObj.isBlockPowered(pos)) {
 			boolean updateCore = false;
 			BlockPos targetPos = getPos().offset(EnumFacing.UP);
 			TileEntity targetTile = worldObj.getTileEntity(targetPos);
@@ -45,13 +45,8 @@ public class TileEntityEjectPort extends TileEntityBase {
 					if (inventoryList != null && inventoryList.size() > 0) {
 						ItemGroup group = inventoryList.get(0);
 						if (group != null) {
-							ItemStack stack = group.itemStack.copy(); // wasn't
-																		// a
-																		// copy
-																		// before...
-																		// WEIRD
-																		// STUFF
-																		// HAPPENED.
+							ItemStack stack = group.itemStack.copy(); // wasn't a copy before....
+							// WEIRD STUFF HAPPENED.
 							stack.stackSize = (int) Math.min(stack.getMaxStackSize(), group.count);
 							int stackSize = stack.stackSize;
 							ItemStack leftOver = TileEntityHopper.putStackInInventoryAllSlots(targetInv, stack, EnumFacing.DOWN);

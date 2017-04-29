@@ -7,7 +7,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 /** Superclass for smart I/O port tile entities */
-public abstract class TileEntityItemHandler extends TileEntityBase implements ISidedInventory {
+public abstract class TileEntityItemHandler extends TileEntityMultiblock implements ISidedInventory {
 
 	protected InvWrapper itemCapability;
 

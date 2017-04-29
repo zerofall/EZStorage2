@@ -89,8 +89,7 @@ public class ContainerStorageCore extends Container {
 		} else {
 			val = super.slotClick(slotId, dragType, clickTypeIn, player);
 			if (clickTypeIn == ClickType.QUICK_MOVE)
-				this.tileEntity.sortInventory(); // sort only on insert
-													// shift-click
+				this.tileEntity.sortInventory(); // sort only on insert shift-click
 		}
 		return val;
 	}

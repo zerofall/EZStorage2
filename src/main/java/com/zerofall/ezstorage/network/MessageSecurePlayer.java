@@ -77,10 +77,9 @@ public class MessageSecurePlayer implements IMessage {
 						tile.removeAllowedPlayer(p);
 					}
 					tile.markDirty();
-					EZNetwork.sendSecureSyncMsg(p.worldObj, m.pos, tile.getAllowedPlayers()); // now
-																								// resync
-																								// with
-																								// clients
+					
+					// resync with clients
+					EZNetwork.sendSecureSyncMsg(p.worldObj, m.pos, tile.getAllowedPlayers());
 				}
 			}
 		}
