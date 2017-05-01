@@ -72,7 +72,7 @@ public class EZInventory {
 		}
 
 		// need to add a space
-		inventory.add(new ItemGroup(itemStack, amount));
+		inventory.add(new ItemGroup(itemStack.copy(), amount));
 		itemStack.stackSize -= amount;
 
 		if (itemStack.stackSize <= 0) {

@@ -137,12 +137,12 @@ public class GuiExtractPort extends GuiContainer {
     {
         for (int i = 0; i < this.buttonList.size(); ++i)
         {
-            ((GuiButton)this.buttonList.get(i)).drawButton(this.mc, mouseX, mouseY);
+            this.buttonList.get(i).drawButton(this.mc, mouseX, mouseY);
         }
 
         for (int j = 0; j < this.labelList.size(); ++j)
         {
-            ((GuiLabel)this.labelList.get(j)).drawLabel(this.mc, mouseX, mouseY);
+            this.labelList.get(j).drawLabel(this.mc, mouseX, mouseY);
         }
     }
 	
@@ -163,7 +163,7 @@ public class GuiExtractPort extends GuiContainer {
         drawScreenSuper(mouseX, mouseY, partialTicks);
         RenderHelper.enableGUIStandardItemLighting();
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float)i, (float)j, 0.0F);
+        GlStateManager.translate(i, j, 0.0F);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.enableRescaleNormal();
         this.theSlot = null;
@@ -174,7 +174,7 @@ public class GuiExtractPort extends GuiContainer {
 
         for (int i1 = 0; i1 < this.inventorySlots.inventorySlots.size(); ++i1)
         {
-            Slot slot = (Slot)this.inventorySlots.inventorySlots.get(i1);
+            Slot slot = this.inventorySlots.inventorySlots.get(i1);
             this.drawSlot(slot);
 
             if (this.isMouseOverSlot(slot, mouseX, mouseY) && slot.canBeHovered())
@@ -207,7 +207,7 @@ public class GuiExtractPort extends GuiContainer {
             if (this.draggedStack != null && this.isRightMouseClick)
             {
                 itemstack = itemstack.copy();
-                itemstack.stackSize = MathHelper.ceiling_float_int((float)itemstack.stackSize / 2.0F);
+                itemstack.stackSize = MathHelper.ceiling_float_int(itemstack.stackSize / 2.0F);
             }
             else if (this.dragSplitting && this.dragSplittingSlots.size() > 1)
             {
@@ -225,7 +225,7 @@ public class GuiExtractPort extends GuiContainer {
 
         if (this.returningStack != null)
         {
-            float f = (float)(Minecraft.getSystemTime() - this.returningStackTime) / 100.0F;
+            float f = (Minecraft.getSystemTime() - this.returningStackTime) / 100.0F;
 
             if (f >= 1.0F)
             {
@@ -235,8 +235,8 @@ public class GuiExtractPort extends GuiContainer {
 
             int l2 = this.returningStackDestSlot.xDisplayPosition - this.touchUpX;
             int i3 = this.returningStackDestSlot.yDisplayPosition - this.touchUpY;
-            int l1 = this.touchUpX + (int)((float)l2 * f);
-            int i2 = this.touchUpY + (int)((float)i3 * f);
+            int l1 = this.touchUpX + (int)(l2 * f);
+            int i2 = this.touchUpY + (int)(i3 * f);
             this.drawItemStack(this.returningStack, l1, i2, (String)null);
         }
 
@@ -393,7 +393,7 @@ public class GuiExtractPort extends GuiContainer {
         {
             for (int i = 0; i < this.buttonList.size(); ++i)
             {
-                GuiButton guibutton = (GuiButton)this.buttonList.get(i);
+                GuiButton guibutton = this.buttonList.get(i);
 
                 if (guibutton.mousePressed(this.mc, mouseX, mouseY))
                 {
@@ -414,7 +414,8 @@ public class GuiExtractPort extends GuiContainer {
     /**
      * Called when the mouse is clicked. Args : mouseX, mouseY, clickedButton
      */
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
+    @Override
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
         mouseClickedSuper(mouseX, mouseY, mouseButton);
         boolean flag = this.mc.gameSettings.keyBindPickBlock.isActiveAndMatches(mouseButton - 100);
@@ -522,7 +523,8 @@ public class GuiExtractPort extends GuiContainer {
      * Called when a mouse button is pressed and the mouse is moved around. Parameters are : mouseX, mouseY,
      * lastButtonClicked & timeSinceMouseClick.
      */
-    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick)
+    @Override
+	protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick)
     {
         Slot slot = this.getSlotAtPosition(mouseX, mouseY);
         ItemStack itemstack = this.mc.thePlayer.inventory.getItemStack();
@@ -584,7 +586,8 @@ public class GuiExtractPort extends GuiContainer {
     /**
      * Called when a mouse button is released.
      */
-    protected void mouseReleased(int mouseX, int mouseY, int state)
+    @Override
+	protected void mouseReleased(int mouseX, int mouseY, int state)
     {
         mouseReleasedSuper(mouseX, mouseY, state); //Forge, Call parent to release buttons
         Slot slot = this.getSlotAtPosition(mouseX, mouseY);
@@ -732,7 +735,7 @@ public class GuiExtractPort extends GuiContainer {
     {
         for (int i = 0; i < this.inventorySlots.inventorySlots.size(); ++i)
         {
-            Slot slot = (Slot)this.inventorySlots.inventorySlots.get(i);
+            Slot slot = this.inventorySlots.inventorySlots.get(i);
 
             if (this.isMouseOverSlot(slot, x, y))
             {
