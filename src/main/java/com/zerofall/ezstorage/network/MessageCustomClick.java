@@ -45,7 +45,7 @@ public class MessageCustomClick implements IMessage {
 
 		@Override
 		public IMessage onMessage(MessageCustomClick message, MessageContext ctx) {
-			EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+			EntityPlayerMP player = ctx.getServerHandler().player;
 			if (player != null)
 				((WorldServer) player.world).addScheduledTask(() -> handle(player, message));
 			return null; // no response in this case

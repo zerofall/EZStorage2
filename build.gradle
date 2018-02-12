@@ -9,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -21,7 +21,7 @@ repositories {
     }
 }
 
-version = "2.4.1"
+version = "2.5.0"
 group= "com.zerofall.ezstorage2"
 archivesBaseName = "ezstorage"
 
@@ -29,14 +29,14 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 minecraft {
-    version = "1.11.2-13.20.0.2285"
-    runDir = "run"
-    useDepAts = true
-    mappings = "snapshot_20161220"
+	version = "1.12.2-14.23.2.2613"
+	runDir = "run"
+	useDepAts = true
+	mappings = "snapshot_20180210"
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_1.11.2:4.3.3.266"
+	deobfCompile "mezz.jei:jei_1.12.2:4.8.4.131"
 }
 
 processResources

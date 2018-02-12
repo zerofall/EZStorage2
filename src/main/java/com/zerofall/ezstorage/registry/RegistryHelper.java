@@ -1,17 +1,29 @@
 package com.zerofall.ezstorage.registry;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 import com.google.common.collect.ObjectArrays;
+import com.zerofall.ezstorage.EZStorage;
+import com.zerofall.ezstorage.crafting.CraftingManager;
+import com.zerofall.ezstorage.init.EZBlocks;
+import com.zerofall.ezstorage.init.EZItems;
 import com.zerofall.ezstorage.ref.Log;
+import com.zerofall.ezstorage.util.JointList;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /** Helps register items and blocks in the game */
 public class RegistryHelper {
+	
+	public static final List<IRecipe> RECIPES_TO_REGISTER = new JointList();
+	public static final List<Block> BLOCKS_TO_REGISTER = new JointList();
+	public static final List<Item> ITEMS_TO_REGISTER = new JointList();
 	
 	/** Register a list of blocks at once */
 	public static void registerBlocks(Iterable<IRegistryBlock> regBlocks) {
@@ -32,7 +44,7 @@ public class RegistryHelper {
 		ItemBlock item;
 		
 		// register the block by itself first
-        GameRegistry.register(block.setUnlocalizedName(block.getRegistryName().toString()));
+		BLOCKS_TO_REGISTER.add(block.setUnlocalizedName(block.getRegistryName().toString()));
         
 		// try to get the ItemBlock
         if(regBlock.getItemClass() != null) {
@@ -50,14 +62,55 @@ public class RegistryHelper {
 	        }
 	        
 	        // register the ItemBlock if there are no errors
-	        GameRegistry.register(item.setRegistryName(block.getRegistryName()));
+	        ITEMS_TO_REGISTER.add(item.setRegistryName(block.getRegistryName()));
         }
 	}
 	
 	/** Register the item correctly */
 	public static void registerItem(IRegistryItem regItem) {
 		Item item = (Item)regItem;
-		GameRegistry.register(item.setUnlocalizedName(item.getRegistryName().toString()));
+		ITEMS_TO_REGISTER.add(item.setUnlocalizedName(item.getRegistryName().toString()));
+	}
+	
+	/** Register blocks and fluids */
+	@SubscribeEvent
+	public void onBlockRegistry(Register<Block> e) {
+		EZBlocks.mainRegistry();
+		
+		for(Block b : BLOCKS_TO_REGISTER) {
+			e.getRegistry().register(b);
+		}
+		BLOCKS_TO_REGISTER.clear();
+		
+		Log.logger.info("Blocks registered.");
+	}
+	
+	/** Register items */
+	@SubscribeEvent
+	public void onItemRegistry(Register<Item> e) {
+		EZItems.mainRegistry();
+		
+		for(Item i : ITEMS_TO_REGISTER) {
+			e.getRegistry().register(i);
+		}
+		ITEMS_TO_REGISTER.clear();
+		
+		EZStorage.proxy.registerRenders();
+		
+		Log.logger.info("Items registered.");
+	}
+	
+	/** Register recipes */
+	@SubscribeEvent
+	public void onRecipeRegistry(Register<IRecipe> e) {
+		CraftingManager.mainRegistry();
+		
+		for(IRecipe r : RECIPES_TO_REGISTER) {
+			e.getRegistry().register(r);
+		}
+		RECIPES_TO_REGISTER.clear();
+		
+		Log.logger.info("Recipes registered.");
 	}
 
 }

@@ -28,6 +28,7 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -42,7 +43,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 /** The storage core GUI */
 @SideOnly(Side.CLIENT)
-public class GuiStorageCore extends GuiContainer {
+public class GuiStorageCore extends GuiContainerEZ {
 
 	TileEntityStorageCore tileEntity;
 	EZItemRenderer ezRenderer;
@@ -73,7 +74,7 @@ public class GuiStorageCore extends GuiContainer {
 	@Override
 	public void initGui() {
 		super.initGui();
-		this.searchField = new GuiTextField(0, this.fontRendererObj, this.guiLeft + 10, this.guiTop + 6, 80, this.fontRendererObj.FONT_HEIGHT);
+		this.searchField = new GuiTextField(0, this.fontRenderer, this.guiLeft + 10, this.guiTop + 6, 80, this.fontRenderer.FONT_HEIGHT);
 		this.searchField.setMaxStringLength(20);
 		this.searchField.setEnableBackgroundDrawing(false);
 		this.searchField.setTextColor(0xFFFFFF);
@@ -112,7 +113,7 @@ public class GuiStorageCore extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void drawBackground() {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(getBackground());
 		int x = (this.width - this.xSize) / 2;
@@ -180,7 +181,7 @@ public class GuiStorageCore extends GuiContainer {
 		String amount = totalCount + "/" + max;
 
 		// right-align text
-		int stringWidth = fontRendererObj.getStringWidth(amount);
+		int stringWidth = fontRenderer.getStringWidth(amount);
 
 		// scale down text if it is too large
 		if (stringWidth > 88) {
@@ -189,20 +190,20 @@ public class GuiStorageCore extends GuiContainer {
 			GL11.glPushMatrix();
 			GL11.glScaled(ScaleFactor, ScaleFactor, ScaleFactor);
 			int X = (int) ((187 - stringWidth * ScaleFactor) * RScaleFactor);
-			fontRendererObj.drawString(amount, X, 10, 4210752);
+			fontRenderer.drawString(amount, X, 10, 4210752);
 			GL11.glPopMatrix();
 		} else {
-			fontRendererObj.drawString(amount, 187 - stringWidth, 6, 4210752);
+			fontRenderer.drawString(amount, 187 - stringWidth, 6, 4210752);
 		}
 
 		// sorting mode
 		modeToggle.displayString = tileEntity.sortMode.toString();
 		if (this.tileEntity.hasSortBox) {
-			this.fontRendererObj.drawString("Sorting Mode", -100, 6, 4210752);
+			this.fontRenderer.drawString("Sorting Mode", -100, 6, 4210752);
 			GL11.glPushMatrix();
 			double scale = 0.7;
 			GL11.glScaled(scale, scale, scale);
-			this.fontRendererObj.drawSplitString(tileEntity.sortMode.getDesc(), (int) (-100 / scale), (int) (42 / scale), (int) (96 / scale),
+			this.fontRenderer.drawSplitString(tileEntity.sortMode.getDesc(), (int) (-100 / scale), (int) (42 / scale), (int) (96 / scale),
 					4210752);
 			GL11.glPopMatrix();
 		}
@@ -242,7 +243,7 @@ public class GuiStorageCore extends GuiContainer {
 				if (!stack.isEmpty())
 					font = stack.getItem().getFontRenderer(stack);
 				if (font == null)
-					font = fontRendererObj;
+					font = fontRenderer;
 				RenderHelper.enableGUIStandardItemLighting();
 				this.itemRender.renderItemAndEffectIntoGUI(stack, x, y);
 				ezRenderer.renderItemOverlayIntoGUI(font, stack, x, y, "" + group.count);
@@ -302,7 +303,8 @@ public class GuiStorageCore extends GuiContainer {
 	/** Custom tooltips have the exact amount of items at the bottom */
 	protected void renderToolTip(ItemGroup group, int x, int y) {
 		ItemStack stack = group.itemStack;
-		List<String> list = stack.getTooltip(this.mc.player, this.mc.gameSettings.advancedItemTooltips);
+		List<String> list = stack.getTooltip(this.mc.player, 
+				this.mc.gameSettings.advancedItemTooltips ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL);
 
 		for (int i = 0; i < list.size(); ++i) {
 			if (i == 0) {
@@ -315,7 +317,7 @@ public class GuiStorageCore extends GuiContainer {
 		DecimalFormat formatter = new DecimalFormat("#,###");
 		list.add(TextFormatting.ITALIC + "Count: " + formatter.format(group.count));
 		FontRenderer font = stack.getItem().getFontRenderer(stack);
-		this.drawHoveringText(list, x, y, (font == null ? fontRendererObj : font));
+		this.drawHoveringText(list, x, y, (font == null ? fontRenderer : font));
 	}
 
 	/** Update the filtered items on type */
@@ -400,7 +402,8 @@ public class GuiStorageCore extends GuiContainer {
 				} catch (Exception e) {}
 
 			} else { // searches the item's name and tooltip info
-				iterator1 = itemstack.getTooltip(this.mc.player, this.mc.gameSettings.advancedItemTooltips).iterator();
+				iterator1 = itemstack.getTooltip(this.mc.player, 
+						this.mc.gameSettings.advancedItemTooltips ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL).iterator();
 			}
 
 			while (true) {
@@ -482,8 +485,8 @@ public class GuiStorageCore extends GuiContainer {
 			ContainerStorageCore container = (ContainerStorageCore) this.inventorySlots;
 			container.customSlotClick(index, mouseButton, mode, this.mc.player);
 		} else {
-			int elementX = this.searchField.xPosition;
-			int elementY = this.searchField.yPosition;
+			int elementX = this.searchField.x;
+			int elementY = this.searchField.y;
 			if (mouseX >= elementX && mouseX <= elementX + this.searchField.width && mouseY >= elementY
 					&& mouseY <= elementY + this.searchField.height) {
 				if (mouseButton == 1 || GuiScreen.isShiftKeyDown()) {

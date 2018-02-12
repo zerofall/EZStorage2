@@ -3,9 +3,9 @@ package com.zerofall.ezstorage.util;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.ModelManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -41,7 +41,7 @@ public class EZItemRenderer extends RenderItem {
 					GL11.glDisable(GL11.GL_ALPHA_TEST);
 					GL11.glDisable(GL11.GL_BLEND);
 					Tessellator tessellator = Tessellator.getInstance();
-					VertexBuffer vertexbuffer = tessellator.getBuffer();
+					BufferBuilder vertexbuffer = tessellator.getBuffer();
 					this.draw(vertexbuffer, xPosition + 2, yPosition + 13, 13, 2, 0, 0, 0, 255);
 					this.draw(vertexbuffer, xPosition + 2, yPosition + 13, 12, 1, (255 - i) / 4, 64, 0, 255);
 					this.draw(vertexbuffer, xPosition + 2, yPosition + 13, j, 1, 255 - i, i, 0, 255);
@@ -90,7 +90,7 @@ public class EZItemRenderer extends RenderItem {
 	}
 
 	/** Draw with the WorldRenderer */
-	private void draw(VertexBuffer renderer, int x, int y, int width, int height, int red, int green, int blue, int alpha) {
+	private void draw(BufferBuilder renderer, int x, int y, int width, int height, int red, int green, int blue, int alpha) {
 		renderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
 		renderer.pos(x + 0, y + 0, 0.0D).color(red, green, blue, alpha).endVertex();
 		renderer.pos(x + 0, y + height, 0.0D).color(red, green, blue, alpha).endVertex();

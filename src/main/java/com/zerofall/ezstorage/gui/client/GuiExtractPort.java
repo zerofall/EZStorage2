@@ -41,7 +41,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 /** Extraction port GUI */
 @SideOnly(Side.CLIENT)
-public class GuiExtractPort extends GuiContainer {
+public class GuiExtractPort extends GuiContainerEZ {
 
 	public static final ResourceLocation extractGuiTextures = new ResourceLocation(RefStrings.MODID, "textures/gui/extract_port.png");
 	private TileEntityExtractPort tileExtract;
@@ -101,8 +101,8 @@ public class GuiExtractPort extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		// show the titles for each section
 		String string = EZBlocks.extract_port.getLocalizedName();
-		this.fontRendererObj.drawString(string, this.xSize / 2 - this.fontRendererObj.getStringWidth(string) / 2, 6, 0x404040);
-		this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 94, 0x404040);
+		this.fontRenderer.drawString(string, this.xSize / 2 - this.fontRenderer.getStringWidth(string) / 2, 6, 0x404040);
+		this.fontRenderer.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 94, 0x404040);
 
 		// now update the button based on the selected mode
 		listMode.displayString = tileExtract.listMode.toString();
@@ -114,7 +114,7 @@ public class GuiExtractPort extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
+	protected void drawBackground() {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(extractGuiTextures);
 		int k = (this.width - this.xSize) / 2;
@@ -137,7 +137,7 @@ public class GuiExtractPort extends GuiContainer {
     {
         for (int i = 0; i < this.buttonList.size(); ++i)
         {
-            this.buttonList.get(i).drawButton(this.mc, mouseX, mouseY);
+            this.buttonList.get(i).drawButton(this.mc, mouseX, mouseY, partialTicks);
         }
 
         for (int j = 0; j < this.labelList.size(); ++j)
@@ -177,7 +177,7 @@ public class GuiExtractPort extends GuiContainer {
             Slot slot = this.inventorySlots.inventorySlots.get(i1);
             this.drawSlot(slot);
 
-            if (this.isMouseOverSlot(slot, mouseX, mouseY) && slot.canBeHovered())
+            if (this.isMouseOverSlot(slot, mouseX, mouseY))
             {
                 this.theSlot = slot;
                 GlStateManager.disableLighting();
@@ -307,7 +307,7 @@ public class GuiExtractPort extends GuiContainer {
         this.zLevel = 100.0F;
         this.itemRender.zLevel = 100.0F;
 
-        if (itemstack.isEmpty() && slotIn.canBeHovered())
+        if (itemstack.isEmpty())
         {
             TextureAtlasSprite textureatlassprite = slotIn.getBackgroundSprite();
 
@@ -330,7 +330,7 @@ public class GuiExtractPort extends GuiContainer {
 
             GlStateManager.enableDepth();
             this.itemRender.renderItemAndEffectIntoGUI(this.mc.player, itemstack, i, j);
-            if(!(slotIn instanceof SlotExtractList)) this.itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, itemstack, i, j, s);
+            if(!(slotIn instanceof SlotExtractList)) this.itemRender.renderItemOverlayIntoGUI(this.fontRenderer, itemstack, i, j, s);
         }
 
         this.itemRender.zLevel = 0.0F;
@@ -349,7 +349,7 @@ public class GuiExtractPort extends GuiContainer {
         this.itemRender.zLevel = 200.0F;
         net.minecraft.client.gui.FontRenderer font = null;
         if (!stack.isEmpty()) font = stack.getItem().getFontRenderer(stack);
-        if (font == null) font = fontRendererObj;
+        if (font == null) font = fontRenderer;
         this.itemRender.renderItemAndEffectIntoGUI(stack, x, y);
         this.itemRender.renderItemOverlayIntoGUI(font, stack, x, y - (this.draggedStack.isEmpty() ? 0 : 8), altText);
         this.zLevel = 0.0F;

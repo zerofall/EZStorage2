@@ -20,69 +20,69 @@ public class CraftingManager {
 		// primary recipes
 
 		// blank box
-		RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.blank_box, 2), "ABA", "BCB", "ABA", 'A', "logWood", 'B', "plankWood", 'C',
+		RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.blank_box, 2), "ABA", "BCB", "ABA", 'A', "logWood", 'B', "plankWood", 'C',
 				"stickWood");
 
 		// old recipes enabled
 		if (EZConfig.classicRecipes) {
 
 			// storage core
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.storage_core), "ABA", "BCB", "ABA", 'A', "logWood", 'B', "ingotIron", 'C',
+			RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.storage_core), "ABA", "BCB", "ABA", 'A', "logWood", 'B', "ingotIron", 'C',
 					Blocks.CHEST);
 
 			// basic storage box
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.storage_box), "ABA", "B B", "ABA", 'A', "logWood", 'B', Blocks.CHEST);
+			RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.storage_box), "ABA", "B B", "ABA", 'A', "logWood", 'B', Blocks.CHEST);
 
 			// input port
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.input_port), "ABA", "BCB", "ABA", 'A', Blocks.HOPPER, 'B', Blocks.PISTON, 'C',
+			RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.input_port), "ABA", "BCB", "ABA", 'A', Blocks.HOPPER, 'B', Blocks.PISTON, 'C',
 					"blockQuartz");
 
 			// crafting box
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.crafting_box), "ABA", "BCB", "ABA", 'A', Items.ENDER_EYE, 'B',
+			RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.crafting_box), "ABA", "BCB", "ABA", 'A', Items.ENDER_EYE, 'B',
 					Blocks.CRAFTING_TABLE, 'C', "gemDiamond");
 
 			// search box
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.search_box), "ABA", "BCB", "ABA", 'A', "blockIron", 'B', Items.ENCHANTED_BOOK, 'C',
+			RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.search_box), "ABA", "BCB", "ABA", 'A', "blockIron", 'B', Items.ENCHANTED_BOOK, 'C',
 					Items.COMPASS);
 
 			// sorting box
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.sort_box), "ABA", "BCB", "ABA", 'A', "logWood", 'B', Items.COMPARATOR, 'C',
+			RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.sort_box), "ABA", "BCB", "ABA", 'A', "logWood", 'B', Items.COMPARATOR, 'C',
 					Items.MAP);
 
 			// security box
 			if (EZConfig.enableSecurity)
-				RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.security_box), "ABA", "BCB", "ABA", 'A', "blockIron", 'B', Blocks.IRON_BARS,
+				RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.security_box), "ABA", "BCB", "ABA", 'A', "blockIron", 'B', Blocks.IRON_BARS,
 						'C', EZItems.key);
 
 		} else { // blank box recipes
 
 			// storage core
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.storage_core), "C", "B", "I", 'B', new ItemStack(EZBlocks.blank_box), 'C',
+			RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.storage_core), "C", "B", "I", 'B', new ItemStack(EZBlocks.blank_box), 'C',
 					Blocks.CHEST, 'I', "ingotIron");
 
 			// basic storage box
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.storage_box), " C ", "CBC", " C ", 'B', new ItemStack(EZBlocks.blank_box), 'C',
+			RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.storage_box), " C ", "CBC", " C ", 'B', new ItemStack(EZBlocks.blank_box), 'C',
 					Blocks.CHEST);
 
 			// input port
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.input_port), "HQH", "PBP", "PHP", 'B', new ItemStack(EZBlocks.blank_box), 'H',
+			RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.input_port), "HQH", "PBP", "PHP", 'B', new ItemStack(EZBlocks.blank_box), 'H',
 					Blocks.HOPPER, 'P', Blocks.PISTON, 'Q', "blockQuartz");
 
 			// crafting box
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.crafting_box), "EDE", "CBC", "CEC", 'B', new ItemStack(EZBlocks.blank_box), 'E',
+			RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.crafting_box), "EDE", "CBC", "CEC", 'B', new ItemStack(EZBlocks.blank_box), 'E',
 					Items.ENDER_EYE, 'C', Blocks.CRAFTING_TABLE, 'D', "gemDiamond");
 
 			// search box
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.search_box), "EDE", "CBC", "CEC", 'B', new ItemStack(EZBlocks.blank_box), 'E',
+			RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.search_box), "EDE", "CBC", "CEC", 'B', new ItemStack(EZBlocks.blank_box), 'E',
 					Items.ENCHANTED_BOOK, 'C', "blockIron", 'D', Items.COMPASS);
 
 			// sorting box
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.sort_box), "EDE", "CBC", "CEC", 'B', new ItemStack(EZBlocks.blank_box), 'E',
+			RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.sort_box), "EDE", "CBC", "CEC", 'B', new ItemStack(EZBlocks.blank_box), 'E',
 					Items.COMPARATOR, 'C', "logWood", 'D', Items.MAP);
 
 			// security box
 			if (EZConfig.enableSecurity)
-				RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.security_box), "EDE", "CBC", "CEC", 'B', new ItemStack(EZBlocks.blank_box),
+				RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.security_box), "EDE", "CBC", "CEC", 'B', new ItemStack(EZBlocks.blank_box),
 						'E', "blockIron", 'C', Blocks.IRON_BARS, 'D', EZItems.key);
 
 		}
@@ -90,42 +90,42 @@ public class CraftingManager {
 		// secondary recipes
 
 		// condensed storage box
-		RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.condensed_storage_box), "ACA", "CBC", "ACA", 'A', "blockIron", 'B',
+		RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.condensed_storage_box), "ACA", "CBC", "ACA", 'A', "blockIron", 'B',
 				EZBlocks.storage_box, 'C', Blocks.IRON_BARS);
 
 		// super storage box
-		RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.super_storage_box), "ACA", "CBC", "ACA", 'A', "blockGold", 'B',
+		RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.super_storage_box), "ACA", "CBC", "ACA", 'A', "blockGold", 'B',
 				EZBlocks.condensed_storage_box, 'C', "nuggetGold");
 
 		// ultra storage box
-		RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.ultra_storage_box), "ACA", "CBC", "ACA", 'A', "blockDiamond", 'B',
+		RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.ultra_storage_box), "ACA", "CBC", "ACA", 'A', "blockDiamond", 'B',
 				EZBlocks.super_storage_box, 'C', "gemDiamond");
 
 		// hyper storage box
-		RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.hyper_storage_box), "ABA", "ACA", EZConfig.toughHyper ? "ABA" : "AAA", 'A',
+		RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.hyper_storage_box), "ABA", "ACA", EZConfig.toughHyper ? "ABA" : "AAA", 'A',
 				Blocks.OBSIDIAN, 'B', Items.NETHER_STAR, 'C', EZBlocks.ultra_storage_box);
 
 		// ejection port
-		RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.output_port), " D ", "ABA", " A ", 'A', Blocks.PISTON, 'D', Blocks.DISPENSER, 'B',
+		RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.output_port), " D ", "ABA", " A ", 'A', Blocks.PISTON, 'D', Blocks.DISPENSER, 'B',
 				EZBlocks.input_port);
 
 		// extraction port
-		RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.extract_port), "ICI", "ABA", "ICI", 'A', Blocks.HOPPER, 'C', Items.COMPARATOR, 'I',
+		RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.extract_port), "ICI", "ABA", "ICI", 'A', Blocks.HOPPER, 'C', Items.COMPARATOR, 'I',
 				Blocks.IRON_BARS, 'B', EZBlocks.input_port);
 
 		// terminal
 		if (EZConfig.enableTerminal)
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZBlocks.access_terminal), "IXI", "XAX", "IXI", 'X', "paneGlass", 'I', Blocks.IRON_BARS,
+			RecipeHelper.addShapedRecipe(new ItemStack(EZBlocks.access_terminal), "IXI", "XAX", "IXI", 'X', "paneGlass", 'I', Blocks.IRON_BARS,
 					'A', EZBlocks.storage_core);
 
 		// key
 		if (EZConfig.enableSecurity)
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZItems.key), "XXI", "XX ", 'I', "ingotGold", 'X', "nuggetGold");
+			RecipeHelper.addShapedRecipe(new ItemStack(EZItems.key), "XXI", "XX ", 'I', "ingotGold", 'X', "nuggetGold");
 		
 		// dollies
 		if (EZConfig.enableDolly) {
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZItems.dolly_basic), "X X","X X","PPP", 'X',"ingotIron", 'P',Blocks.STONE_PRESSURE_PLATE);
-			RecipeHelper.addShapedOreRecipe(new ItemStack(EZItems.dolly_super), " X "," D "," X ", 'X',"ingotGold", 'D',EZItems.dolly_basic);
+			RecipeHelper.addShapedRecipe(new ItemStack(EZItems.dolly_basic), "X X","X X","PPP", 'X',"ingotIron", 'P',Blocks.STONE_PRESSURE_PLATE);
+			RecipeHelper.addShapedRecipe(new ItemStack(EZItems.dolly_super), " X "," D "," X ", 'X',"ingotGold", 'D',EZItems.dolly_basic);
 		}
 
 	}

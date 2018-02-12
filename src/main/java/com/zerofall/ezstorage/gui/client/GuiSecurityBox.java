@@ -25,7 +25,7 @@ import com.zerofall.ezstorage.util.JointList;
 
 /** Secure box GUI */
 @SideOnly(Side.CLIENT)
-public class GuiSecurityBox extends GuiContainer {
+public class GuiSecurityBox extends GuiContainerEZ {
 
 	public static final ResourceLocation secureGuiTextures = new ResourceLocation(RefStrings.MODID, "textures/gui/security_box.png");
 	private TileEntitySecurityBox tileSecure;
@@ -112,16 +112,16 @@ public class GuiSecurityBox extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		// show the titles for each section
 		String string = EZBlocks.security_box.getLocalizedName();
-		this.fontRendererObj.drawString(string, this.xSize / 2 - this.fontRendererObj.getStringWidth(string) / 2, 6, 0x404040);
-		this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 94, 0x404040);
+		this.fontRenderer.drawString(string, this.xSize / 2 - this.fontRenderer.getStringWidth(string) / 2, 6, 0x404040);
+		this.fontRenderer.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 94, 0x404040);
 
 		// now show subtitles
-		this.fontRendererObj.drawString("Allowed Players", 4, 18, 0x606060);
-		this.fontRendererObj.drawString("Nearby Players", this.xSize - buttonWidth - 4, 18, 0x606060);
+		this.fontRenderer.drawString("Allowed Players", 4, 18, 0x606060);
+		this.fontRenderer.drawString("Nearby Players", this.xSize - buttonWidth - 4, 18, 0x606060);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
+	protected void drawBackground() {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(secureGuiTextures);
 		int k = (this.width - this.xSize) / 2;

@@ -20,7 +20,7 @@ public interface IRegistryItem extends IRegistryBase {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public default void registerRender() {
-		ModelLoader.setCustomModelResourceLocation((Item)this, 0, new ModelResourceLocation(((Item)this).getRegistryName(), "inventory"));
+		ClientRegistryHelper.registerModel((Item)this, 0, new ModelResourceLocation(((Item)this).getRegistryName(), "inventory"));
 	}
 
 }
