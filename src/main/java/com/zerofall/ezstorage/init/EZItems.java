@@ -29,8 +29,8 @@ public class EZItems {
 	private static void init() {
 		items.join(
 			key = new ItemKey(),
-			dolly_basic = new ItemDolly(false),
-			dolly_super = new ItemDolly(true)
+			dolly_basic = new ItemDolly(6, "dolly"),
+			dolly_super = new ItemDolly(16, "dolly_super")
 		);
 		if(!EZConfig.enableSecurity) items.remove(key); // security disabled
 		if(!EZConfig.enableDolly) {

@@ -1,14 +1,16 @@
 package com.zerofall.ezstorage.gui.server;
 
+import javax.annotation.Nonnull;
+
+import com.zerofall.ezstorage.network.EZNetwork;
+import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import com.zerofall.ezstorage.network.EZNetwork;
-import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
 
 /** The secure box container */
 public class ContainerSecurityBox extends Container {
@@ -58,8 +60,8 @@ public class ContainerSecurityBox extends Container {
 
 	/** Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that. */
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
-		ItemStack itemstack = null;
+	public @Nonnull ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+		ItemStack itemstack = ItemStack.EMPTY;
 		Slot slot = this.inventorySlots.get(par2);
 
 		int INPUT = -1;
@@ -74,26 +76,26 @@ public class ContainerSecurityBox extends Container {
 				if (par2 >= INPUT + 1 && par2 < INPUT + 28) {
 					// place in action bar
 					if (!this.mergeItemStack(itemstack1, INPUT + 28, INPUT + 37, false)) {
-						return null;
+						return ItemStack.EMPTY;
 					}
 				}
 				// item in action bar - place in player inventory
 				else if (par2 >= INPUT + 28 && par2 < INPUT + 37 && !this.mergeItemStack(itemstack1, INPUT + 1, INPUT + 28, false)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			}
 
-			if (itemstack1.stackSize == 0) {
-				slot.putStack((ItemStack) null);
+			if (itemstack1.getCount() == 0) {
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}
 
-			if (itemstack1.stackSize == itemstack.stackSize) {
-				return null;
+			if (itemstack1.getCount() == itemstack.getCount()) {
+				return ItemStack.EMPTY;
 			}
 
-			slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+			slot.onTake(par1EntityPlayer, itemstack1);
 		}
 		return itemstack;
 	}

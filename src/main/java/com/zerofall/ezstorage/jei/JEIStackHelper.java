@@ -15,6 +15,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -30,7 +31,7 @@ public class JEIStackHelper {
 		}
 
 		final ItemStack firstStack = itemStacks.iterator().next();
-		if (firstStack != null) {
+		if (!firstStack.isEmpty()) {
 			for (final int oreId : OreDictionary.getOreIDs(firstStack)) {
 				final String oreName = OreDictionary.getOreName(oreId);
 				List<ItemStack> ores = OreDictionary.getOres(oreName);
@@ -46,13 +47,13 @@ public class JEIStackHelper {
 	/** Returns true if all stacks from "contains" are found in "stacks" and the opposite is true as well. */
 	public boolean containsSameStacks(@Nonnull Iterable<ItemStack> stacks, @Nonnull Iterable<ItemStack> contains) {
 		for (ItemStack stack : contains) {
-			if (containsStack(stacks, stack) == null) {
+			if (containsStack(stacks, stack).isEmpty()) {
 				return false;
 			}
 		}
 
 		for (ItemStack stack : stacks) {
-			if (containsStack(contains, stack) == null) {
+			if (containsStack(contains, stack).isEmpty()) {
 				return false;
 			}
 		}
@@ -61,27 +62,27 @@ public class JEIStackHelper {
 	}
 
 	/* Returns an ItemStack from "stacks" if it isEquivalent to an ItemStack from "contains" */
-	@Nullable
+	@Nonnull
 	public ItemStack containsStack(@Nullable Iterable<ItemStack> stacks, @Nullable Iterable<ItemStack> contains) {
 		if (stacks == null || contains == null) {
-			return null;
+			return ItemStack.EMPTY;
 		}
 
 		for (ItemStack containStack : contains) {
 			ItemStack matchingStack = containsStack(stacks, containStack);
-			if (matchingStack != null) {
+			if (!matchingStack.isEmpty()) {
 				return matchingStack;
 			}
 		}
 
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	/* Returns an ItemStack from "stacks" if it isEquivalent to "contains" */
-	@Nullable
-	public ItemStack containsStack(@Nullable Iterable<ItemStack> stacks, @Nullable ItemStack contains) {
-		if (stacks == null || contains == null) {
-			return null;
+	@Nonnull
+	public ItemStack containsStack(@Nullable Iterable<ItemStack> stacks, @Nonnull ItemStack contains) {
+		if (stacks == null || contains.isEmpty()) {
+			return ItemStack.EMPTY;
 		}
 
 		for (ItemStack stack : stacks) {
@@ -89,16 +90,16 @@ public class JEIStackHelper {
 				return stack;
 			}
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	/** Similar to ItemStack.areItemStacksEqual but ignores NBT on items without subtypes, and uses the INbtIgnoreList */
-	public boolean isEquivalent(@Nullable ItemStack lhs, @Nullable ItemStack rhs) {
-		if (lhs == rhs) {
+	public boolean isEquivalent(@Nonnull ItemStack lhs, @Nonnull ItemStack rhs) {
+		if (lhs == rhs || (lhs.isEmpty() && rhs.isEmpty())) {
 			return true;
 		}
 
-		if (lhs == null || rhs == null) {
+		if (lhs.isEmpty() || rhs.isEmpty()) {
 			return false;
 		}
 
@@ -123,7 +124,7 @@ public class JEIStackHelper {
 
 	@Nonnull
 	public List<ItemStack> getSubtypes(@Nullable ItemStack itemStack) {
-		if (itemStack == null) {
+		if (itemStack.isEmpty()) {
 			return Collections.emptyList();
 		}
 
@@ -136,7 +137,7 @@ public class JEIStackHelper {
 			return Collections.singletonList(itemStack);
 		}
 
-		return getSubtypes(item, itemStack.stackSize);
+		return getSubtypes(item, itemStack.getCount());
 	}
 
 	@Nonnull
@@ -144,15 +145,15 @@ public class JEIStackHelper {
 		List<ItemStack> itemStacks = new ArrayList<>();
 
 		for (CreativeTabs itemTab : item.getCreativeTabs()) {
-			List<ItemStack> subItems = new ArrayList<>();
+			NonNullList<ItemStack> subItems = NonNullList.create();
 			try {
 				item.getSubItems(item, itemTab, subItems);
 			} catch (RuntimeException | LinkageError e) {}
 			for (ItemStack subItem : subItems) {
-				if (subItem == null) {} else if (subItem.getItem() == null) {} else {
-					if (subItem.stackSize != stackSize) {
+				if (subItem.isEmpty()) {} else if (subItem.getItem() == null) {} else {
+					if (subItem.getCount() != stackSize) {
 						ItemStack subItemCopy = subItem.copy();
-						subItemCopy.stackSize = stackSize;
+						subItemCopy.setCount(stackSize);
 						itemStacks.add(subItemCopy);
 					} else {
 						itemStacks.add(subItem);
@@ -226,10 +227,10 @@ public class JEIStackHelper {
 		} else if (stack.getHasSubtypes()) {
 			itemKey.append(':').append(metadata);
 
-			String subtypeInfo = EZStoragePlugin.jeiHelpers.getSubtypeRegistry().getSubtypeInfo(stack);
-			if (subtypeInfo != null) {
-				itemKey.append(':').append(subtypeInfo);
-			}
+//			String subtypeInfo = EZStoragePlugin.jeiHelpers.getSubtypeRegistry().getSubtypeInfo(stack);
+//			if (subtypeInfo != null) {
+//				itemKey.append(':').append(subtypeInfo);
+//			}
 		}
 
 		String result = itemKey.toString();

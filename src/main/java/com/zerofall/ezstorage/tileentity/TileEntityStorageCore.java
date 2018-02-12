@@ -8,9 +8,9 @@ import java.util.Set;
 
 import com.zerofall.ezstorage.EZStorage;
 import com.zerofall.ezstorage.block.BlockCraftingBox;
+import com.zerofall.ezstorage.block.BlockEjectPort;
 import com.zerofall.ezstorage.block.BlockExtractPort;
 import com.zerofall.ezstorage.block.BlockInputPort;
-import com.zerofall.ezstorage.block.BlockEjectPort;
 import com.zerofall.ezstorage.block.BlockSearchBox;
 import com.zerofall.ezstorage.block.BlockSortBox;
 import com.zerofall.ezstorage.block.BlockStorage;
@@ -32,7 +32,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.text.TextComponentString;
 
 /** The storage core tile entity */
 public class TileEntityStorageCore extends TileEntityBase {
@@ -66,7 +65,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 		if(robinIndex >= this.inventory.slotCount()) robinIndex = 0;
 		
 		if (this.inventory.inventory.isEmpty())
-			return null; // make sure the inventory isn't empty
+			return ItemStack.EMPTY; // make sure the inventory isn't empty
 		switch (mode) {
 		case IGNORE: // get the first item no matter what
 			return this.inventory.getItemsAt(roundRobin ? robinIndex++ : 0, 0, size);
@@ -78,13 +77,13 @@ public class TileEntityStorageCore extends TileEntityBase {
 	/** Peeks the first applicable stack in the inventory */
 	public ItemStack peekFirstStack(EnumListMode mode, InventoryExtractList list) {
 		if (this.inventory.inventory.isEmpty())
-			return null; // make sure the inventory isn't empty
+			return ItemStack.EMPTY; // make sure the inventory isn't empty
 		switch (mode) {
 		case IGNORE: // get the first item no matter what
 			ItemGroup g = this.inventory.inventory.get(0);
 			int count = (int) Math.min(g.itemStack.getMaxStackSize(), g.count);
 			ItemStack ret = g.itemStack.copy();
-			ret.stackSize = count;
+			ret.setCount(count);
 			return ret;
 		default: // peek a matching item
 			return this.inventory.peekItemsExtractList(mode, false, list);
@@ -93,7 +92,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 
 	/** Sorts the inventory on change and tells clients to update their filtered lists */
 	public void sortInventory() {
-		if (!this.worldObj.isRemote) {
+		if (!this.world.isRemote) {
 			this.inventory.sort();
 			updateInventory();
 		}
@@ -102,7 +101,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 	/** Creates a block update and sends client data to update their filtered lists */
 	public void updateInventory() {
 		updateTileEntity();
-		EZStorage.nw.sendToDimension(new MessageFilterUpdate(this), worldObj.provider.getDimension());
+		EZStorage.nw.sendToDimension(new MessageFilterUpdate(this), world.provider.getDimension());
 	}
 
 	/** Updates the tile entity position in the world and marks it to be saved */
@@ -116,7 +115,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < this.inventory.slotCount(); ++i) {
 			ItemGroup group = this.inventory.inventory.get(i);
-			if (group != null && group.itemStack != null && group.count > 0) {
+			if (group != null && !group.itemStack.isEmpty() && group.count > 0) {
 				NBTTagCompound tag = new NBTTagCompound();
 				tag.setByte("Index", (byte) i);
 				group.itemStack.writeToNBT(tag);
@@ -142,7 +141,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 			for (int i = 0; i < nbttaglist.tagCount(); ++i) {
 				NBTTagCompound tag = nbttaglist.getCompoundTagAt(i);
 				int j = tag.getByte("Index") & 255;
-				ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+				ItemStack stack = new ItemStack(tag);
 				long count = tag.getLong("InternalCount");
 				String name = tag.getString("id");
 				ItemGroup group = new ItemGroup(stack, count, name);
@@ -162,7 +161,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 	@Override
 	public void update() {
 		if (!firstTick) {
-			if(worldObj != null) {
+			if(world != null) {
 				firstTick = true;
 				scanMultiblock(); // scan the multiblock
 				scanInventory(); // make sure the inventory has valid items
@@ -175,7 +174,7 @@ public class TileEntityStorageCore extends TileEntityBase {
 		Iterator<ItemGroup> iterator = inventory.inventory.iterator();
 		while(iterator.hasNext()) {
 			ItemGroup g = iterator.next();
-			if(g.itemStack == null || g.itemStack.getItem() == null) {
+			if(g.itemStack.isEmpty() || g.itemStack.getItem() == null) {
 				Log.logger.warn("Removing " + g + " due to block/item removal!");
 				iterator.remove();
 			}
@@ -205,20 +204,20 @@ public class TileEntityStorageCore extends TileEntityBase {
 	 * 
 	 * @param br */
 	private void getValidNeighbors(BlockRef br) {
-		List<BlockRef> neighbors = EZStorageUtils.getNeighbors(br.pos.getX(), br.pos.getY(), br.pos.getZ(), worldObj);
+		List<BlockRef> neighbors = EZStorageUtils.getNeighbors(br.pos.getX(), br.pos.getY(), br.pos.getZ(), world);
 		for (BlockRef blockRef : neighbors) {
 			if (blockRef.block instanceof StorageMultiblock) {
 				if (multiblock.add(blockRef) == true && validateSystem() == true) {
 					if (blockRef.block instanceof BlockInputPort) {
-						TileEntityInputPort entity = (TileEntityInputPort) this.worldObj.getTileEntity(blockRef.pos);
+						TileEntityInputPort entity = (TileEntityInputPort) this.world.getTileEntity(blockRef.pos);
 						entity.core = this;
 					}
 					if (blockRef.block instanceof BlockEjectPort) {
-						TileEntityEjectPort entity = (TileEntityEjectPort) this.worldObj.getTileEntity(blockRef.pos);
+						TileEntityEjectPort entity = (TileEntityEjectPort) this.world.getTileEntity(blockRef.pos);
 						entity.core = this;
 					}
 					if (blockRef.block instanceof BlockExtractPort) {
-						TileEntityExtractPort entity = (TileEntityExtractPort) this.worldObj.getTileEntity(blockRef.pos);
+						TileEntityExtractPort entity = (TileEntityExtractPort) this.world.getTileEntity(blockRef.pos);
 						entity.core = this;
 					}
 					if (blockRef.block instanceof BlockCraftingBox) {
@@ -244,13 +243,13 @@ public class TileEntityStorageCore extends TileEntityBase {
 				count++;
 			}
 			if (count > 1) {
-				if (worldObj.isRemote) {
-					if (Minecraft.getMinecraft() != null && Minecraft.getMinecraft().thePlayer != null) {
-						Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString("You can only have 1 Storage Core per system!"));
+				if (world.isRemote) {
+					if (Minecraft.getMinecraft() != null && Minecraft.getMinecraft().player != null) {
+						Minecraft.getMinecraft().player.sendChatMessage("You can only have 1 Storage Core per system!");
 					}
-				} else if (worldObj.getBlockState(pos).getBlock() == EZBlocks.storage_core) {
-					worldObj.setBlockToAir(getPos());
-					worldObj.spawnEntityInWorld(new EntityItem(worldObj, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(EZBlocks.storage_core)));
+				} else if (world.getBlockState(pos).getBlock() == EZBlocks.storage_core) {
+					world.setBlockToAir(getPos());
+					world.spawnEntity(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(EZBlocks.storage_core)));
 				}
 				return false;
 			}

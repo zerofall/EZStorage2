@@ -5,10 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 /** Like an ItemStack, but with a discrete, mostly unbounded item count */
 public class ItemGroup {
@@ -22,17 +19,17 @@ public class ItemGroup {
 
 	public ItemGroup(@Nonnull ItemStack itemStack) {
 		this.itemStack = itemStack;
-		this.count = itemStack.stackSize;
+		this.count = itemStack.getCount();
 		this.name = itemStack.getItem().getRegistryName().toString();
 	}
 	
-	public ItemGroup(@Nullable ItemStack itemStack, long count) {
+	public ItemGroup(@Nonnull ItemStack itemStack, long count) {
 		this.itemStack = itemStack;
 		this.count = count;
 		this.name = itemStack.getItem().getRegistryName().toString();
 	}
 
-	public ItemGroup(@Nullable ItemStack itemStack, long count, String name) {
+	public ItemGroup(@Nonnull ItemStack itemStack, long count, String name) {
 		this.itemStack = itemStack;
 		this.count = count;
 		this.name = name;

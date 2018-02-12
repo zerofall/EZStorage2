@@ -1,9 +1,12 @@
 package com.zerofall.ezstorage.network;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.List;
 
+import com.zerofall.ezstorage.EZStorage;
+import com.zerofall.ezstorage.gui.server.ContainerStorageCoreCrafting;
+import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -16,10 +19,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.oredict.OreDictionary;
-
-import com.zerofall.ezstorage.EZStorage;
-import com.zerofall.ezstorage.gui.server.ContainerStorageCoreCrafting;
-import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 
 /** The JEI crafting recipe server sync message */
 public class MessageRecipeSync implements IMessage {
@@ -51,7 +50,7 @@ public class MessageRecipeSync implements IMessage {
 		public MessageCraftingSync onMessage(MessageRecipeSync message, MessageContext ctx) {
 			EntityPlayerMP player = ctx.getServerHandler().playerEntity;
 			if (player != null)
-				((WorldServer) player.worldObj).addScheduledTask(() -> handle(player, message));
+				((WorldServer) player.world).addScheduledTask(() -> handle(player, message));
 			return null;
 		}
 
@@ -80,7 +79,7 @@ public class MessageRecipeSync implements IMessage {
 						} else { // sent an itemstack list
 							this.recipe[x] = new ItemStack[list.tagCount()];
 							for (int y = 0; y < list.tagCount(); y++) {
-								this.recipe[x][y] = ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(y));
+								this.recipe[x][y] = new ItemStack(list.getCompoundTagAt(y));
 							}
 						}
 					}
@@ -90,7 +89,7 @@ public class MessageRecipeSync implements IMessage {
 						Slot slot = con.getSlotFromInventory(con.craftMatrix, i);
 						if (slot != null) {
 							ItemStack retreived = tileEntity.inventory.getItems(this.recipe[i]);
-							if (retreived != null) {
+							if (!retreived.isEmpty()) {
 								slot.putStack(retreived);
 							}
 						}

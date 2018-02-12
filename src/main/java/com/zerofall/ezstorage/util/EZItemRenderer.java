@@ -19,8 +19,8 @@ public class EZItemRenderer extends RenderItem {
 	}
 
 	@Override
-	public void renderItemOverlayIntoGUI(FontRenderer fr, ItemStack stack, int xPosition, int yPosition, String text) {
-		if (stack != null) {
+	public void renderItemOverlayIntoGUI(FontRenderer fr, ItemStack stack, int xPosition, int yPosition, String amtString) {
+		if (!stack.isEmpty()) {
 			float ScaleFactor = 0.5f;
 			float RScaleFactor = 1.0f / ScaleFactor;
 			int offset = 0;
@@ -28,7 +28,7 @@ public class EZItemRenderer extends RenderItem {
 			boolean unicodeFlag = fr.getUnicodeFlag();
 			fr.setUnicodeFlag(false);
 
-			long amount = Long.parseLong(text);
+			long amount = Long.parseLong(amtString);
 
 			if (amount != 0) {
 				if (stack.getItem().showDurabilityBar(stack)) {

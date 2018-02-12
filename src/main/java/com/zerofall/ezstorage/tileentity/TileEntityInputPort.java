@@ -1,22 +1,26 @@
 package com.zerofall.ezstorage.tileentity;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
-import com.zerofall.ezstorage.util.BlockRef;
-
 /** The input port */
 public class TileEntityInputPort extends TileEntityItemHandler {
 
-	private ItemStack[] inv = new ItemStack[1];
-
+	private ItemStack[] inv = new ItemStack[]{ItemStack.EMPTY};
+	
 	@Override
-	public boolean hasCustomName() {
-		return false;
+	public void update() {
+		super.update();
+
+		if(this.hasCore()) {
+			ItemStack stack = this.inv[0];
+			if (!stack.isEmpty() && stack.getCount() > 0) {
+				this.inv[0] = this.core.input(stack);
+			}
+		}
 	}
 
 	@Override
@@ -37,13 +41,13 @@ public class TileEntityInputPort extends TileEntityItemHandler {
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
 		ItemStack stack = getStackInSlot(index);
-		if (stack != null) {
-			if (stack.stackSize <= count) {
-				setInventorySlotContents(index, null);
+		if (!stack.isEmpty()) {
+			if (stack.getCount() <= count) {
+				setInventorySlotContents(index, ItemStack.EMPTY);
 			} else {
 				stack = stack.splitStack(count);
-				if (stack.stackSize == 0) {
-					setInventorySlotContents(index, null);
+				if (stack.getCount() == 0) {
+					setInventorySlotContents(index, ItemStack.EMPTY);
 				}
 			}
 		}
@@ -53,29 +57,9 @@ public class TileEntityInputPort extends TileEntityItemHandler {
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		inv[index] = stack;
-		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-			stack.stackSize = getInventoryStackLimit();
+		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
+			stack.setCount(getInventoryStackLimit());
 		}
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return true;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {
-
 	}
 
 	@Override
@@ -84,24 +68,9 @@ public class TileEntityInputPort extends TileEntityItemHandler {
 	}
 
 	@Override
-	public int getField(int id) {
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
-	}
-
-	@Override
 	public void clear() {
 		for (int i = 0; i < inv.length; ++i) {
-			inv[i] = null;
+			inv[i] = ItemStack.EMPTY;
 		}
 	}
 
@@ -114,28 +83,12 @@ public class TileEntityInputPort extends TileEntityItemHandler {
 
 	@Override
 	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-		return !worldObj.isBlockPowered(pos);
+		return !world.isBlockPowered(pos);
 	}
 
 	@Override
 	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
 		return false;
-	}
-
-	@Override
-	public void update() {
-		super.update();
-
-		if (this.core != null) {
-			ItemStack stack = this.inv[0];
-			if (stack != null && stack.stackSize > 0) {
-				if (this.core.isPartOfMultiblock(new BlockRef(this))) {
-					this.inv[0] = this.core.input(stack);
-				} else {
-					this.core = null;
-				}
-			}
-		}
 	}
 
 	@Override
@@ -145,7 +98,7 @@ public class TileEntityInputPort extends TileEntityItemHandler {
 
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

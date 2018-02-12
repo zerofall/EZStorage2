@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.gui.ingredients.GuiIngredient;
@@ -26,11 +25,6 @@ public class RecipeTransferHandler implements IRecipeTransferHandler {
 	@Override
 	public Class<? extends Container> getContainerClass() {
 		return ContainerStorageCoreCrafting.class;
-	}
-
-	@Override
-	public String getRecipeCategoryUid() {
-		return VanillaRecipeCategoryUid.CRAFTING;
 	}
 
 	@Override
