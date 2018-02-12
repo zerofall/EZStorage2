@@ -18,7 +18,6 @@ public class EZBlockContainer extends StorageMultiblock implements ITileEntityPr
 		super(name, materialIn);
 		this.setUnlocalizedName(name);
 		this.setCreativeTab(EZStorage.instance.creativeTab);
-		this.isBlockContainer = true;
 	}
 
 	@Override

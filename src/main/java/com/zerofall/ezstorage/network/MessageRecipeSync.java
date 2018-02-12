@@ -48,7 +48,7 @@ public class MessageRecipeSync implements IMessage {
 
 		@Override
 		public MessageCraftingSync onMessage(MessageRecipeSync message, MessageContext ctx) {
-			EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+			EntityPlayerMP player = ctx.getServerHandler().player;
 			if (player != null)
 				((WorldServer) player.world).addScheduledTask(() -> handle(player, message));
 			return null;

@@ -57,7 +57,7 @@ public class MessageSecurePlayer implements IMessage {
 
 		@Override
 		public IMessage onMessage(MessageSecurePlayer m, MessageContext ctx) {
-			EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+			EntityPlayerMP player = ctx.getServerHandler().player;
 			if (player != null)
 				((WorldServer) player.world).addScheduledTask(() -> handle(m));
 			return null; // no specific replies

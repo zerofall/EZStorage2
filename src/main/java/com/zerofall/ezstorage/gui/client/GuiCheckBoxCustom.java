@@ -18,11 +18,11 @@ public class GuiCheckBoxCustom extends GuiCheckBox {
 
 	/** Draws this button to the screen. */
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 		if (this.visible) {
-			this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.boxWidth
-					&& mouseY < this.yPosition + this.height;
-			GuiUtils.drawContinuousTexturedBox(BUTTON_TEXTURES, this.xPosition, this.yPosition, 0, 46, this.boxWidth, this.height, 200, 20, 2, 3, 2,
+			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.boxWidth
+					&& mouseY < this.y + this.height;
+			GuiUtils.drawContinuousTexturedBox(BUTTON_TEXTURES, this.x, this.y, 0, 46, this.boxWidth, this.height, 200, 20, 2, 3, 2,
 					2, this.zLevel);
 			this.mouseDragged(mc, mouseX, mouseY);
 			int color = 14737632;
@@ -34,7 +34,7 @@ public class GuiCheckBoxCustom extends GuiCheckBox {
 			}
 
 			if (this.isChecked())
-				this.drawCenteredString(mc.fontRendererObj, checkStr, this.xPosition + this.boxWidth / 2 + 1, this.yPosition + 1, 14737632);
+				this.drawCenteredString(mc.fontRenderer, checkStr, this.x + this.boxWidth / 2 + 1, this.y + 1, 14737632);
 		}
 	}
 

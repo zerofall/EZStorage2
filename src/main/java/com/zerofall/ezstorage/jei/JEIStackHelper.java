@@ -147,7 +147,7 @@ public class JEIStackHelper {
 		for (CreativeTabs itemTab : item.getCreativeTabs()) {
 			NonNullList<ItemStack> subItems = NonNullList.create();
 			try {
-				item.getSubItems(item, itemTab, subItems);
+				item.getSubItems(itemTab, subItems);
 			} catch (RuntimeException | LinkageError e) {}
 			for (ItemStack subItem : subItems) {
 				if (subItem.isEmpty()) {} else if (subItem.getItem() == null) {} else {
