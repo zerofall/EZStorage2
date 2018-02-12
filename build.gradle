@@ -21,7 +21,7 @@ repositories {
     }
 }
 
-version = "2.3.0"
+version = "2.4.1"
 group= "com.zerofall.ezstorage2"
 archivesBaseName = "ezstorage"
 
@@ -29,14 +29,14 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 minecraft {
-    version = "1.10.2-12.18.3.2185"
+    version = "1.11.2-13.20.0.2285"
     runDir = "run"
-	useDepAts = true
-    mappings = "snapshot_20160518"
+    useDepAts = true
+    mappings = "snapshot_20161220"
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_1.10.2:3.13.6.389"
+    deobfCompile "mezz.jei:jei_1.11.2:4.3.3.266"
 }
 
 processResources

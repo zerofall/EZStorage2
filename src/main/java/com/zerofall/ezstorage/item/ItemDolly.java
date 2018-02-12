@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -20,7 +19,6 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -30,15 +28,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /** A dolly item for moving chests and storage cores */
 public class ItemDolly extends EZItem {
 
-	public static final int super_max_damage = 16;
-	public static final int basic_max_damage = 6;
-
-	public boolean isSuper;
-
-	public ItemDolly(boolean isSuper) {
-		super(isSuper ? "dolly_super" : "dolly");
-		this.setMaxDamage(isSuper ? super_max_damage : basic_max_damage);
-		this.isSuper = isSuper;
+	public ItemDolly(int maxDamage, String name) {
+		super(name);
+		this.setMaxDamage(maxDamage);
 	}
 
 	// take on a package

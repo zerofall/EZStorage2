@@ -4,13 +4,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.zerofall.ezstorage.config.EZConfig;
 import com.zerofall.ezstorage.util.JointList;
 import com.zerofall.ezstorage.util.SecurityOverrideHelper;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 
 /** The security box tile entity */
 public class TileEntitySecurityBox extends TileEntityMultiblock {
@@ -28,7 +28,7 @@ public class TileEntitySecurityBox extends TileEntityMultiblock {
 	public void update() {
 		super.update();
 		
-		if (!worldObj.isRemote && sendOpNotification && op != null) {
+		if (!world.isRemote && sendOpNotification && op != null) {
 			SecurityOverrideHelper.sendOpNotification(op, allowedPlayers);
 			sendOpNotification = false;
 		}
@@ -61,7 +61,7 @@ public class TileEntitySecurityBox extends TileEntityMultiblock {
 		}
 
 		// allowed due to op level 2 override
-		if (EZConfig.enableOpOverride && !p.worldObj.isRemote && p.capabilities.isCreativeMode
+		if (EZConfig.enableOpOverride && !p.world.isRemote && p.capabilities.isCreativeMode
 				&& SecurityOverrideHelper.isPlayerOpLv2((EntityPlayerMP) p)) {
 			op = (EntityPlayerMP) p;
 			sendOpNotification = true;

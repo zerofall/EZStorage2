@@ -1,5 +1,7 @@
 package com.zerofall.ezstorage.tileentity;
 
+import com.zerofall.ezstorage.gui.server.InventoryExtractList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,16 +10,33 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
-import com.zerofall.ezstorage.gui.server.InventoryExtractList;
-
-/** The extraction port, a virtual output inventory */
+/** The extraction port, a joined output inventory */
 public class TileEntityExtractPort extends TileEntityItemHandler {
 
 	public InventoryExtractList extractList = new InventoryExtractList("extract_port", 9);
-	public ItemStack buffer;
+	public ItemStack buffer = ItemStack.EMPTY;
 	
 	public EnumListMode listMode = EnumListMode.IGNORE;
 	public boolean roundRobin;
+	
+	@Override
+	public void update() {
+		super.update();
+		
+		if(!world.isRemote && this.hasCore()) {
+			// take from the core every tick if the buffer is empty
+			if(buffer.isEmpty() && !world.isBlockPowered(pos)) {
+				buffer = core.getFirstStack(1, listMode, roundRobin, extractList);
+				this.markDirty();
+			}
+			// refresh the buffer once a second
+			if(!buffer.isEmpty() && world.getTotalWorldTime() % 20 == 0) {
+				core.input(buffer);
+				buffer = ItemStack.EMPTY;
+				this.markDirty();
+			}
+		}
+	}
 
 	@Override
 	public NBTTagCompound writeDataToNBT(NBTTagCompound nbt) {
@@ -27,12 +46,12 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 		for (int i = 0; i < extractList.getSizeInventory(); i++) {
 			NBTTagCompound stackTag = new NBTTagCompound();
 			ItemStack slot = extractList.getStackInSlot(i);
-			if(slot != null) slot.writeToNBT(stackTag);
+			if(!slot.isEmpty()) slot.writeToNBT(stackTag);
 			list.appendTag(stackTag);
 		}
 		nbt.setTag("slots", list);
 		
-		if(buffer != null) {
+		if(!buffer.isEmpty()) {
 			NBTTagCompound bufTag = new NBTTagCompound();
 			buffer.writeToNBT(bufTag);
 			nbt.setTag("buffer", bufTag);
@@ -50,21 +69,16 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 		NBTTagList list = nbt.getTagList("slots", 10);
 		for(int i = 0; i < extractList.getSizeInventory(); i++) {
 			NBTTagCompound stackTag = list.getCompoundTagAt(i);
-			ItemStack slot = ItemStack.loadItemStackFromNBT(stackTag);
+			ItemStack slot = new ItemStack(stackTag);
 			extractList.setInventorySlotContents(i, slot);
 		}
 		
 		NBTTagCompound bufTag = (NBTTagCompound)nbt.getTag("buffer");
 		if(bufTag != null) {
-			buffer = ItemStack.loadItemStackFromNBT(bufTag);
+			buffer = new ItemStack(bufTag);
 		}
 		
 		roundRobin = nbt.getBoolean("roundRobin");
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return false;
 	}
 
 	@Override
@@ -76,45 +90,16 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 	public int getSizeInventory() {
 		return 1;
 	}
-	
-	@Override
-	public void update() {
-		super.update();
-		
-		if(!worldObj.isRemote) {
-			// take from the core every tick if the buffer is empty
-			if(buffer == null && !worldObj.isBlockPowered(pos)) {
-				buffer = core.getFirstStack(1, listMode, roundRobin, extractList);
-				this.markDirty();
-			}
-			// refresh the buffer once a second
-			if(buffer != null && worldObj.getTotalWorldTime() % 20 == 0) {
-				core.input(buffer);
-				buffer = null;
-				this.markDirty();
-			}
-		}
-	}
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-//		if (core != null && listMode != EnumListMode.DISABLED && !worldObj.isBlockPowered(pos)) {
-//			return core.peekFirstStack(listMode, extractList);
-//		} else {
-//			return null;
-//		}
 		return buffer;
 	}
 
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
-//		if (core != null && listMode != EnumListMode.DISABLED && !worldObj.isBlockPowered(pos)) {
-//			return core.getFirstStack(count, listMode, extractList);
-//		} else {
-//			return null;
-//		}
 		ItemStack ret = buffer;
-		if(buffer.stackSize <= count) buffer = null;
+		if(buffer.getCount() <= count) buffer = ItemStack.EMPTY;
 		return ret;
 	}
 
@@ -129,41 +114,9 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 	}
 
 	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return true;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {}
-
-	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 		return true;
 	}
-
-	@Override
-	public int getField(int id) {
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
-	}
-
-	@Override
-	public void clear() {}
 
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {

@@ -47,11 +47,7 @@ public class BlockSecurityBox extends EZBlockContainer {
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileEntitySecurityBox tile = (TileEntitySecurityBox) worldIn.getTileEntity(pos);
 		if (tile.isPlayerAllowed(playerIn)) { // allowed player actions:
-			if (heldItem != null && heldItem.getItem() == EZItems.key) { // try
-																			// to
-																			// break
-																			// the
-																			// block
+			if (!heldItem.isEmpty() && heldItem.getItem() == EZItems.key) { // try to break the block
 				if (!worldIn.isRemote)
 					worldIn.destroyBlock(pos, true); // permitted block breaking
 				return true;

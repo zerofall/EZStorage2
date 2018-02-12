@@ -1,9 +1,12 @@
 package com.zerofall.ezstorage.network;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.List;
 
+import com.zerofall.ezstorage.EZStorage;
+import com.zerofall.ezstorage.gui.server.ContainerStorageCoreCrafting;
+import com.zerofall.ezstorage.util.JointList;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
@@ -16,10 +19,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.zerofall.ezstorage.EZStorage;
-import com.zerofall.ezstorage.gui.server.ContainerStorageCoreCrafting;
-import com.zerofall.ezstorage.util.JointList;
 
 /** A message to sync the crafting matrix to the client */
 public class MessageCraftingSync implements IMessage {
@@ -43,7 +42,7 @@ public class MessageCraftingSync implements IMessage {
 		stackList = new JointList();
 		for (int i = 0; i < count; i++) {
 			NBTTagCompound item = list.getCompoundTagAt(i);
-			stackList.add(ItemStack.loadItemStackFromNBT(item));
+			stackList.add(new ItemStack(item));
 		}
 	}
 
@@ -54,7 +53,7 @@ public class MessageCraftingSync implements IMessage {
 		NBTTagList list = new NBTTagList();
 		for (ItemStack s : stackList) {
 			NBTTagCompound nTag = new NBTTagCompound();
-			if (s != null)
+			if (!s.isEmpty())
 				s.writeToNBT(nTag);
 			list.appendTag(nTag);
 		}

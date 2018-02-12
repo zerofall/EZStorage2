@@ -2,13 +2,13 @@ package com.zerofall.ezstorage.util;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.management.PlayerList;
-import net.minecraft.util.text.TextComponentString;
-
 import com.zerofall.ezstorage.ref.Log;
 import com.zerofall.ezstorage.ref.RefStrings;
 import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox.SecurePlayer;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.management.PlayerList;
+import net.minecraft.util.text.TextComponentString;
 
 /** Helps with overrides for the security system */
 public class SecurityOverrideHelper {
@@ -41,9 +41,9 @@ public class SecurityOverrideHelper {
 		for (SecurePlayer p : list) {
 			EntityPlayerMP match = pl.getPlayerByUsername(p.name);
 			if (match != null)
-				match.addChatMessage(new TextComponentString(chat));
+				match.sendMessage(new TextComponentString(chat));
 		}
-		from.addChatMessage(new TextComponentString(chatSender));
+		from.sendMessage(new TextComponentString(chatSender));
 	}
 
 }

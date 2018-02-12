@@ -1,5 +1,8 @@
 package com.zerofall.ezstorage.network;
 
+import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
+import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox.SecurePlayer;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,9 +14,6 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox;
-import com.zerofall.ezstorage.tileentity.TileEntitySecurityBox.SecurePlayer;
 
 /** Send a single SecurePlayer instance from client to server for addition or removal from a security box */
 public class MessageSecurePlayer implements IMessage {
@@ -59,7 +59,7 @@ public class MessageSecurePlayer implements IMessage {
 		public IMessage onMessage(MessageSecurePlayer m, MessageContext ctx) {
 			EntityPlayerMP player = ctx.getServerHandler().playerEntity;
 			if (player != null)
-				((WorldServer) player.worldObj).addScheduledTask(() -> handle(m));
+				((WorldServer) player.world).addScheduledTask(() -> handle(m));
 			return null; // no specific replies
 		}
 
@@ -67,9 +67,9 @@ public class MessageSecurePlayer implements IMessage {
 		public void handle(MessageSecurePlayer m) {
 			// make sure the provided player is valid
 			PlayerList list = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList();
-			for (EntityPlayerMP p : list.getPlayerList()) {
+			for (EntityPlayerMP p : list.getPlayers()) {
 				if (p.dimension == m.dimension && p.getUniqueID().toString().equals(m.player.id.toString())) {
-					TileEntitySecurityBox tile = (TileEntitySecurityBox) p.worldObj.getTileEntity(m.pos);
+					TileEntitySecurityBox tile = (TileEntitySecurityBox) p.world.getTileEntity(m.pos);
 					// add or remove from the list
 					if (m.add) {
 						tile.addAllowedPlayer(p);
@@ -79,7 +79,7 @@ public class MessageSecurePlayer implements IMessage {
 					tile.markDirty();
 					
 					// resync with clients
-					EZNetwork.sendSecureSyncMsg(p.worldObj, m.pos, tile.getAllowedPlayers());
+					EZNetwork.sendSecureSyncMsg(p.world, m.pos, tile.getAllowedPlayers());
 				}
 			}
 		}

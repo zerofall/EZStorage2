@@ -11,25 +11,32 @@ public class InventoryExtractList extends InventoryBasic {
 
 	@Override
 	public int getInventoryStackLimit() {
-		return 0;
+		return 1;
+	}
+	
+	@Override
+	public ItemStack addItem(ItemStack stack) {
+		return super.addItem(stack.copy());
+		//return stack;
 	}
 
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
-		super.decrStackSize(index, count);
-		return null; // nothing returned
+		return super.decrStackSize(index, count);
+		//return ItemStack.EMPTY; // nothing returned
 	}
 
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
-		super.removeStackFromSlot(index);
-		return null; // nothing returned
+		return super.removeStackFromSlot(index);
+		//return ItemStack.EMPTY; // nothing returned
 	}
 
 	/** Checks whether or not this inventory is empty */
+	@Override
 	public boolean isEmpty() {
 		for (int i = 0; i < this.getSizeInventory(); i++) {
-			if (this.getStackInSlot(i) != null)
+			if (!this.getStackInSlot(i).isEmpty())
 				return false;
 		}
 		return true;

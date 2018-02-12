@@ -53,7 +53,7 @@ public class GuiStorageCore extends GuiContainer {
 	private boolean wasClicking = false;
 	private static final ResourceLocation creativeInventoryTabs = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
 	private static final ResourceLocation searchBar = new ResourceLocation("textures/gui/container/creative_inventory/tab_item_search.png");
-	private static final ResourceLocation sortGui = new ResourceLocation(RefStrings.MODID, "textures/gui/customGui.png");
+	private static final ResourceLocation sortGui = new ResourceLocation(RefStrings.MODID, "textures/gui/custom_gui.png");
 	private float currentScroll;
 	
 	private GuiTextField searchField;
@@ -151,7 +151,7 @@ public class GuiStorageCore extends GuiContainer {
 	public void markFilterUpdate() {
 		needsUpdate = true;
 		updateTicksPassed = 0;
-		updateTicksCurrent = mc.thePlayer.ticksExisted;
+		updateTicksCurrent = mc.player.ticksExisted;
 	}
 
 	@Override
@@ -162,9 +162,9 @@ public class GuiStorageCore extends GuiContainer {
 		// check if this inventory needs a filter update
 		// then update it after no more than 0.1s have passed
 		if (needsUpdate) {
-			if (mc.thePlayer.ticksExisted > updateTicksCurrent) {
+			if (mc.player.ticksExisted > updateTicksCurrent) {
 				updateTicksPassed++;
-				updateTicksCurrent = mc.thePlayer.ticksExisted;
+				updateTicksCurrent = mc.player.ticksExisted;
 			}
 
 			// update the filtered list
@@ -239,7 +239,7 @@ public class GuiStorageCore extends GuiContainer {
 				ItemStack stack = group.itemStack;
 
 				FontRenderer font = null;
-				if (stack != null)
+				if (!stack.isEmpty())
 					font = stack.getItem().getFontRenderer(stack);
 				if (font == null)
 					font = fontRendererObj;
@@ -302,7 +302,7 @@ public class GuiStorageCore extends GuiContainer {
 	/** Custom tooltips have the exact amount of items at the bottom */
 	protected void renderToolTip(ItemGroup group, int x, int y) {
 		ItemStack stack = group.itemStack;
-		List<String> list = stack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+		List<String> list = stack.getTooltip(this.mc.player, this.mc.gameSettings.advancedItemTooltips);
 
 		for (int i = 0; i < list.size(); ++i) {
 			if (i == 0) {
@@ -400,7 +400,7 @@ public class GuiStorageCore extends GuiContainer {
 				} catch (Exception e) {}
 
 			} else { // searches the item's name and tooltip info
-				iterator1 = itemstack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips).iterator();
+				iterator1 = itemstack.getTooltip(this.mc.player, this.mc.gameSettings.advancedItemTooltips).iterator();
 			}
 
 			while (true) {
@@ -452,7 +452,7 @@ public class GuiStorageCore extends GuiContainer {
 
 		if (this.isScrolling) {
 			this.currentScroll = (mouseY - j1 - 7.5F) / (l1 - j1 - 15.0F);
-			this.currentScroll = MathHelper.clamp_float(this.currentScroll, 0.0F, 1.0F);
+			this.currentScroll = MathHelper.clamp(this.currentScroll, 0.0F, 1.0F);
 			scrollTo(this.currentScroll);
 		}
 	}
@@ -480,7 +480,7 @@ public class GuiStorageCore extends GuiContainer {
 
 			EZStorage.nw.sendToServer(new MessageCustomClick(index, mouseButton, mode));
 			ContainerStorageCore container = (ContainerStorageCore) this.inventorySlots;
-			container.customSlotClick(index, mouseButton, mode, this.mc.thePlayer);
+			container.customSlotClick(index, mouseButton, mode, this.mc.player);
 		} else {
 			int elementX = this.searchField.xPosition;
 			int elementY = this.searchField.yPosition;
@@ -535,7 +535,7 @@ public class GuiStorageCore extends GuiContainer {
 			}
 
 			this.currentScroll = (float) (this.currentScroll - (double) i / (double) j);
-			this.currentScroll = MathHelper.clamp_float(this.currentScroll, 0.0F, 1.0F);
+			this.currentScroll = MathHelper.clamp(this.currentScroll, 0.0F, 1.0F);
 			scrollTo(this.currentScroll);
 		}
 
@@ -551,7 +551,7 @@ public class GuiStorageCore extends GuiContainer {
 	}
 
 	protected ResourceLocation getBackground() {
-		return new ResourceLocation(RefStrings.MODID + ":textures/gui/storageScrollGui.png");
+		return new ResourceLocation(RefStrings.MODID + ":textures/gui/storage_scroll_gui.png");
 	}
 
 	public int rowsVisible() {

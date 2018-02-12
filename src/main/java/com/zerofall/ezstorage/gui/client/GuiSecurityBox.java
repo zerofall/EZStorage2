@@ -27,7 +27,7 @@ import com.zerofall.ezstorage.util.JointList;
 @SideOnly(Side.CLIENT)
 public class GuiSecurityBox extends GuiContainer {
 
-	public static final ResourceLocation secureGuiTextures = new ResourceLocation(RefStrings.MODID, "textures/gui/securityBox.png");
+	public static final ResourceLocation secureGuiTextures = new ResourceLocation(RefStrings.MODID, "textures/gui/security_box.png");
 	private TileEntitySecurityBox tileSecure;
 	private static final int nButtons = 7;
 	private static final int buttonWidth = 80;

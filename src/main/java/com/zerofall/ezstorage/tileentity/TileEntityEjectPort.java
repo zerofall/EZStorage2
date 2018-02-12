@@ -22,19 +22,19 @@ public class TileEntityEjectPort extends TileEntityMultiblock {
 	public void update() {
 		super.update();
 		
-		if(core != null && !worldObj.isRemote && !worldObj.isBlockPowered(pos)) {
+		if(!world.isRemote && hasCore() && !world.isBlockPowered(pos)) {
 			boolean updateCore = false;
 			BlockPos targetPos = getPos().offset(EnumFacing.UP);
-			TileEntity targetTile = worldObj.getTileEntity(targetPos);
+			TileEntity targetTile = world.getTileEntity(targetPos);
 
 			// make sure there's a inventory tile entity above it
 			if (targetTile != null && targetTile instanceof IInventory) {
 				IInventory targetInv = (IInventory) targetTile;
-				Block targetBlock = worldObj.getBlockState(targetPos).getBlock();
+				Block targetBlock = world.getBlockState(targetPos).getBlock();
 
 				// double chest support
 				if (targetInv != null && targetInv instanceof TileEntityChest && targetBlock instanceof BlockChest) {
-					targetInv = ((BlockChest) targetBlock).getContainer(worldObj, targetPos, true);
+					targetInv = ((BlockChest) targetBlock).getContainer(world, targetPos, true);
 				}
 
 				// make sure the inventory exists
@@ -46,12 +46,12 @@ public class TileEntityEjectPort extends TileEntityMultiblock {
 						ItemGroup group = inventoryList.get(0);
 						if (group != null) {
 							ItemStack stack = group.itemStack.copy(); // wasn't a copy before....
-							// WEIRD STUFF HAPPENED.
-							stack.stackSize = (int) Math.min(stack.getMaxStackSize(), group.count);
-							int stackSize = stack.stackSize;
-							ItemStack leftOver = TileEntityHopper.putStackInInventoryAllSlots(targetInv, stack, EnumFacing.DOWN);
-							if (leftOver != null) {
-								int remaining = stackSize - leftOver.stackSize;
+																	  // WEIRD STUFF HAPPENED.
+							stack.setCount((int)Math.min(stack.getMaxStackSize(), group.count));
+							int stackSize = stack.getCount();
+							ItemStack leftOver = TileEntityHopper.putStackInInventoryAllSlots(targetInv, targetInv, stack, EnumFacing.DOWN);
+							if (!leftOver.isEmpty()) {
+								int remaining = stackSize - leftOver.getCount();
 								if (remaining > 0) {
 									group.count -= remaining;
 									updateCore = true;

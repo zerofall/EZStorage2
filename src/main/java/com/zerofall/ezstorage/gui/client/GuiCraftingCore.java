@@ -28,6 +28,6 @@ public class GuiCraftingCore extends GuiStorageCore {
 
 	@Override
 	protected ResourceLocation getBackground() {
-		return new ResourceLocation(RefStrings.MODID + ":textures/gui/storageCraftingGui.png");
+		return new ResourceLocation(RefStrings.MODID + ":textures/gui/storage_crafting_gui.png");
 	}
 }
