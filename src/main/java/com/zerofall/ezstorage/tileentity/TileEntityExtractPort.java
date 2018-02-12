@@ -18,6 +18,25 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 	
 	public EnumListMode listMode = EnumListMode.IGNORE;
 	public boolean roundRobin;
+	
+	@Override
+	public void update() {
+		super.update();
+		
+		if(!worldObj.isRemote && this.hasCore()) {
+			// take from the core every tick if the buffer is empty
+			if(buffer == null && !worldObj.isBlockPowered(pos)) {
+				buffer = core.getFirstStack(1, listMode, roundRobin, extractList);
+				this.markDirty();
+			}
+			// refresh the buffer once a second
+			if(buffer != null && worldObj.getTotalWorldTime() % 20 == 0) {
+				core.input(buffer);
+				buffer = null;
+				this.markDirty();
+			}
+		}
+	}
 
 	@Override
 	public NBTTagCompound writeDataToNBT(NBTTagCompound nbt) {
@@ -63,11 +82,6 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 	}
 
 	@Override
-	public boolean hasCustomName() {
-		return false;
-	}
-
-	@Override
 	public ITextComponent getDisplayName() {
 		return new TextComponentString("extract_port");
 	}
@@ -76,43 +90,14 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 	public int getSizeInventory() {
 		return 1;
 	}
-	
-	@Override
-	public void update() {
-		super.update();
-		
-		if(!worldObj.isRemote) {
-			// take from the core every tick if the buffer is empty
-			if(buffer == null && !worldObj.isBlockPowered(pos)) {
-				buffer = core.getFirstStack(1, listMode, roundRobin, extractList);
-				this.markDirty();
-			}
-			// refresh the buffer once a second
-			if(buffer != null && worldObj.getTotalWorldTime() % 20 == 0) {
-				core.input(buffer);
-				buffer = null;
-				this.markDirty();
-			}
-		}
-	}
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-//		if (core != null && listMode != EnumListMode.DISABLED && !worldObj.isBlockPowered(pos)) {
-//			return core.peekFirstStack(listMode, extractList);
-//		} else {
-//			return null;
-//		}
 		return buffer;
 	}
 
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
-//		if (core != null && listMode != EnumListMode.DISABLED && !worldObj.isBlockPowered(pos)) {
-//			return core.getFirstStack(count, listMode, extractList);
-//		} else {
-//			return null;
-//		}
 		ItemStack ret = buffer;
 		if(buffer.stackSize <= count) buffer = null;
 		return ret;
@@ -127,43 +112,6 @@ public class TileEntityExtractPort extends TileEntityItemHandler {
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		buffer = stack;
 	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return true;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {}
-
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return true;
-	}
-
-	@Override
-	public int getField(int id) {
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
-	}
-
-	@Override
-	public void clear() {}
 
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {

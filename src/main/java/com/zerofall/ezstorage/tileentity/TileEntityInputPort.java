@@ -1,22 +1,26 @@
 package com.zerofall.ezstorage.tileentity;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
-import com.zerofall.ezstorage.util.BlockRef;
-
 /** The input port */
 public class TileEntityInputPort extends TileEntityItemHandler {
 
 	private ItemStack[] inv = new ItemStack[1];
-
+	
 	@Override
-	public boolean hasCustomName() {
-		return false;
+	public void update() {
+		super.update();
+
+		if(this.hasCore()) {
+			ItemStack stack = this.inv[0];
+			if(stack != null && stack.stackSize > 0) {
+				this.inv[0] = this.core.input(stack);
+			}
+		}
 	}
 
 	@Override
@@ -59,46 +63,6 @@ public class TileEntityInputPort extends TileEntityItemHandler {
 	}
 
 	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return true;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return true;
-	}
-
-	@Override
-	public int getField(int id) {
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
-	}
-
-	@Override
 	public void clear() {
 		for (int i = 0; i < inv.length; ++i) {
 			inv[i] = null;
@@ -120,22 +84,6 @@ public class TileEntityInputPort extends TileEntityItemHandler {
 	@Override
 	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
 		return false;
-	}
-
-	@Override
-	public void update() {
-		super.update();
-
-		if (this.core != null) {
-			ItemStack stack = this.inv[0];
-			if (stack != null && stack.stackSize > 0) {
-				if (this.core.isPartOfMultiblock(new BlockRef(this))) {
-					this.inv[0] = this.core.input(stack);
-				} else {
-					this.core = null;
-				}
-			}
-		}
 	}
 
 	@Override

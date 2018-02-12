@@ -22,7 +22,7 @@ public class TileEntityEjectPort extends TileEntityMultiblock {
 	public void update() {
 		super.update();
 		
-		if(core != null && !worldObj.isRemote && !worldObj.isBlockPowered(pos)) {
+		if(!worldObj.isRemote && hasCore() && !worldObj.isBlockPowered(pos)) {
 			boolean updateCore = false;
 			BlockPos targetPos = getPos().offset(EnumFacing.UP);
 			TileEntity targetTile = worldObj.getTileEntity(targetPos);

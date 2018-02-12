@@ -1,6 +1,8 @@
 package com.zerofall.ezstorage.tileentity;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -32,5 +34,47 @@ public abstract class TileEntityItemHandler extends TileEntityMultiblock impleme
 			return super.getCapability(capability, facing);
 		}
 	}
+	
+	@Override
+	public boolean hasCustomName() {
+		return false;
+	}
+	
+	@Override
+	public int getInventoryStackLimit() {
+		return 64;
+	}
+
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer player) {
+		return true;
+	}
+
+	@Override
+	public void openInventory(EntityPlayer player) {}
+
+	@Override
+	public void closeInventory(EntityPlayer player) {}
+
+	@Override
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
+		return true;
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {}
 
 }
