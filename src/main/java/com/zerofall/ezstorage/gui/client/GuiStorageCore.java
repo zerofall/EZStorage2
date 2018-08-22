@@ -298,6 +298,8 @@ public class GuiStorageCore extends GuiContainerEZ {
 				}
 			}
 		}
+
+		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	/** Custom tooltips have the exact amount of items at the bottom */
