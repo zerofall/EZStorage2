@@ -69,7 +69,7 @@ public class ContainerStorageCoreCrafting extends ContainerStorageCore {
 			if (slotObject instanceof SlotCrafting) {
 				ItemStack[] recipe = new ItemStack[9];
 				for (int i = 0; i < 9; i++) {
-					recipe[i] = this.craftMatrix.getStackInSlot(i);
+					recipe[i] = this.craftMatrix.getStackInSlot(i).copy();
 				}
 
 				ItemStack itemstack1 = slotObject.getStack();
@@ -80,15 +80,15 @@ public class ContainerStorageCoreCrafting extends ContainerStorageCore {
 				int crafting = itemstack1.getCount();
 				for (int i = 0; i < itemstack1.getMaxStackSize(); i++) {
 
-					if (slotObject.getHasStack() && slotObject.getStack().isItemEqual(itemstack1)) {
+					if (slotObject.getHasStack()) {
 						if (crafting > maxStackSize) {
 							return ItemStack.EMPTY;
 						}
 						itemstack1 = slotObject.getStack();
 						itemstack = itemstack1.copy();
 						if (crafted + itemstack1.getCount() > itemstack1.getMaxStackSize()) {
-							return ItemStack.EMPTY;
-						}
+                            return ItemStack.EMPTY;
+                        }
 						boolean merged = this.mergeItemStack(itemstack1, this.rowCount() * 9, this.rowCount() * 9 + 36, true);
 						if (!merged) {
 							return ItemStack.EMPTY;
@@ -102,9 +102,10 @@ public class ContainerStorageCoreCrafting extends ContainerStorageCore {
 							if (original.isItemEqual(slotObject.getStack())) {
 								continue;
 							}
-
-							tryToPopulateCraftingGrid(recipe, playerIn);
 						}
+
+                        tryToPopulateCraftingGrid(recipe, playerIn);
+
 					} else {
 						break;
 					}
