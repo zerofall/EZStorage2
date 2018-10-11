@@ -101,10 +101,10 @@ public class ContainerStorageCore extends Container {
 		ItemStack heldStack = playerIn.inventory.getItemStack();
 
 		if (heldStack.isEmpty()) {
-		    // take item from system if the user inventory is not full
-            if (playerIn.inventory.getFirstEmptyStack() != -1) {
-                ItemStack retrievedStack = this.tileEntity.inventory.getItemsAt(slotId, clickedButton);
+            ItemStack retrievedStack = this.tileEntity.inventory.getItemsAt(slotId, clickedButton);
 
+            // take item from system if the user inventory is not full
+            if (playerIn.inventory.getFirstEmptyStack() != -1) {
                 if (retrievedStack.isEmpty()) return ItemStack.EMPTY;
 
                 // check for shift clicking
@@ -113,9 +113,9 @@ public class ContainerStorageCore extends Container {
                         this.tileEntity.inventory.input(retrievedStack);
                     }
                 } else playerIn.inventory.setItemStack(retrievedStack);
-
                 return retrievedStack;
-            }
+
+            } else playerIn.inventory.setItemStack(retrievedStack);
         } else playerIn.inventory.setItemStack(this.tileEntity.inventory.input(heldStack));
 
 		return ItemStack.EMPTY;
