@@ -98,31 +98,34 @@ public class ContainerStorageCore extends Container {
 
 	/** Click a custom slot to take or insert items */
 	public @Nonnull ItemStack customSlotClick(int slotId, int clickedButton, int mode, EntityPlayer playerIn) {
+
 		int itemIndex = slotId;
 		ItemStack heldStack = playerIn.inventory.getItemStack();
 
 		// grab a stack from the inventory
 		if (heldStack.isEmpty()) {
-			int type = 0;
-			if (clickedButton == 1) {
-				type = 1;
-			}
-			ItemStack stack = this.tileEntity.inventory.getItemsAt(itemIndex, type);
-			if (stack.isEmpty()) {
-				return ItemStack.EMPTY;
-			}
-			// player -> inventory
-			if (clickedButton == 0 && mode == 1) {
-				if (!this.mergeItemStack(stack, this.rowCount() * 9, this.rowCount() * 9 + 36, true)) {
-					this.tileEntity.inventory.input(stack);
+			if(playerIn.inventory.getFirstEmptyStack() != -1) {
+				int type = 0;
+				if (clickedButton == 1) {
+					type = 1;
 				}
-				// inventory -> player
-			} else {
-				playerIn.inventory.setItemStack(stack);
-			}
-			return stack;
+				ItemStack stack = this.tileEntity.inventory.getItemsAt(itemIndex, type);
+				if (stack.isEmpty()) {
+					return ItemStack.EMPTY;
+				}
+				// player -> inventory
+				if (clickedButton == 0 && mode == 1) {
+					if (!this.mergeItemStack(stack, this.rowCount() * 9, this.rowCount() * 9 + 36, true)) {
+						this.tileEntity.inventory.input(stack);
+					}
+					// inventory -> player
+				} else {
+					playerIn.inventory.setItemStack(stack);
+				}
+				return stack;
 
-			// place a stack into the inventory
+				// place a stack into the inventory
+			}
 		} else {
 			playerIn.inventory.setItemStack(this.tileEntity.inventory.input(heldStack));
 		}
