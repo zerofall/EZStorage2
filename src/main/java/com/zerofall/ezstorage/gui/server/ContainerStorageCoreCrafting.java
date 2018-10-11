@@ -144,19 +144,20 @@ public class ContainerStorageCoreCrafting extends ContainerStorageCore {
 	}
 
 	private void tryToPopulateCraftingGrid(ItemStack[] recipe, EntityPlayer playerIn) {
-		clearGrid(playerIn);
+		clearCraftingGrid(playerIn);
 		for (int j = 0; j < recipe.length; j++) {
 			if (!recipe[j].isEmpty()) {
-				if (recipe[j].getCount() > 1) {
-					continue;
-				} else {
-					recipe[j].setCount(1);
-				}
+
+			    // if the item count is higher than 1, we take 1 item away.
+			    if(recipe[j].getCount() != 1) {
+                    recipe[j].setCount(recipe[j].getCount() - 1);
+                }
+
 				Slot slot = getSlotFromInventory(this.craftMatrix, j);
 				if (slot != null) {
-					ItemStack retreived = tileEntity.inventory.getItems(new ItemStack[] { recipe[j] });
-					if (!retreived.isEmpty()) {
-						slot.putStack(retreived);
+					ItemStack retrieved = tileEntity.inventory.getItems(new ItemStack[] { recipe[j] });
+					if (!retrieved.isEmpty()) {
+						slot.putStack(retrieved);
 					}
 				}
 			}
@@ -175,16 +176,18 @@ public class ContainerStorageCoreCrafting extends ContainerStorageCore {
 
 	@Override
 	public void onContainerClosed(EntityPlayer playerIn) {
-		clearGrid(playerIn);
+		clearCraftingGrid(playerIn);
 		super.onContainerClosed(playerIn);
 	}
 
-	public void clearGrid(EntityPlayer playerIn) {
+	public void clearCraftingGrid(EntityPlayer playerIn) {
 		for (int i = 0; i < 9; i++) {
 			ItemStack stack = this.craftMatrix.getStackInSlot(i);
 			if (!stack.isEmpty()) {
 				ItemStack result = this.tileEntity.input(stack);
 				this.craftMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
+
+				// drop items on the ground if the grid is unable to be cleared
 				if (!result.isEmpty()) {
 					playerIn.dropItem(result, false);
 				}

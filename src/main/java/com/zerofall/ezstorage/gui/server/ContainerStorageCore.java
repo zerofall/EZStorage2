@@ -63,7 +63,7 @@ public class ContainerStorageCore extends Container {
 			return true;
 		case 1: // clear the crafting grid if it exists
 			if (this instanceof ContainerStorageCoreCrafting) {
-				((ContainerStorageCoreCrafting) this).clearGrid(player);
+				((ContainerStorageCoreCrafting) this).clearCraftingGrid(player);
 				tileEntity.sortInventory();
 				return true;
 			}

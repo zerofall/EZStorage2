@@ -62,7 +62,7 @@ public class MessageRecipeSync implements IMessage {
 				TileEntityStorageCore tileEntity = con.tileEntity;
 
 				// Empty grid into inventory
-				con.clearGrid(player);
+				con.clearCraftingGrid(player);
 
 				this.recipe = new ItemStack[9][];
 				for (int x = 0; x < this.recipe.length; x++) {
