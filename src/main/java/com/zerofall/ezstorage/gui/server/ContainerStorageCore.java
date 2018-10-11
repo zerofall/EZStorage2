@@ -97,38 +97,27 @@ public class ContainerStorageCore extends Container {
 	}
 
 	/** Click a custom slot to take or insert items */
-	public @Nonnull ItemStack customSlotClick(int slotId, int clickedButton, int mode, EntityPlayer playerIn) {
-
-		int itemIndex = slotId;
+	public @Nonnull ItemStack customSlotClick(int slotId, int clickedButton, int shiftPressed, EntityPlayer playerIn) {
 		ItemStack heldStack = playerIn.inventory.getItemStack();
 
-		// grab a stack from the inventory
 		if (heldStack.isEmpty()) {
-			if(playerIn.inventory.getFirstEmptyStack() != -1) {
-				int type = 0;
-				if (clickedButton == 1) {
-					type = 1;
-				}
-				ItemStack stack = this.tileEntity.inventory.getItemsAt(itemIndex, type);
-				if (stack.isEmpty()) {
-					return ItemStack.EMPTY;
-				}
-				// player -> inventory
-				if (clickedButton == 0 && mode == 1) {
-					if (!this.mergeItemStack(stack, this.rowCount() * 9, this.rowCount() * 9 + 36, true)) {
-						this.tileEntity.inventory.input(stack);
-					}
-					// inventory -> player
-				} else {
-					playerIn.inventory.setItemStack(stack);
-				}
-				return stack;
+		    // take item from system if the user inventory is not full
+            if (playerIn.inventory.getFirstEmptyStack() != -1) {
+                ItemStack retrievedStack = this.tileEntity.inventory.getItemsAt(slotId, clickedButton);
 
-				// place a stack into the inventory
-			}
-		} else {
-			playerIn.inventory.setItemStack(this.tileEntity.inventory.input(heldStack));
-		}
+                if (retrievedStack.isEmpty()) return ItemStack.EMPTY;
+
+                // check for shift clicking
+                if (clickedButton == 0 && shiftPressed == 1) {
+                    if (!this.mergeItemStack(retrievedStack, this.rowCount() * 9, this.rowCount() * 9 + 36, true)) {
+                        this.tileEntity.inventory.input(retrievedStack);
+                    }
+                } else playerIn.inventory.setItemStack(retrievedStack);
+
+                return retrievedStack;
+            }
+        } else playerIn.inventory.setItemStack(this.tileEntity.inventory.input(heldStack));
+
 		return ItemStack.EMPTY;
 	}
 
